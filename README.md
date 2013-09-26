@@ -1,4 +1,4 @@
 Initial
 =======
 
-Initial repository for testing
+Seda spa KGS Initial repository for testing.
