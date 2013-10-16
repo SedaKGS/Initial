@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.mybatis.jpetstore.persistence.AccountMapper">
+
+	<cache />
+
+	<resultMap id="account" type="Account">
+		<id property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="firstname" column="firstname" />
+		<result property="email" column="email" />
+		<result property="enabled" column="enabled" />
+		<result property="registration" column="registration" />
+		<result property="expiration" column="expiration" />
+		<result property="credentialsExpiration" column="credentialsExpiration" />
+		<result property="locked" column="locked" />
+		<result property="attempts" column="attempts" />
+	</resultMap>
+
+
+	<resultMap id="accountComplete" type="Account" extends="account">
+		<collection property="authorities" ofType="Authority">
+			<result column="authority" property="authority" />
+		</collection>
+	</resultMap>
+
+	<select id="getAccountByUsername" parameterType="string" resultMap="accountComplete">
+		SELECT
+		USERS.username,
+		USERS.firstName,
+		USERS.lastName,
+		USERS.email,
+		USERS.enabled,
+		USERS.registration,
+		USERS.expiration,
+		USERS.credentialsExpiration,
+		USERS.locked,
+		USERS.attempts,
+		GROUP_AUTHORITIES.authority as "authority"
+		FROM USERS, GROUP_MEMBERS, GROUP_AUTHORITIES
+		WHERE USERS.USERNAME = #{username}
+		AND GROUP_MEMBERS.USERNAME = USERS.USERNAME
+		AND GROUP_AUTHORITIES.GROUP_ID = GROUP_MEMBERS.GROUP_ID
+	</select>
+
+	<select id="findPasswordByUsername" parameterType="Account" resultType="string">
+		SELECT SIGNON.password
+		  FROM SIGNON
+		 WHERE SIGNON.username = #{username}
+	</select>
+
+	<insert id="insertAccount" parameterType="Account">
+		INSERT INTO ACCOUNT
+		(username,firstName,lastName,email,expiration)
+		VALUES
+		(#{username}, #{firstName}, #{lastName}, #{email}, #{expiration})
+	</insert>
+
+	<insert id="insertDefaultGroupMember" parameterType="string">
+		INSERT INTO GROUP_MEMBERS (group_id, username)
+		SELECT id,#{username} FROM GROUPS 
+		 WHERE group_name='users'
+	</insert>
+
+	<delete id="deleteGroupMember" parameterType="GroupMember">
+	    DELETE FROM GROUP_MEMBERS
+	     WHERE group_id = #{groupId}
+	       AND username = #{username}
+	</delete>
+	
+	<delete id="insertGroupMember" parameterType="GroupMember">
+	    INSERT INTO GROUP_MEMBERS 
+	    VALUES (#{username}, #{groupId})
+	</delete>	
+
+	<update id="updateAccount" parameterType="Account">
+		UPDATE USERS SET
+		EMAIL = #{email},
+		FIRSTNAME = #{firstName},
+		EMAIL = #{email},
+		ENABLED = #{enabled}
+		WHERE USERNAME = #{username}
+	</update>
+
+	<insert id="insertAccount" parameterType="Account">
+		INSERT INTO ACCOUNT
+		(EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY,
+		PHONE, USERID)
+		VALUES
+		(#{email}, #{firstName}, #{lastName}, #{status}, #{address1},
+		#{address2,jdbcType=VARCHAR}, #{city}, #{state}, #{zip}, #{country},
+		#{phone}, #{username})
+	</insert>
+
+	<update id="updateSignon" parameterType="Signon">
+		UPDATE SIGNON SET PASSWORD = #{password}
+		WHERE USERNAME = #{username}
+	</update>
+
+	<insert id="insertSignon" parameterType="Signon">
+		INSERT INTO SIGNON (PASSWORD,USERNAME)
+		VALUES (#{password}, #{username})
+	</insert>
+
+</mapper>
