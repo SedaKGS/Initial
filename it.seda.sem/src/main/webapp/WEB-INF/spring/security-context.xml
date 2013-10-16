@@ -34,7 +34,7 @@
 	<!-- define the SqlSessionFactory -->
 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource" />
-		<beans:property name="typeAliasesPackage" value="it.seda.seda.security.domain" />
+		<beans:property name="typeAliasesPackage" value="it.seda.sem.security.domain" />
 	</beans:bean>
 
 	<!-- scan for mappers and let them be autowired -->

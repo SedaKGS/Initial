@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.mybatis.jpetstore.persistence.AccountMapper">
+<mapper namespace="it.seda.sem.security.persistence.AccountMapper">
 
 	<cache />
 
@@ -83,16 +83,6 @@
 		ENABLED = #{enabled}
 		WHERE USERNAME = #{username}
 	</update>
-
-	<insert id="insertAccount" parameterType="Account">
-		INSERT INTO ACCOUNT
-		(EMAIL, FIRSTNAME, LASTNAME, STATUS, ADDR1, ADDR2, CITY, STATE, ZIP, COUNTRY,
-		PHONE, USERID)
-		VALUES
-		(#{email}, #{firstName}, #{lastName}, #{status}, #{address1},
-		#{address2,jdbcType=VARCHAR}, #{city}, #{state}, #{zip}, #{country},
-		#{phone}, #{username})
-	</insert>
 
 	<update id="updateSignon" parameterType="Signon">
 		UPDATE SIGNON SET PASSWORD = #{password}

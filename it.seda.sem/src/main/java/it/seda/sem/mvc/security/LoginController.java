@@ -21,7 +21,7 @@ public class LoginController {
 	private Logger logger = LoggerFactory.getLogger(LoginController.class);
 			
 	@RequestMapping(method=RequestMethod.GET)
-	public ModelAndView readString() {
+	public ModelAndView def() {
 		logger.debug("hello login");
 		return new ModelAndView("login");
 	}
