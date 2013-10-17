@@ -63,6 +63,12 @@
 		SELECT id,#{username} FROM GROUPS 
 		 WHERE group_name='users'
 	</insert>
+	
+	<insert id="insertAdminGroupMember" parameterType="string">
+		INSERT INTO GROUP_MEMBERS (group_id, username)
+		SELECT id,#{username} FROM GROUPS 
+		 WHERE group_name='administrators'
+	</insert>	
 
 	<delete id="deleteGroupMember" parameterType="GroupMember">
 	    DELETE FROM GROUP_MEMBERS
@@ -73,15 +79,19 @@
 	<delete id="insertGroupMember" parameterType="GroupMember">
 	    INSERT INTO GROUP_MEMBERS 
 	    VALUES (#{username}, #{groupId})
-	</delete>	
+	</delete>
 
 	<update id="updateAccount" parameterType="Account">
-		UPDATE USERS SET
-		EMAIL = #{email},
-		FIRSTNAME = #{firstName},
-		EMAIL = #{email},
-		ENABLED = #{enabled}
-		WHERE USERNAME = #{username}
+		UPDATE USERS
+		<set>
+			<if test="firstName != null">FIRSTNAME = #{firstName},</if>
+			<if test="lastName != null">LASTNAME=#{lastName},</if>
+			<if test="email != null">EMAIL=#{email},</if>
+			<if test="expiration != null">EXPIRATION=#{expiration},</if>
+			<if test="credentialsExpiration != null">CREDENTIALSEXPIRATION=#{credentialsExpiration},</if>
+			<if test="enabled != null">ENABLED=#{enabled}</if>
+		</set>
+		WHERE USERNAME = #{username}		
 	</update>
 
 	<update id="updateSignon" parameterType="Signon">

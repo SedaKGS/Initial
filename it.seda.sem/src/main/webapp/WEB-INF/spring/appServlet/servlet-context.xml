@@ -62,6 +62,4 @@
 		<property name="defaultLocale" value="it" />
 	</bean>
     
-	<mvc:view-controller path="/home" view-name="home" />
-	
 </beans>

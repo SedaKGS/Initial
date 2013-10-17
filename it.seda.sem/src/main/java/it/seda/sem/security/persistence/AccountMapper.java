@@ -10,7 +10,9 @@ public interface AccountMapper {
 	String findPasswordByUsername(String username);
 
 	void insertAccount(Account account);
-	void insertDefaultGroupMember(String username);	
+	
+	void insertDefaultGroupMember(String username);
+	void insertAdminGroupMember(String username);
 	void deleteGroupMember(GroupMember groupMember);	
 	void insertGroupMember(GroupMember groupMember);	
 	
