@@ -22,7 +22,7 @@ public class LoginController {
 			
 	@RequestMapping(method=RequestMethod.GET)
 	public ModelAndView def() {
-		logger.debug("hello login");
+		logger.debug("SEM::-hello login");
 		return new ModelAndView("login");
 	}
 	

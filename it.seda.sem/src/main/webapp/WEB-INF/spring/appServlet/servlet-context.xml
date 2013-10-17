@@ -32,4 +32,36 @@
 		</property>
 	</bean>
 	
+	
+	 <!-- ******************************************************************** -->
+     <!-- ******************MESSAGES SPRING LOCALE URL BASED****************** -->
+     <!-- ******************************************************************** -->
+     
+    <!-- message.properties personalizzato security  -->
+      
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	 <property name="basenames">
+	    <list>
+		 <value>it/seda/sem/i18n/uimessages</value>
+	    </list>
+	 </property>
+     </bean>
+    
+    <!-- locales handling non funziona con spring security!-->
+	<mvc:interceptors>  
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">  
+            <property name="paramName" value="language" />  
+        </bean>  
+    </mvc:interceptors> 
+ 	<!-- 
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">  
+        <property name="defaultLocale" value="en_UK" />  
+    </bean>  
+ 	-->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="it" />
+	</bean>
+    
+	<mvc:view-controller path="/home" view-name="home" />
+	
 </beans>

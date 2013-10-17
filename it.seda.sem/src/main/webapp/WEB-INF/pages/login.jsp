@@ -14,11 +14,16 @@
 		<div>${SPRING_SECURITY_LAST_EXCEPTION.message}</div>
 	</c:if>
 	<h1>log in personalizzato</h1>
+	<h3>
+        <spring:message code="login.title" text="default text" />
+        <br>
+        Current Locale : ${pageContext.response.locale}
+    </h3>
 	<form class="main" action="j_spring_security_check" method="post">
 		Username: <input type="text" name="j_username" /><br /> Password: <input
 			type="password" name="j_password" /><br /> <input type="checkbox"
 			name="_spring_security_remember_me" /> Remember me<br /> <input
-			type="submit" value="Log in" />
+			type="submit" value='<spring:message code="login.form.button" />' />
 	</form>
 </body>
 </html>
