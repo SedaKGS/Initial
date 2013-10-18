@@ -10,6 +10,7 @@ import it.seda.sem.security.domain.GroupMember;
 import it.seda.sem.security.domain.Signon;
 import it.seda.sem.security.persistence.AccountMapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ public class AccountService {
 
 	@Inject private AccountMapper accountMapper;
 	@Inject private ShaPasswordEncoder passwordEncoder;
+	
+	
 
 	public Account getAccountByUserName(String username) {
 		return accountMapper.getAccountByUsername(username);
@@ -37,7 +40,8 @@ public class AccountService {
 	public void insertAccount(Account account) {
 		Signon signon = new Signon();
 		signon.setUsername(account.getUsername());
-		signon.setPassword(((PasswordEncoder) passwordEncoder).encode(account.getUsername()));
+		
+		signon.setPassword(passwordEncoder.encodePassword(account.getUsername(),null));
 		
 		accountMapper.insertAccount(account);
 		accountMapper.insertDefaultGroupMember(account.getUsername());
@@ -48,7 +52,7 @@ public class AccountService {
 	public void insertAdministrator(Account account) {
 		Signon signon = new Signon();
 		signon.setUsername(account.getUsername());
-		signon.setPassword(((PasswordEncoder) passwordEncoder).encode(account.getUsername()));
+		signon.setPassword(passwordEncoder.encodePassword(account.getUsername(),null));
 		
 		accountMapper.insertAccount(account);
 		accountMapper.insertAdminGroupMember(account.getUsername());
@@ -63,7 +67,7 @@ public class AccountService {
 	
 	@Transactional
 	public void updateSignon(Signon signon) {
-		signon.setPassword(((PasswordEncoder) passwordEncoder).encode(signon.getUsername()));		
+		signon.setPassword(passwordEncoder.encodePassword(signon.getUsername(),null));
 		accountMapper.updateSignon(signon);
 	}	
 

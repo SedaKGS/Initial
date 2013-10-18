@@ -3,6 +3,7 @@
  */
 package it.seda.sem.security.domain;
 
+
 /**
  * @author f.ricci
  *

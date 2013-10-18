@@ -41,7 +41,7 @@ public class RefreshContextListener implements ApplicationListener<ContextRefres
 			account.setLastName("administrator");
 			account.setEnabled(true);
 			account.setLocked(false);			
-			
+			account.setEmail("administrator@administrator.it");
 			account.setExpiration(expiration.toDate());
 			account.setCredentialsExpiration(credentialsExpiration.toDate());
 

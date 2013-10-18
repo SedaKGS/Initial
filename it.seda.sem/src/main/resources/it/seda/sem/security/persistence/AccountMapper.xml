@@ -4,12 +4,13 @@
 
 <mapper namespace="it.seda.sem.security.persistence.AccountMapper">
 
+	<!-- 
 	<cache />
-
+ 	-->
 	<resultMap id="account" type="Account">
 		<id property="username" column="username" />
 		<result property="password" column="password" />
-		<result property="firstname" column="firstname" />
+		<result property="firstName" column="firstname" />
 		<result property="email" column="email" />
 		<result property="enabled" column="enabled" />
 		<result property="registration" column="registration" />
@@ -18,11 +19,11 @@
 		<result property="locked" column="locked" />
 		<result property="attempts" column="attempts" />
 	</resultMap>
-
+ 
 
 	<resultMap id="accountComplete" type="Account" extends="account">
 		<collection property="authorities" ofType="Authority">
-			<result column="authority" property="authority" />
+			<result column="name" property="authority" />
 		</collection>
 	</resultMap>
 
@@ -52,7 +53,7 @@
 	</select>
 
 	<insert id="insertAccount" parameterType="Account">
-		INSERT INTO ACCOUNT
+		INSERT INTO USERS
 		(username,firstName,lastName,email,expiration)
 		VALUES
 		(#{username}, #{firstName}, #{lastName}, #{email}, #{expiration})
