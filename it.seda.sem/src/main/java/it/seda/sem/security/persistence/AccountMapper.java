@@ -1,6 +1,6 @@
 package it.seda.sem.security.persistence;
 
-import it.seda.sem.mvc.annotations.SecurityRepository;
+import it.seda.sem.security.annotations.SecurityRepository;
 import it.seda.sem.security.domain.Account;
 import it.seda.sem.security.domain.GroupMember;
 import it.seda.sem.security.domain.Signon;

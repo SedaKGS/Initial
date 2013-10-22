@@ -1,4 +1,4 @@
-package it.seda.sem.mvc.welcome;
+package it.seda.sem.mvc.events;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

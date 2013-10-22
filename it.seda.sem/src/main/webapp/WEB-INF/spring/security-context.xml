@@ -46,22 +46,41 @@
 	<beans:bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 	    <beans:property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 		<beans:property name="basePackage" value="it.seda.sem.security.persistence" />
-		<beans:property name="annotationClass" value="it.seda.sem.mvc.annotations.SecurityRepository"/>
+		<beans:property name="annotationClass" value="it.seda.sem.security.annotations.SecurityRepository"/>
 	</beans:bean>
 	
 
 	<!-- **************************************************************************** -->
 
-	<http auto-config="true">
-		<intercept-url pattern="/welcome" access="ROLE_USER, ROLE_ADMIN" />
-		<!-- <intercept-url pattern="/manager/*" access="ROLE_AMMI" /> <intercept-url 
-			pattern="/services/*" access="ROLE_AMMI, ROLE_WRITER" /> -->
-		<form-login login-page="/login" 
-		            authentication-failure-url="/login?failed=true"
-			        default-target-url="/welcome" />
+	<http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/"
+                access="permitAll"/>
+        <intercept-url pattern="/security/login/**"
+                access="permitAll"/>
+        <intercept-url pattern="/security/signup/*"
+                access="permitAll"/>
+        <intercept-url pattern="/security/logout"
+                access="permitAll"/>
+        <intercept-url pattern="/errors/**"
+                access="permitAll"/>
+
+        <intercept-url pattern="/manager/**"
+                access="hasRole('ROLE_ADMIN')"/>
+	<!--                
+        <intercept-url pattern="/**"
+                access="hasRole('ROLE_USER')"/>
+	-->                
+ 
+       <intercept-url pattern="/events/**"
+                access="hasAnyRole('ROLE_ADMIN,ROLSE_USER')"/>
+       	
+		<form-login login-page="/security/login" 
+		            authentication-failure-url="/security/login?failed=true"
+			        default-target-url="/events/welcome" />
 		
 		<!-- Using "logout-success-url" attribute we delete the remember me cookie after logout -->	
-		<logout logout-success-url="/login" />
+		<logout logout-success-url="/security/login" 
+				logout-url="/security/logout"/>
 
 		<remember-me />
 	</http>
