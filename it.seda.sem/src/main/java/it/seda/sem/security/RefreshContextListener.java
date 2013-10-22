@@ -1,11 +1,8 @@
 package it.seda.sem.security;
 
-import it.seda.sem.mvc.security.LoginController;
 import it.seda.sem.security.domain.Account;
 import it.seda.sem.security.service.AccountService;
-
 import javax.inject.Inject;
-
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +24,13 @@ public class RefreshContextListener implements ApplicationListener<ContextRefres
 	
 	@Inject AccountService accountService; 
 	
+	
+	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		Account account = accountService.getAccountByUserName(ADMIN_USER);
+		
+		
 		
 		if (account==null) {
 			logger.warn("adinitrator account not found.... trying to create it..."); //TODO no i18n

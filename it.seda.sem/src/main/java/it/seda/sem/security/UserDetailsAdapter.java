@@ -77,17 +77,17 @@ public class UserDetailsAdapter implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return account.isExpired(new Date());
+		return !account.isExpired(new Date());
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return account.isLocked();
+		return !account.isLocked();
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return account.isCredentialsExpired(new Date());
+		return !account.isCredentialsExpired(new Date());
 	}
 
 	@Override

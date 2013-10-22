@@ -23,7 +23,7 @@
 
 	<resultMap id="accountComplete" type="Account" extends="account">
 		<collection property="authorities" ofType="Authority">
-			<result column="name" property="authority" />
+			<result column="authority" property="name" />
 		</collection>
 	</resultMap>
 

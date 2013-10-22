@@ -2,11 +2,71 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
+	<!-- ************************************************************************** -->
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- ************************************************************************** -->
 	
+	<!-- Business datasource (is the same of security data source) -->
+	<bean id="dataSourceBusiness"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/SEMDataSource" />
+	</bean>
+
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionBusinessManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceBusiness" />
+	</bean>
 	
+	<!-- enable transaction with annotations -->
+	<tx:annotation-driven />
+   
+    <!-- enable autowire/inject -->
+	<context:annotation-config /> 
+      
+	<!-- define the SqlSessionFactory -->
+	<bean id="sqlSessionFactoryBusiness" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceBusiness" />
+		<property name="typeAliasesPackage" value="it.seda.sem.domain" />
+	</bean>
+
+	<!-- scan for mybatis mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBusiness" />
+		<property name="basePackage" value="it.seda.sem.persistence" />
+		<property name="annotationClass" value="it.seda.sem.mvc.annotations.BusinessRepository"/>
+	</bean>
+	
+    <!-- *********************** SPRING i18n BOUNDLES ***************************** -->
+    <!-- uimessage.properties personalizzato -->      
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	 <property name="basenames">
+	    <list>
+		 <value>it/seda/sem/i18n/uimessages</value>
+	    </list>
+	 </property>
+     </bean>
+    
+    <!-- locales handling non funziona con spring security!-->
+	<mvc:interceptors>  
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">  
+            <property name="paramName" value="language" />  
+        </bean>  
+    </mvc:interceptors> 
+ 	<!-- 
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">  
+        <property name="defaultLocale" value="en_UK" />  
+    </bean>  
+ 	-->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="it" />
+	</bean>
 
 </beans>

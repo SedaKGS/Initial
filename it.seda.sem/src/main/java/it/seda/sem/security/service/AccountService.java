@@ -5,14 +5,15 @@ package it.seda.sem.security.service;
 
 import javax.inject.Inject;
 
+import it.seda.sem.persistence.AccountBusinessMapper;
+import it.seda.sem.security.UserDetailsAdapter;
 import it.seda.sem.security.domain.Account;
-import it.seda.sem.security.domain.GroupMember;
 import it.seda.sem.security.domain.Signon;
 import it.seda.sem.security.persistence.AccountMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,8 @@ public class AccountService {
 
 	@Inject private AccountMapper accountMapper;
 	@Inject private ShaPasswordEncoder passwordEncoder;
+	@Inject private SaltSource saltSource;
+	
 	
 	
 
@@ -36,23 +39,27 @@ public class AccountService {
 		return accountMapper.findPasswordByUsername(username);
 	}
 
-	@Transactional
+	@Transactional("transactionSecurityManager")
 	public void insertAccount(Account account) {
 		Signon signon = new Signon();
 		signon.setUsername(account.getUsername());
 		
-		signon.setPassword(passwordEncoder.encodePassword(account.getUsername(),null));
+		
+		Object salt = saltSource.getSalt(new UserDetailsAdapter(account));
+		signon.setPassword(passwordEncoder.encodePassword(account.getUsername(),salt));
 		
 		accountMapper.insertAccount(account);
 		accountMapper.insertDefaultGroupMember(account.getUsername());
 		accountMapper.insertSignon(signon);
 	}
 	
-	@Transactional
+	@Transactional("transactionSecurityManager")
 	public void insertAdministrator(Account account) {
 		Signon signon = new Signon();
 		signon.setUsername(account.getUsername());
-		signon.setPassword(passwordEncoder.encodePassword(account.getUsername(),null));
+			
+		Object salt = saltSource.getSalt(new UserDetailsAdapter(account));
+		signon.setPassword(passwordEncoder.encodePassword(account.getUsername(),salt));	
 		
 		accountMapper.insertAccount(account);
 		accountMapper.insertAdminGroupMember(account.getUsername());
@@ -60,14 +67,19 @@ public class AccountService {
 		accountMapper.updateAccount(account);
 	}	
 	
-	@Transactional
+	@Transactional("transactionSecurityManager")
 	public void updateAccount(Account account) {
 		accountMapper.updateAccount(account);
 	}
 	
-	@Transactional
+	@Transactional("transactionSecurityManager")
 	public void updateSignon(Signon signon) {
-		signon.setPassword(passwordEncoder.encodePassword(signon.getUsername(),null));
+		
+		Account tempAccount =new Account();
+		tempAccount.setUsername(signon.getUsername());
+		Object salt = saltSource.getSalt(new UserDetailsAdapter(tempAccount));	
+		signon.setPassword(passwordEncoder.encodePassword(signon.getUsername(),salt));
+		
 		accountMapper.updateSignon(signon);
 	}	
 
