@@ -9,6 +9,9 @@
 	<configs>
 		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/security-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/eventsServlet/controllers.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/managerServlet/controllers.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/securityServlet/controllers.xml</config>
 	</configs>
 	<configSets>
 	</configSets>
