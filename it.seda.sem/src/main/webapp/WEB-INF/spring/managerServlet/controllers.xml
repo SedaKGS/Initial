@@ -8,6 +8,4 @@
 	<context:component-scan base-package="it.seda.sem.mvc.manager" />
 	<context:component-scan base-package="it.seda.sem.mvc.manager.models" />
 	
-	
-	
 </beans>

@@ -3,12 +3,15 @@
  */
 package it.seda.sem.security.domain;
 
+import java.io.Serializable;
+
 
 /**
  * @author f.ricci
  *
  */
-public class Authority {
+@SuppressWarnings("serial")
+public class Authority implements Serializable{
 
 	private String name;
 	public String getName() {

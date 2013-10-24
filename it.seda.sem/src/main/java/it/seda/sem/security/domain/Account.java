@@ -3,6 +3,7 @@
  */
 package it.seda.sem.security.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,8 @@ import java.util.List;
  * @author f.ricci
  *
  */
-public class Account {
+@SuppressWarnings("serial")
+public class Account implements Serializable {
 
 	private String username;
 	private String firstName;
