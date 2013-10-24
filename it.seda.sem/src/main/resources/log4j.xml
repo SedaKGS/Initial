@@ -37,7 +37,11 @@
 	<logger name="org.springframework.security">
 		<level value="debug" />
 	</logger>	
-
+	
+	<logger name="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	    <level value="warn" />
+	</logger>
+	
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="console" />

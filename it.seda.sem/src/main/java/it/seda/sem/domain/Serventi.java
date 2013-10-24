@@ -4,19 +4,14 @@ import java.sql.Timestamp;
 
 public class Serventi {
 	
-	private Timestamp dataIn;
+	private Timestamp registrazione;
 	private String descrizione;
 	private String id;
 	private String indirizzoIp;
 	private String servente;
-	private Timestamp timeIn;
-	private String utenteId;
-	public Timestamp getDataIn() {
-		return dataIn;
-	}
-	public void setDataIn(Timestamp dataIn) {
-		this.dataIn = dataIn;
-	}
+	
+	
+	
 	public String getDescrizione() {
 		return descrizione;
 	}
@@ -41,25 +36,19 @@ public class Serventi {
 	public void setServente(String servente) {
 		this.servente = servente;
 	}
-	public Timestamp getTimeIn() {
-		return timeIn;
+	public Timestamp getRegistrazione() {
+		return registrazione;
 	}
-	public void setTimeIn(Timestamp timeIn) {
-		this.timeIn = timeIn;
-	}
-	public String getUtenteId() {
-		return utenteId;
-	}
-	public void setUtenteId(String utenteId) {
-		this.utenteId = utenteId;
+	public void setRegistrazione(Timestamp registrazione) {
+		this.registrazione = registrazione;
 	}
 	@Override
 	public String toString() {
-		return "Serventi [dataIn=" + dataIn + ", descrizione=" + descrizione
-				+ ", id=" + id + ", indirizzoIp=" + indirizzoIp + ", servente="
-				+ servente + ", timeIn=" + timeIn + ", utenteId=" + utenteId
-				+ "]";
+		return "Serventi [registrazione=" + registrazione + ", descrizione="
+				+ descrizione + ", id=" + id + ", indirizzoIp=" + indirizzoIp
+				+ ", servente=" + servente + "]";
 	}
+	
 	
 	
 

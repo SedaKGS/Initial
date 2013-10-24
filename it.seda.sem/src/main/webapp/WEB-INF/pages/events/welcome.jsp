@@ -11,7 +11,7 @@
 <body>
 	<h1>Message : ${message}</h1>
 	<ul>
-		<c:url var="managerUrl" value="/manager/" />
+		<c:url var="managerUrl" value="/manager" />
 		<sec:authorize url="${managerUrl}">
 			<li><a id="navManagerLink" href="${managerUrl}">Manager</a></li>
 		</sec:authorize>

@@ -53,6 +53,7 @@
 	 <property name="basenames">
 	    <list>
 		 <value>it/seda/sem/i18n/uimessages</value>
+		 <value>it/seda/sem/i18n/validatorMessages</value>
 	    </list>
 	 </property>
      </bean>
@@ -71,5 +72,17 @@
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="defaultLocale" value="it" />
 	</bean>
+	 <!-- Custom validator messages -->
+	 
+	 <mvc:annotation-driven validator="validator"></mvc:annotation-driven>
+	 
+    <bean name="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+      <property name="validationMessageSource">
+          <ref bean="messageSource"/>
+      </property>
+    </bean>
+
+    
+	
 
 </beans>
