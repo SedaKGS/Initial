@@ -39,6 +39,10 @@
 			</tr>
 		</table>
 	</form:form>
+	<br>
+	<a href="?language=en">Inglese</a>
+	<br>
+	<a href="?language=it">Italiano</a>
  
 </body>
 </html>

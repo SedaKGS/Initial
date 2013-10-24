@@ -8,10 +8,10 @@ public class FormClient {
 	
 	
 
-	@NotEmpty(message="{login.title}")
+	@NotEmpty(message="{formClient.cliente.notEmpty}")
 	private String cliente;
 	
-	@Pattern(regexp="^[a-zA-Z0-9]+$",message="{login.title}")
+	@Pattern(regexp="^[a-zA-Z0-9]+$",message="{formClient.descrizione.pattern}")
 	private String descrizione;
 	
 	@Pattern(regexp="[0-9]{1,4}/[0-9]{1,2}/[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}",message="La registrazione deve essere: anno/mese/giorno ora/minuto/secondo")

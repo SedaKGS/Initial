@@ -60,22 +60,20 @@
 	</bean>
     
     <!-- locales handling non funziona con spring security!-->
-	<mvc:interceptors>  
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">  
-            <property name="paramName" value="language" />  
-        </bean>  
-    </mvc:interceptors> 
- 	<!-- 
+	
+ 	<!--  
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">  
         <property name="defaultLocale" value="en_UK" />  
-    </bean>  
- 	-->
+    </bean> 
+    --> 
+ 	 
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="defaultLocale" value="it" />
 	</bean>
+	
 	 <!-- Custom validator messages -->
 	 
-	 <mvc:annotation-driven validator="validator"></mvc:annotation-driven>
+	 
 	 
     <bean name="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
       <property name="validationMessageSource">
