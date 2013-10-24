@@ -3,17 +3,15 @@
  */
 package it.seda.sem.security.service;
 
-import javax.inject.Inject;
-
-import it.seda.sem.persistence.AccountBusinessMapper;
 import it.seda.sem.security.UserDetailsAdapter;
 import it.seda.sem.security.domain.Account;
 import it.seda.sem.security.domain.Signon;
 import it.seda.sem.security.persistence.AccountMapper;
 
+import javax.inject.Inject;
+
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

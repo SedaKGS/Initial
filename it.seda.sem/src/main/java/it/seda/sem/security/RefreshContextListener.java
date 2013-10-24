@@ -22,18 +22,14 @@ public class RefreshContextListener implements ApplicationListener<ContextRefres
 	
 	public final static String ADMIN_USER="admin";
 	
-	@Inject AccountService accountService; 
-	
-	
+	@Inject private AccountService accountService; 
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		Account account = accountService.getAccountByUserName(ADMIN_USER);
 		
-		
-		
 		if (account==null) {
-			logger.warn("adinitrator account not found.... trying to create it..."); //TODO no i18n
+			logger.warn("administrator account not found.... trying to create it..."); //TODO no i18n
 			final DateTime expiration = new DateTime(2099, 12, 31, 12, 0, 0, 0);
 			final DateTime credentialsExpiration = new DateTime(2099, 12, 30, 12, 0, 0, 0);
 			account=new Account();
@@ -47,9 +43,9 @@ public class RefreshContextListener implements ApplicationListener<ContextRefres
 			account.setCredentialsExpiration(credentialsExpiration.toDate());
 
 			accountService.insertAdministrator(account);
-			logger.warn("adinitrator account created..."); //TODO no i18n			
+			logger.warn("administrator account created..."); //TODO no i18n			
 		} else {
-			logger.warn("adinitrator account found"); //TODO no i18n
+			logger.warn("administrator account found"); //TODO no i18n
 		}
 		
 	}
