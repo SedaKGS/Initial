@@ -2,6 +2,7 @@ package it.seda.template.container.locale;
 
 import it.seda.template.container.Screen;
 import it.seda.template.container.Template;
+import it.seda.template.container.TemplateContainer;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -20,6 +21,7 @@ public class LocalizedContainer {
 	private Logger logger = LoggerFactory.getLogger(LocalizedContainer.class);	
 	
 	private Locale locale;
+	private TemplateContainer templateContainer;
 	private Template defaultTemplate;
 	private Map<String, Template> templates;
 	private Map<String, Screen> screens;
@@ -39,8 +41,9 @@ public class LocalizedContainer {
 		return screens.get(name);
 	}	
 	
-	public LocalizedContainer(Locale locale) {
+	public LocalizedContainer(Locale locale, TemplateContainer templateContainer) {
 		this.locale=locale;
+		this.templateContainer=templateContainer;
 		this.templates=new HashMap<String, Template>();
 		this.screens=new HashMap<String, Screen>();
 	}
@@ -73,8 +76,18 @@ public class LocalizedContainer {
 	public void addScreen(String template, Screen screen) {
 		Template t = getTemplateOrDefault(template);
 		if (t==null) {
-			logger.warn(getMessage("screen "+ screen.getName() + " without template " + template + ", discarded"));			
-			return;
+			LocalizedContainer rootLocalizedContainer = templateContainer.getLocalizedContainer(Locale.ROOT);
+			if (rootLocalizedContainer==null) {
+				logger.warn(getMessage("*******************************screen "+ screen.getName() + " without template " + template + ", discarded"));			
+				return;				
+			} else {
+				t=rootLocalizedContainer.getTemplateOrDefault(template);
+				if (t==null) {
+					logger.warn(getMessage("screen "+ screen.getName() + " without template " + template + ", discarded"));			
+					return;									
+				}
+			}
+
 		}
 		screen.setTemplate(t);
 		screens.put(screen.getName(), screen);
