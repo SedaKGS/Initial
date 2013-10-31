@@ -49,7 +49,7 @@ public class TemplateContainer {
 		if (getLocalizedContainers().containsKey(locale)) {
 			containerLocaleResolver=getLocalizedContainers().get(locale);
 		} else if (create) { 
-			containerLocaleResolver=new LocalizedContainer(locale);
+			containerLocaleResolver=new LocalizedContainer(locale,this);
 			getLocalizedContainers().put(locale, containerLocaleResolver);
 		}
 		return containerLocaleResolver;
