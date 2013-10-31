@@ -7,6 +7,7 @@ import it.seda.sem.mvc.manager.models.FormClient;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -31,25 +32,27 @@ public class ClientController {
 
 		//command object
 		model.addAttribute("initialClientData", client);
- 
+		model.addAttribute("titleargs", new Object[]{"ahio galapagos"});
 		//return form view
 		return "formClient";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView addCustomer(@Valid  @ModelAttribute("initialClientData") FormClient client, BindingResult result) {
+	public String addCustomer(@Valid  @ModelAttribute("initialClientData") FormClient client, BindingResult result, ModelMap model) {
 		
 		List<ObjectError> errors=null;
  
 		if (result.hasErrors()) {
 			errors=result.getAllErrors();
-			return new ModelAndView("formClient");
+			return "formClient";
 		} else {
+			
 			System.out.println("Dati inseriti correttamente");
 		}
 		
-		return new ModelAndView("nextPage","cliente",client);
- 
+		model.addAttribute("cliente",client);
+		
+		return "nexPage";
 	}
 
 }

@@ -55,33 +55,29 @@
 			<list>
 				<value>it/seda/sem/i18n/uimessages</value>
 				<value>it/seda/sem/i18n/validatorMessages</value>
+				<!-- security localization work close to org.springframework.web.filter.RequestContextFilter 
+				or org.springframework.web.context.request.RequestContextListener -->
+				<!-- 				
+				<value>it/seda/sem/i18n/security/messages</value>
+				 --> 
 			</list>
 		</property>
 	</bean>
     
-    <!-- locales handling non funziona con spring security!-->
-	
- 	<!--  
-	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">  
-        <property name="defaultLocale" value="en_UK" />  
-    </bean> 
-    --> 
- 	 
+    <!-- locales handling !-->
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<!-- 
 		<property name="defaultLocale" value="it" />
+		 -->
+		<property name="cookieName" value="language"/>
+		<property name="cookieMaxAge" value="864000"/>
 	</bean>
 	
 	 <!-- Custom validator messages -->
-	 
-	 
-	 
     <bean name="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
       <property name="validationMessageSource">
           <ref bean="messageSource"/>
       </property>
     </bean>
-
-    
-	
 
 </beans>

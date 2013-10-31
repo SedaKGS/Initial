@@ -18,28 +18,21 @@
 	<!-- Imports user-defined @Controller beans that process client requests -->
 	<import resource="controllers.xml" />
 
-	<bean id="templateConfigurer"
-		class="it.seda.spring.servlet.view.template.TemplateConfigurer">
+	<!-- Seda templating -->
+	<bean id="templateConfigurer" class="it.seda.template.spring.TemplateConfigurer">
 		<property name="definitions">
-			<list>
-				<value>/WEB-INF/tiles-defs/templates.xml</value>
+			<list> 
+				<value>/WEB-INF/spring/managerServlet/template.xml</value>
 			</list>
 		</property>
-		<property name="context" value="manager"/>
 	</bean>
 
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass">
-			<value>org.springframework.web.servlet.view.JstlView</value>
-		</property>
-		<property name="prefix">
-			<value>/WEB-INF/pages/manager/</value>
-		</property>
-		<property name="suffix">
-			<value>.jsp</value>
-		</property>
+	<bean class="it.seda.template.spring.TemplateViewResolver">
+		<property name="viewClass" value="it.seda.spring.template.TemplateView"/>
 	</bean>
-	
+
+
+	<!-- Enables the Spring locale interceptor -->
 	<mvc:interceptors>   
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">  
             <property name="paramName" value="language" />  

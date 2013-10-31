@@ -19,20 +19,6 @@
 	<!-- Imports user-defined @Controller beans that process client requests -->
 	<import resource="controllers.xml" />
 
-
-
-	<bean id="templateConfigurer"
-		class="it.seda.spring.servlet.view.template.TemplateConfigurer">
-		<property name="definitions">
-			<list>
-				<value>/WEB-INF/tiles-defs/templates.xml</value>
-			</list>
-		</property>
-		<property name="context" value="events"/>		
-	</bean>
-
-
-
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass">
 			<value>org.springframework.web.servlet.view.JstlView</value>
