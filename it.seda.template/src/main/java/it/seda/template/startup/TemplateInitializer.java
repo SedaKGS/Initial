@@ -22,7 +22,7 @@ public class TemplateInitializer {
 
 		XMLContainerParser containerParser = new XMLContainerParser(context);
 		TemplateContainer container = containerParser.parse();
-		
+		context.setContainer(container);
 		ContainerAccess.register(context, container);
 	}
 	

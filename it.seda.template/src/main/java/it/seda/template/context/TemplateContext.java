@@ -1,7 +1,9 @@
 package it.seda.template.context;
 
+import it.seda.template.container.TemplateContainer;
 import it.seda.template.context.locale.LocaleResolver;
 import it.seda.template.context.locale.URLResource;
+import it.seda.template.renderer.Renderer;
 import it.seda.template.startup.ResourceNotFoundException;
 import it.seda.template.utils.Utils;
 
@@ -28,12 +30,25 @@ public class TemplateContext {
 	private WebApplicationContext wac;
 	private ServletContext servletContext;
 	private LocaleResolver localeResolver;
-	
+	private TemplateContainer container;
+	private Renderer renderer;	
 	
 	private List<TemplateResource> resources;
 	
 	public String getWacName() {
 		return name;
+	}
+
+	public Renderer getRenderer() {
+		return renderer;
+	}	
+
+	public void setContainer(TemplateContainer container) {
+		this.container=container;
+	}
+	
+	public TemplateContainer getContainer() {
+		return container;
 	}
 	
 	public MessageSource getMessageSource() {
@@ -132,5 +147,4 @@ public class TemplateContext {
 	public String toString() {
 		return "TemplateContext ["+wac.getDisplayName()+"]";
 	}
-
 }

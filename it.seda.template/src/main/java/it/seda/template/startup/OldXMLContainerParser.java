@@ -27,9 +27,9 @@ import it.seda.template.xparser.XPathParser;
  * @author f.ricci
  *
  */
-public class XMLContainerParser {
+public class OldXMLContainerParser {
 
-	private Logger logger = LoggerFactory.getLogger(XMLContainerParser.class);
+	private Logger logger = LoggerFactory.getLogger(OldXMLContainerParser.class);
 
 	final static String NULL_TEMPLATE = "*null*";
 	
@@ -38,12 +38,14 @@ public class XMLContainerParser {
 	private TemplateContainer templateContainer;
 	private TemplateContext context;
 	private Map<String, Screen> temporaryScreens;
+	private Map<String, String> temporaryTemplate;
 	private TemplateResource currentResource;
 
-	public XMLContainerParser(TemplateContext context) {
+	public OldXMLContainerParser(TemplateContext context) {
 		this.context=context;
 		templateContainer=new TemplateContainer(context);
 		temporaryScreens=new HashMap<String, Screen>();
+		temporaryTemplate= new HashMap<String, String>();
 	}
 
 	public TemplateContainer parse() {
@@ -96,8 +98,7 @@ public class XMLContainerParser {
 				template.setName(name);
 				template.setUrl(url);
 				
-//				List<Locale> locales = localesElement(xNode);
-				List<Locale> locales = localeElements(xNode);
+				List<Locale> locales = localesElement(xNode);
 				template.addLocales(locales);
 				
 				templateContainer.addTemplate(template);				
@@ -117,14 +118,18 @@ public class XMLContainerParser {
 				
 				
 				String template = xNode.getStringAttribute("template");
+				temporaryTemplate.put(name, template==null?NULL_TEMPLATE:template);
+				
 				String inherit = xNode.getStringAttribute("extends");
 				Screen screen = new Screen();
 				screen.setName(name);
-				screen.setTemplate(template);
 				screen.setInherit(inherit);
 				screen.setResource(currentResource);
 				
-				Properties properties = xNode.getChildrenAsProperties();
+				List<Locale> locales = localesElement(xNode);				
+				screen.addLocales(locales);
+				
+				Properties properties = parametersElement(xNode);
 				for (Object okey : properties.keySet()) {
 					String key = (String)okey;
 					Parameter parameter = new Parameter();
@@ -143,7 +148,8 @@ public class XMLContainerParser {
 		
 		for (String name : temporaryScreens.keySet()) {
 			Screen screen = temporaryScreens.get(name);
-			templateContainer.addScreen(screen);			
+			String template = temporaryTemplate.get(name);
+			templateContainer.addScreen(template.equals(NULL_TEMPLATE)?null:template, screen);			
 		}		
 		
 	}
@@ -174,24 +180,12 @@ public class XMLContainerParser {
 		screen.inherit(parent);
 	}
 
-	private List<Locale> localeElements(XNode hasLocaleNode) {
-		List<Locale> returnLocale=new ArrayList<Locale>();
-		List<XNode> localeList = hasLocaleNode.evalNodes("locale");		
-		for (XNode xNode : localeList) {
-			String localeString = xNode.getStringBody();
-			Locale locale = Utils.localeFromString(localeString);
-			if (locale!=null) {
-				returnLocale.add(locale);
-			} else {
-				throw new ParserException("string locale not parsed " + localeString);
-			}
-		}
-		if (returnLocale.size()==0) {
-			returnLocale.add(currentResource.getLocale());
-		}
-		return returnLocale;
-	}	
-	
+	private Properties parametersElement(XNode screen) {
+		XNode parameters = screen.evalNode("parameters");
+		Properties properties = parameters.getChildrenAsProperties();		
+		return properties;
+	}
+
 	private List<Locale> localesElement(XNode hasLocaleNode) {
 		List<Locale> returnLocale=new ArrayList<Locale>();
 		XNode locales = hasLocaleNode.evalNode("locales");		

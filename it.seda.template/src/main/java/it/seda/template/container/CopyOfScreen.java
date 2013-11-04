@@ -2,7 +2,10 @@ package it.seda.template.container;
 
 import it.seda.template.context.TemplateResource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -13,14 +16,15 @@ import org.slf4j.LoggerFactory;
  * @author f.ricci
  *
  */
-public class Screen {
+public class CopyOfScreen {
 
-	private Logger logger = LoggerFactory.getLogger(Screen.class);	
+	private Logger logger = LoggerFactory.getLogger(CopyOfScreen.class);	
 	
 	private String name;
 	private String inherit;
 	private boolean inherited;
-	private String template;
+	private Template template;
+	private List<Locale> locales;
 	private Map<String, Parameter> parameters;
 	private TemplateResource resource;
 	
@@ -33,7 +37,7 @@ public class Screen {
 	public boolean hasInerited() {
 		return inherited;
 	}
-	public void inherit(Screen parent) {
+	public void inherit(CopyOfScreen parent) {
 		inherited=true;
 		int p=0;
 		for (String key : parent.getParameters().keySet()) {
@@ -43,7 +47,14 @@ public class Screen {
 			}
 		}
 
-		logger.debug(name + " inherited #" + p + " parameters from " + parent.getName());		
+		int l=0;
+		for (Locale locale : parent.getLocales()) {
+			if (!locales.contains(locale)) {
+				l++;
+				locales.add(locale);
+			}
+		}
+		logger.debug(name + " inherited #" + p + " parameters and #" + l + " locales from " + parent.getName());		
 	}
 	public TemplateResource getResource() {
 		return resource;
@@ -60,17 +71,24 @@ public class Screen {
 	public boolean hasInheritance() {
 		return inherit!=null;
 	}
-	public String getTemplate() {
+	public Template getTemplate() {
 		return template;
 	}
-	public void setTemplate(String template) {
+	public void setTemplate(Template template) {
 		this.template = template;
 	}
+	public void addLocales(List<Locale> locales) {
+		this.locales.addAll(locales);
+	}	
+	public List<Locale> getLocales() {
+		return locales;
+	}	
 	public Map<String, Parameter> getParameters() {
 		return parameters;
 	}
 	
-	public Screen() {
+	public CopyOfScreen() {
+		locales=new ArrayList<Locale>();
 		parameters=new HashMap<String, Parameter>(4);
 	}
 	
@@ -90,7 +108,7 @@ public class Screen {
 	public String toString() {
 		return "Screen [name=" + name + ", inherit="
 				+ inherit + ", template="
-				+ (template==null?"*default*":template)  
+				+ template + ",locales=" + locales 
 				+ ", parameters=" + parameters 
 				+ ", resource=" + resource+"]";
 	}

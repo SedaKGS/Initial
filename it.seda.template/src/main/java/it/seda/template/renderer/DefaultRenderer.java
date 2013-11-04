@@ -3,7 +3,6 @@ package it.seda.template.renderer;
 import it.seda.template.container.Screen;
 import it.seda.template.container.Template;
 import it.seda.template.container.TemplateContainer;
-import it.seda.template.container.locale.LocalizedContainer;
 import it.seda.template.request.ParameterContext;
 import it.seda.template.utils.Utils;
 
@@ -18,9 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TemplateRenderer implements Renderer {
+public class DefaultRenderer implements Renderer {
 
-	private Logger logger = LoggerFactory.getLogger(TemplateRenderer.class);	
+	private Logger logger = LoggerFactory.getLogger(DefaultRenderer.class);	
 	
 	private TemplateContainer container;
 	
@@ -28,9 +27,9 @@ public class TemplateRenderer implements Renderer {
 		this.container=container;
 	}
 	
-	public TemplateRenderer() {}
+	public DefaultRenderer() {}
 	
-	public TemplateRenderer(TemplateContainer container) {
+	public DefaultRenderer(TemplateContainer container) {
 		this.container=container;
 	}
 
@@ -38,27 +37,22 @@ public class TemplateRenderer implements Renderer {
 			HttpServletResponse response) throws ServletException, IOException {
 		
 		Locale currentLocale = container.getTemplateContext().getCurrentLocale();
-		LocalizedContainer localizedContainer = container.getLocalizedContainer(currentLocale);
-		if (localizedContainer==null) {
-			logger.debug(url + " rendering locale " + currentLocale + " not found");			
-			localizedContainer=container.getLocalizedContainer(Locale.ROOT);
-			if (localizedContainer==null) {
-				throw new ServletException("default localized contaner not found? Did you miss some configuration (template.xml)?");
-			}
-		}
 		
-		Screen screen = localizedContainer.getScreen(url);
-		if (screen==null) {
+		if (!container.containsScreen(url)) {
+			logger.debug("screen " + url + " rendering locale " + currentLocale + " not found");			
 			throw new ServletException("screen definition "+url+" not found");
+		}		
+		Screen screen = container.getScreen(url);
+		
+		Template template = container.getLocalizedTemplate(currentLocale, screen.getTemplate());
+		if (template==null) {
+			logger.debug(screen.getTemplate() +  " rendering locale " + currentLocale + " not found");			
+			throw new ServletException("template " + (screen.getTemplate()==null?"*default*":screen.getTemplate()) + " definition not found for "+screen+ ". Did you miss some configuration (template.xml)?");
 		}
 		
-		Template template = screen.getTemplate();
-		if (template==null) {
-			throw new ServletException("screen definition "+url+" missing of template");
-		}
 		
 		if (logger.isDebugEnabled()) {
-			logger.debug("rendering screen " + screen.getName() + " to " + template.getUrl());
+			logger.debug("locale '" +currentLocale+ "' rendering screen " + screen.getName() + " to " + template.getUrl());
 		}
 		
 		// prefase, caricamento degli atributi ereditati

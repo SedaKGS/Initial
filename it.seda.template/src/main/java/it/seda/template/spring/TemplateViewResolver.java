@@ -4,6 +4,7 @@
 package it.seda.template.spring;
 
 import it.seda.template.context.TemplateContext;
+import it.seda.template.renderer.DefaultRenderer;
 import it.seda.template.renderer.Renderer;
 import it.seda.template.startup.TemplateInitializer;
 
@@ -70,19 +71,20 @@ public class TemplateViewResolver extends UrlBasedViewResolver implements Initia
 
 	@Override
 	public void destroy() throws Exception {
-		// TODO Auto-generated method stub
 		initializer.destroy();
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		// TODO Auto-generated method stub
 		TemplateContext applicationContext = new TemplateContext((WebApplicationContext) getApplicationContext());
 		applicationContext.loadDefinitions(definitions);
 		if (initializer==null) {
 			initializer=new TemplateInitializer();
 		}
 		initializer.initialize(applicationContext);
+		if (renderer==null) {
+			renderer=new DefaultRenderer(applicationContext.getContainer());
+		}
 	}
 	
 }

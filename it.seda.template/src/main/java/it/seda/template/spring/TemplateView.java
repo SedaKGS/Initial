@@ -5,7 +5,7 @@ import it.seda.template.container.TemplateContainer;
 import it.seda.template.context.ContextAccess;
 import it.seda.template.context.TemplateContext;
 import it.seda.template.renderer.Renderer;
-import it.seda.template.renderer.TemplateRenderer;
+import it.seda.template.renderer.DefaultRenderer;
 import it.seda.template.request.Request;
 
 import java.util.Locale;
@@ -71,7 +71,7 @@ public class TemplateView extends AbstractUrlBasedView {
 
 		if (this.renderer == null) {
 			TemplateContainer container = ContainerAccess.retrieve(getWebApplicationContext());
-			this.renderer = new TemplateRenderer(container);
+			this.renderer = new DefaultRenderer(container);
 		}
 	}	
 
