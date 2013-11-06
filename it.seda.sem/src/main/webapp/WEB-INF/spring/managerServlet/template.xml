@@ -1,15 +1,34 @@
 <templates>
 	<template name="default" url="/template/manager/default.jsp" default="true"/>
-	<template name="alternate" url="/template/manager/default.jsp">
+	<template name="alternate" url="/template/manager/default.jsp" default="true">
 		<locale></locale>
 		<locale>en</locale>
-	</template>	
+	</template>
+	<template name="alternate" url="/template/manager/default_it.jsp" >
+		<locale>it</locale>
+	</template>		
 
 	<screen name="base">
 		<parameter key="title" value="manager.title"/>
-		<parameter key="header" value="/template/manager/header.jsp"/>
-		<parameter key="menu" value="/template/manager/menu.jsp"/>
-		<parameter key="footer" value="/template/manager/footer.jsp"/>			
+		<parameter key="header" value="/template/manager/header_it.jsp">
+		  <locale>it</locale>
+		</parameter>
+		<parameter key="header" value="/template/manager/header.jsp">
+		  <locale>en</locale>
+		</parameter>
+		<parameter key="menu" value="/template/manager/menu.jsp">
+		  <locale></locale>
+		</parameter>
+		<parameter key="footer" value="/template/manager/footer.jsp">
+		  <locale>it</locale>
+		  <locale></locale>
+		 </parameter>
+		 <parameter key="footer" value="/template/manager/footer_en.jsp">
+		  <locale>en</locale>
+		 </parameter>
+		 <parameter key="body" value="/template/manager/pages/formClient.jsp">
+		   <locale>it</locale>
+		 </parameter>				
 	</screen>
 	
 	<screen name="formClient" template="alternate" extends="base">

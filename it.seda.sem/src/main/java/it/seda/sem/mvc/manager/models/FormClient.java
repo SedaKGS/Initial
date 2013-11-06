@@ -14,7 +14,7 @@ public class FormClient {
 	@Pattern(regexp="^[a-zA-Z0-9]+$",message="{formClient.descrizione.pattern}")
 	private String descrizione;
 	
-	@Pattern(regexp="[0-9]{1,4}/[0-9]{1,2}/[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}",message="La registrazione deve essere: anno/mese/giorno ora/minuto/secondo")
+	@Pattern(regexp="[0-9]{1,4}/[0-9]{1,2}/[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}",message="{formClient.registrazione.pattern}")
     private String registrazione;
 	
 	

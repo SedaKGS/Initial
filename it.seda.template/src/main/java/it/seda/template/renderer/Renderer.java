@@ -1,5 +1,7 @@
 package it.seda.template.renderer;
 
+import it.seda.template.container.TemplateContainer;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -16,5 +18,7 @@ public interface Renderer {
 	
 	void render(String url, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException;
+
+	void setContainer(TemplateContainer container);
 	
 }

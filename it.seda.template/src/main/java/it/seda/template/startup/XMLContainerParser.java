@@ -124,14 +124,19 @@ public class XMLContainerParser {
 				screen.setInherit(inherit);
 				screen.setResource(currentResource);
 				
-				Properties properties = xNode.getChildrenAsProperties();
-				for (Object okey : properties.keySet()) {
-					String key = (String)okey;
+				//Properties properties = xNode.getChildrenAsProperties();
+				List<XNode> parameters=xNode.evalNodes("parameter");
+				for (XNode paramNode : parameters) {
 					Parameter parameter = new Parameter();
-					parameter.setKey(key);
-					parameter.setValue(properties.getProperty(key));
+					parameter.setKey(paramNode.getStringAttribute("key"));
+					parameter.setValue(paramNode.getStringAttribute("value"));
+					List<Locale> locales = localeElements(paramNode);
+					parameter.addLocales(locales);
 					screen.addParameter(parameter);
 				}
+				
+				
+				
 
 				temporaryScreens.put(name, screen);
 			}

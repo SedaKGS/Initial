@@ -50,7 +50,7 @@ public class LocalizedTemplateContainer {
 		if (getLocalizedTemplates().containsKey(locale)) {
 			localizedTemplate=getLocalizedTemplates().get(locale);
 		} else if (create) { 
-			localizedTemplate=new LocalizedTemplate(locale);
+			localizedTemplate=new LocalizedTemplate(locale,this);
 			getLocalizedTemplates().put(locale, localizedTemplate);
 		}
 		return localizedTemplate;

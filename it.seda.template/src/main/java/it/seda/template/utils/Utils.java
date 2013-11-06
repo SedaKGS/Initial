@@ -26,6 +26,9 @@ public class Utils {
 	}
 	
 	public static Locale localeFromString(String locale) {
+		if(locale==null){
+			return Locale.ROOT;
+		}
 		if (locale.equalsIgnoreCase("default")) {
 			return Locale.getDefault();
 		} else if (locale.equalsIgnoreCase("root")) {

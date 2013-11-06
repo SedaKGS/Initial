@@ -41,11 +41,15 @@ public class TemplateContainer {
 		return context;
 	}
 	
+	public void setRenderer(Renderer renderer){
+		this.renderer=renderer;
+	}
+	
 	public TemplateContainer(TemplateContext context) {
 		this.context=context;
 		this.localizedTemplateContainer=new LocalizedTemplateContainer();
 		this.screenContainer=new ScreenContainer();
-		this.renderer=context.getRenderer();
+		
 	}
 
 	public void render(String url, HttpServletRequest request,

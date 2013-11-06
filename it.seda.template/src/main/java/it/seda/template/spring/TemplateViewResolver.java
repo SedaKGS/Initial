@@ -85,6 +85,10 @@ public class TemplateViewResolver extends UrlBasedViewResolver implements Initia
 		if (renderer==null) {
 			renderer=new DefaultRenderer(applicationContext.getContainer());
 		}
+		else{
+			renderer.setContainer(applicationContext.getContainer());
+		}
+		
 	}
 	
 }

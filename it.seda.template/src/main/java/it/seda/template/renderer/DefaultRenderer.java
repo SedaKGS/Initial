@@ -31,7 +31,9 @@ public class DefaultRenderer implements Renderer {
 	
 	public DefaultRenderer(TemplateContainer container) {
 		this.container=container;
+		this.container.setRenderer(this);
 	}
+	
 
 	public void render(String url, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -57,7 +59,10 @@ public class DefaultRenderer implements Renderer {
 		
 		// prefase, caricamento degli atributi ereditati
 		ParameterContext parameterContext = new ParameterContext(container.getTemplateContext());
-		parameterContext.addAll(screen.getParameters());
+		/*
+		 parameterContext.addAll(screen.getParameters());
+		 */
+		parameterContext.addAll(screen.getParameters(currentLocale));
 		ParameterContext.register(request, parameterContext);
 		
 		// fase di render vero e proprio
