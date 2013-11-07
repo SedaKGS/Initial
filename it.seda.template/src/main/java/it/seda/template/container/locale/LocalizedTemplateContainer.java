@@ -19,11 +19,14 @@ import org.slf4j.LoggerFactory;
 public class LocalizedTemplateContainer {
 	private Logger logger = LoggerFactory.getLogger(LocalizedTemplateContainer.class);	
 	
-	private Map<Locale,LocalizedTemplate> localizedTemplates;
+	//private Map<Locale,LocalizedTemplate> localizedTemplates;
+	
+	private LocalizedTemplatesMap<Locale,LocalizedTemplate> localizedTemplates;
 	
 	public Map<Locale, LocalizedTemplate> getLocalizedTemplates() {
 		if (localizedTemplates==null) {
-			localizedTemplates=new HashMap<Locale, LocalizedTemplate>();
+			//localizedTemplates=new HashMap<Locale, LocalizedTemplate>();
+			localizedTemplates=new LocalizedTemplatesMap<Locale, LocalizedTemplate>();
 		}
 		return localizedTemplates;
 	}	
@@ -57,7 +60,8 @@ public class LocalizedTemplateContainer {
 	}		
 	
 	public LocalizedTemplateContainer() {
-		localizedTemplates=new HashMap<Locale, LocalizedTemplate>();
+		//localizedTemplates=new HashMap<Locale, LocalizedTemplate>();
+		localizedTemplates=new LocalizedTemplatesMap<Locale, LocalizedTemplate>();
 	}
 
 	

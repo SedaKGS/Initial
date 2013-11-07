@@ -12,6 +12,7 @@
    <tlib-version>1.2</tlib-version>
    <short-name>template</short-name>
    <uri>http://template.seda.it/tags</uri>
+
    <tag>
       <description>
       <![CDATA[
@@ -50,8 +51,52 @@
          <name>args</name>
          <required>false</required>
          <rtexprvalue>true</rtexprvalue>
-      </attribute>      
+      </attribute>
+      <attribute>
+         <description>
+         <![CDATA[
+         The roles allowed for the tag's usage.
+         ]]>
+         </description>
+         <name>hasRoles</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+         <type>java.lang.String</type>
+      </attribute>          
    </tag>
    
+   <function>
+   <description>Print i18n message.This function must be used with placeholder arguments 
+	<![CDATA[
+      <p>
+      <b>Insert an i18n message.</b>
+      </p>
+      <p>
+      Insert an i18n message from a defined message bundle key and placeholder arguments.
+      </p>
+      ]]>   
+   </description>
+  
+     <name>i18n2</name>
+        <function-class>it.seda.template.taglib.I18N</function-class>
+        <function-signature>java.lang.String printMessage(java.lang.String,java.lang.Object[])</function-signature>
+        
+   </function>
+   <function>
+   <description>
+   <![CDATA[
+      <p>
+      <b>Insert an i18n message.</b>
+      </p>
+      <p>
+      Insert an i18n message from a defined message bundle key.
+      </p>
+      ]]>   
+   </description>
+  
+   <name>i18n</name>
+        <function-class>it.seda.template.taglib.I18N</function-class>
+        <function-signature>java.lang.String printMessage(java.lang.String)</function-signature>
+   </function>   
    
 </taglib>

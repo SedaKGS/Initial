@@ -9,6 +9,7 @@
 	</template>		
 
 	<screen name="base">
+	    <parameter key="myMessage" value="manager.myMessage"/>
 		<parameter key="title" value="manager.title"/>
 		<parameter key="header" value="/template/manager/header_it.jsp">
 		  <locale>it</locale>

@@ -101,8 +101,8 @@ public class Screen {
 	public Map<String, Parameter> getParameters(Locale locale) {
 		Map<String, Parameter> parameters = new HashMap<String, Parameter>();
 		for (Parameter parameter : parametersList) {
-			if (parameter.conatains((Locale.ROOT))
-					|| parameter.conatains(locale)) {
+			if (parameter.contains((Locale.ROOT))
+					|| parameter.contains(locale)) {
 				parameters.put(parameter.getKey(), parameter);
 			}
 		}

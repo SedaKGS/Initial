@@ -12,8 +12,8 @@
 <body>
 
 
-<table style="width: 100%;">
-
+<table style="width: 100%;" border="1">
+    <tr><td><template:include parameter="myMessage" hasRoles="ROLE_ADMIN"></template:include></td></tr>
 	<tr><td colspan="2"><template:include parameter="header"/></td></tr>
 	<tr>
 		<td style="width: 200px;"><template:include parameter="menu"/></td>

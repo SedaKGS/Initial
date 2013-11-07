@@ -1,11 +1,12 @@
 package it.seda.template.container;
 
-import java.util.HashSet;
+import it.seda.template.renderer.Renderer;
+import it.seda.template.utils.LocaleComparator;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import it.seda.template.renderer.Renderer;
+import java.util.TreeSet;
 
 /**
  * 
@@ -21,15 +22,41 @@ public class Parameter {
 	private Set<Locale> locales;
 	
 	
-	
+	public static void main(String[] args) {
+		Parameter parameter = new Parameter();
+		parameter.addLocale(Locale.ROOT);
+//		parameter.addLocale(Locale.UK);
+		parameter.addLocale(Locale.US);
+		parameter.addLocale(Locale.CANADA_FRENCH);
+		parameter.addLocale(Locale.CANADA);
+		parameter.addLocale(Locale.ENGLISH);
+		for (Locale locale : parameter.getLocales()) {
+			System.out.println("'"+locale+"'");			
+		}
+		System.out.println(Locale.UK + " found '"+parameter.contains(Locale.UK)+"'");		
+		System.out.println(Locale.US + " found '"+parameter.contains(Locale.US)+"'");
+		System.out.println(Locale.ITALY + " found '"+parameter.contains(Locale.ITALY)+"'");
+	}
 	
 	
 	public Parameter() {
-		locales=new HashSet<Locale>();
+		locales=new TreeSet<Locale>(new LocaleComparator<Locale>());
 	}
-	public boolean conatains(Locale locale){
-		return locales.contains(locale);
+
+	
+	public boolean contains(Locale l){
+		int weight = LocaleComparator.localeWeight(l);
+		boolean found=false;
+		for (Locale locale : locales) {
+			if (l.getLanguage().equals(locale.getLanguage())) {
+				int lw = LocaleComparator.localeWeight(locale);
+				found=LocaleComparator.localeEqual(locale,l,Math.min(weight,lw));
+				if (found) break;
+			}
+		}		
+		return found;
 	}
+
 	public void addLocale(Locale locale){
 		locales.add(locale);
 	}

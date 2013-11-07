@@ -7,13 +7,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><template:include parameter="title" args="${titleargs}"/></title>
+<title>
+     <template:include parameter="title" args="${titleargs}"/>
+</title>
 </head>
 <body>
 <br>
 Questa è la default_it.jsp, il footer non c'è!
+${template:i18n('Questo messaggio è stampato dalla funzione i18n!')}
+${template:i18n2('manager.formclient.title',titleargs)}
 
 <table style="width: 100%;">
+    <tr><td><template:include parameter="myMessage" hasRoles="notExists"></template:include></td></tr>
     <tr><td colspan="2"><template:include parameter="header"/></td></tr>
 	<tr>
 		<td style="width: 200px;"><template:include parameter="menu"/></td>

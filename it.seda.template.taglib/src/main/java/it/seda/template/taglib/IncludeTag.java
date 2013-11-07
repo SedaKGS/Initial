@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author f.ricci
  *
@@ -23,12 +26,12 @@ import javax.servlet.jsp.tagext.TagSupport;
 @SuppressWarnings("serial")
 public class IncludeTag extends TagSupport {
 
-	
+	private Logger logger = LoggerFactory.getLogger(IncludeTag.class);
 	private SecurityHelper securityHelper;
 	
 	private String parameterName;
 	private Object[] args;	
-	private Set<String> roles;
+	private Set<String> hasRoles;
 	
 	public void setParameter(String parameter) {
 		this.parameterName = parameter;
@@ -38,21 +41,24 @@ public class IncludeTag extends TagSupport {
 		this.args = args;
 	}	
 
-	public void setRoles(String roles) {
-		if (roles!=null) {
-			this.roles=new HashSet<String>();
-			for(String role:roles.split(",")) {
-				this.roles.add(role);
+	public void setHasRoles(String hasRoles) {
+		if (hasRoles!=null) {
+			this.hasRoles=new HashSet<String>();
+			for(String role:hasRoles.split(",")) {
+				this.hasRoles.add(role);
 			}
 		}
 	}
 	
 	public int doEndTag() throws JspTagException {
+		try{
+			pageContext.getOut().flush();
+		}catch(Exception ignore){}
 
 		HttpServletRequest request=(HttpServletRequest)pageContext.getRequest();
 		
-		if (roles!=null && roles.size()>0) {
-			if (!getSecurityHelper().isInRole(roles, request)) {
+		if (hasRoles!=null && hasRoles.size()>0) {
+			if (!getSecurityHelper().isInRole(hasRoles, request)) {
 				return EVAL_PAGE; 
 			}
 		}
@@ -61,11 +67,11 @@ public class IncludeTag extends TagSupport {
 
 		try {
 			if (parameterContext==null) {
-				pageContext.getOut().print("<p style=\"color: red;\">template missing parameter context</p>");
+				logger.warn("template missing parameter context");
 			} else {
 				Parameter parameter = parameterContext.getParameters().get(parameterName);
 				if (parameter==null) {
-					pageContext.getOut().print("<p style=\"color: red;\">template missing parameter <i>"+parameterName+"</i></p>");
+					logger.warn("template missing parameter "+parameterName);
 				} else {
 					render(parameterContext, parameter);
 				}
@@ -99,7 +105,7 @@ public class IncludeTag extends TagSupport {
 	private void recycle() {
 		parameterName=null;
 		args=null;	
-		roles=null;
+		hasRoles=null;
 		
 	}	
 		

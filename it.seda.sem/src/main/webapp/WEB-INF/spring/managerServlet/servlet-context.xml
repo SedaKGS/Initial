@@ -42,14 +42,26 @@
 			</list>
 		</property>
 	</bean>
-    
-    
+	
+	 <!-- Defining Handler Mapping -->
+	 <!--  
+    <bean id="handlerMapping"
+	class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+	<property name="interceptors">
+		<list>
+			<ref bean="localeChangeInterceptor" />
+		</list>
+	</property>
+     </bean>
+     -->
+     <!-- Enables the Spring locale interceptor -->
+	<mvc:interceptors>
+     <bean name="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">  
+          <property name="paramName" value="language" />  
+      </bean>  
+    </mvc:interceptors>
+     
 
-	<!-- Enables the Spring locale interceptor -->
-	<mvc:interceptors>   
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">  
-            <property name="paramName" value="language" />  
-        </bean>  
-    </mvc:interceptors> 
+	
 		
 </beans>
