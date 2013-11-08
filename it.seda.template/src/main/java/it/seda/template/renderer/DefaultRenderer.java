@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ui.context.Theme;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 public class DefaultRenderer implements Renderer {
 
@@ -39,6 +41,7 @@ public class DefaultRenderer implements Renderer {
 			HttpServletResponse response) throws ServletException, IOException {
 		
 		Locale currentLocale = container.getTemplateContext().getCurrentLocale();
+		Theme currentTheme=RequestContextUtils.getTheme(request);
 		
 		if (!container.containsScreen(url)) {
 			logger.debug("screen " + url + " rendering locale " + currentLocale + " not found");			

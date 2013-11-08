@@ -29,6 +29,7 @@ it\seda\template\renderer\DefaultRenderer.class
 it\seda\template\request\Request.class
 it\seda\template\renderer\Renderer.class
 it\seda\template\context\TemplateResource.class
+it\seda\template\spring\theme\URIBasedThemeResolver.class
 it\seda\template\container\ContainerAccess.class
 it\seda\template\context\locale\PostfixedResource.class
 it\seda\template\xparser\XPathParser.class

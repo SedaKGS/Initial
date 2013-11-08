@@ -1,67 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
 
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<mvc:annotation-driven validator="validator"/>
+	<mvc:annotation-driven validator="validator" />
 
 	<!-- Imports user-defined @Controller beans that process client requests -->
 	<import resource="controllers.xml" />
 
 	<!-- Seda templating -->
-	
-	<!--  
-	<bean id="templateConfigurer" class="it.seda.template.spring.TemplateConfigurer">
-		<property name="definitions">
-			<list> 
-				<value>/WEB-INF/spring/managerServlet/template.xml</value>
-			</list>
-		</property>
-	</bean>
-
 	<bean class="it.seda.template.spring.TemplateViewResolver">
-		<property name="viewClass" value="it.seda.spring.template.TemplateView"/>
-	</bean>
-    
-    -->
-    
-    <bean class="it.seda.template.spring.TemplateViewResolver">
 		<property name="definitions">
-			<list> 
+			<list>
 				<value>/WEB-INF/spring/managerServlet/template.xml</value>
 			</list>
 		</property>
 	</bean>
-	
-	 <!-- Defining Handler Mapping -->
-	 <!--  
-    <bean id="handlerMapping"
-	class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-	<property name="interceptors">
-		<list>
-			<ref bean="localeChangeInterceptor" />
-		</list>
-	</property>
-     </bean>
-     -->
-     <!-- Enables the Spring locale interceptor -->
-	<mvc:interceptors>
-     <bean name="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">  
-          <property name="paramName" value="language" />  
-      </bean>  
-    </mvc:interceptors>
-     
 
+	<bean id="themeSource" class="org.springframework.ui.context.support.ResourceBundleThemeSource">
+		<property name="basenamePrefix" value="it.seda.sem.theme.theme-"/>
+	</bean>
 	
-		
+	<!-- Enables the Spring locale interceptor -->
+	<mvc:interceptors>
+		<bean name="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="language" />
+		</bean>
+		<!-- 
+		<bean id="themeChangeInterceptor" class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
+			<property name="paramName" value="theme" />
+		</bean>
+		 -->
+	</mvc:interceptors>
+
+
+
 </beans>

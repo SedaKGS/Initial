@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
@@ -13,12 +11,12 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- ************************************************************************** -->
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources/ directory -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
-	
+
 	<!-- Business datasource (is the same of security data source) -->
-	<bean id="dataSourceBusiness"
-		class="org.springframework.jndi.JndiObjectFactoryBean">
+	<bean id="dataSourceBusiness" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="java:comp/env/jdbc/SEMDataSource" />
 	</bean>
 
@@ -27,13 +25,13 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSourceBusiness" />
 	</bean>
-	
+
 	<!-- enable transaction with annotations -->
 	<tx:annotation-driven />
-   
-    <!-- enable autowire/inject -->
-	<context:annotation-config /> 
-      
+
+	<!-- enable autowire/inject -->
+	<context:annotation-config />
+
 	<!-- define the SqlSessionFactory -->
 	<bean id="sqlSessionFactoryBusiness" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSourceBusiness" />
@@ -42,46 +40,48 @@
 
 	<!-- scan for mybatis mappers and let them be autowired -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-	    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBusiness" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBusiness" />
 		<property name="basePackage" value="it.seda.sem.persistence" />
-		<property name="annotationClass" value="it.seda.sem.mvc.annotations.BusinessRepository"/>
+		<property name="annotationClass"
+			value="it.seda.sem.mvc.annotations.BusinessRepository" />
 	</bean>
 
-	<!-- *********************** SPRING i18n BOUNDLES ***************************** -->
+	<!-- *********************** SPRING i18n BUNDLES ***************************** -->
 	<!-- uimessage.properties personalizzato -->
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
 				<value>it/seda/sem/i18n/uimessages</value>
 				<value>it/seda/sem/i18n/validatorMessages</value>
 				<!-- security localization work close to org.springframework.web.filter.RequestContextFilter 
-				or org.springframework.web.context.request.RequestContextListener -->
-				<!-- 				
-				<value>it/seda/sem/i18n/security/messages</value>
-				 --> 
+					or org.springframework.web.context.request.RequestContextListener -->
+				<!-- <value>it/seda/sem/i18n/security/messages</value> -->
 			</list>
 		</property>
 	</bean>
-    
-    <!-- locales handling !-->
+
+	<!-- locales handling ! -->
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-		<!-- 
-		<property name="defaultLocale" value="it" />
-		 -->
-		<property name="cookieName" value="language"/>
-		<property name="cookieMaxAge" value="864000"/>
+		<!-- <property name="defaultLocale" value="it" /> -->
+		<property name="cookieName" value="language" />
+		<property name="cookieMaxAge" value="864000" />
 	</bean>
-	
-	 <!-- Custom validator messages -->
-    <bean name="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-      <property name="validationMessageSource">
-          <ref bean="messageSource"/>
-      </property>
-    </bean>
-    
-   
-    
-  
+
+	<!-- Custom validator messages -->
+	<bean name="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource">
+			<ref bean="messageSource" />
+		</property>
+	</bean>
+
+	<!-- Enable the Spring theme support -->
+	<bean id="themeSource" class="org.springframework.ui.context.support.ResourceBundleThemeSource">
+		<property name="basenamePrefix" value="it.seda.sem.theme.theme-"/>
+	</bean>
+
+	<bean id="themeResolver" class="it.seda.template.spring.theme.URIBasedThemeResolver">
+		<property name="defaultThemeName" value="default"/>
+	</bean>
 
 </beans>
