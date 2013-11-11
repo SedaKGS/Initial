@@ -2,7 +2,7 @@ package it.seda.sem.domain;
 
 import java.sql.Timestamp;
 
-public class Eventi {
+public class Evento {
 	private String attrezzatura;
 	private String clienteId;
 	private Timestamp dataA;

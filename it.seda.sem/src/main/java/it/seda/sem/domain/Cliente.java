@@ -3,7 +3,7 @@ package it.seda.sem.domain;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-public class Clienti {
+public class Cliente {
 	
 	private BigInteger id;
 	private String cliente;

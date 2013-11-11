@@ -2,7 +2,7 @@ package it.seda.sem.domain;
 
 import java.sql.Timestamp;
 
-public class Responsabili {
+public class Responsabile {
 	private String cognome;
 	private Timestamp dataIn;
 	private String email;

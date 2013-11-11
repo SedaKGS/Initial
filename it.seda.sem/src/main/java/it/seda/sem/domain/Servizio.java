@@ -2,7 +2,7 @@ package it.seda.sem.domain;
 
 import java.sql.Timestamp;
 
-public class Servizi {
+public class Servizio {
 	private Timestamp dataIn;
 	private String descrizione;
 	private String dom;
