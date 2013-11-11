@@ -1,8 +1,11 @@
 package it.seda.template.container;
 
+import it.seda.template.container.command.CommandTheme;
+import it.seda.template.container.command.CommandThemeComparator;
 import it.seda.template.renderer.Renderer;
 import it.seda.template.utils.LocaleComparator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -19,6 +22,11 @@ public class Parameter {
 	private String key;
 	private String value;
 	private Renderer renderer;
+	//Theme
+	private String themeArgs;
+	private ArrayList<CommandTheme> commandTheme;
+	//private TreeSet<CommandTheme> commandTheme;
+	//Theme
 	private Set<Locale> locales;
 	
 	
@@ -30,8 +38,11 @@ public class Parameter {
 		parameter.addLocale(Locale.CANADA_FRENCH);
 		parameter.addLocale(Locale.CANADA);
 		parameter.addLocale(Locale.ENGLISH);
+		
 		for (Locale locale : parameter.getLocales()) {
-			System.out.println("'"+locale+"'");			
+			
+			System.out.println("'"+locale+"'");	
+			
 		}
 		System.out.println(Locale.UK + " found '"+parameter.contains(Locale.UK)+"'");		
 		System.out.println(Locale.US + " found '"+parameter.contains(Locale.US)+"'");
@@ -41,9 +52,49 @@ public class Parameter {
 	
 	public Parameter() {
 		locales=new TreeSet<Locale>(new LocaleComparator<Locale>());
+		//commandTheme=new TreeSet<CommandTheme>(new CommandThemeComparator<CommandTheme>());
+		commandTheme=new ArrayList<CommandTheme>();
+	}
+	
+	//Theme
+	public void setThemes(String themeArgs){
+		this.themeArgs=themeArgs;		
+	}
+	
+	public void addCommandTheme(CommandTheme ct){
+		this.commandTheme.add(ct);
+	}
+	
+   //Theme
+	/*
+	public void setCommandTheme(List<CommandTheme> commandTheme) {
+		this.commandTheme = commandTheme;
+	}*/
+
+
+	public String getThemeArgs() {
+		return themeArgs;
 	}
 
+
+	public void setThemeArgs(String themeArgs) {
+		this.themeArgs = themeArgs;
+	}
+
+
+	public ArrayList<CommandTheme> getCommandTheme() {
+		return commandTheme;
+	}
+
+
 	
+
+
+	public void setLocales(Set<Locale> locales) {
+		this.locales = locales;
+	}
+
+
 	public boolean contains(Locale l){
 		int weight = LocaleComparator.localeWeight(l);
 		boolean found=false;

@@ -11,21 +11,21 @@
 	<screen name="base">
 	    <parameter key="myMessage" value="manager.myMessage"/>
 		<parameter key="title" value="manager.title"/>
-		<parameter key="header" value="/template/manager/header_it.jsp">
+		<parameter key="header" value="/template/manager/header_it.jsp" themes="notExists">
 		  <locale>it</locale>
 		</parameter>
-		<parameter key="header" value="/template/manager/header.jsp">
+		<parameter key="header" value="/template/manager/header.jsp" >
 		  <locale>en</locale>
 		</parameter>
 		<parameter key="menu" value="/template/manager/menu.jsp">
 		  <locale></locale>
 		</parameter>
-		<parameter key="footer" value="/template/manager/footer.jsp">
-		  <locale>it</locale>
+		<parameter key="footer" value="/template/manager/footer.jsp" themes="default">
+		  
 		  <locale></locale>
 		 </parameter>
-		 <parameter key="footer" value="/template/manager/footer_en.jsp">
-		  <locale>en</locale>
+		 <parameter key="footer" value="/template/manager/footer_en.jsp" themes="notExists">
+		 
 		 </parameter>
 		 <parameter key="body" value="/template/manager/pages/formClient.jsp">
 		   <locale>it</locale>

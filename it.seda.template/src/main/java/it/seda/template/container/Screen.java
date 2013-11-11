@@ -1,5 +1,7 @@
 package it.seda.template.container;
 
+import it.seda.template.container.command.CommandTheme;
+import it.seda.template.container.command.CommandThemeDefinitions;
 import it.seda.template.context.TemplateResource;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class Screen {
 	private List<Parameter> parametersList;
 
 	private TemplateResource resource;
-
+    
 	public String getName() {
 		return name;
 	}
@@ -58,8 +60,21 @@ public class Screen {
 					}
 				}
 				if (l > 0)
-					logger.debug(name + " inherited #" + l + " localess from "
+					logger.debug(name + " inherited #" + l + " locales from "
 							+ parent.getName());
+				
+				//Theme
+				int t=0;
+				for(CommandTheme ct:parameter.getCommandTheme()){
+					if(!param.getCommandTheme().contains(ct)){
+						param.addCommandTheme(ct);
+						t++;
+					}
+				if(t>0)	
+					logger.debug(name + " inherited #" + t + " commandThemes from "
+							+ parent.getName());
+				}
+				//Theme
 			}
 		}
 		logger.debug(name + " inherited #" + p + " parameters from "
@@ -98,12 +113,16 @@ public class Screen {
 		this.template = template;
 	}
 
-	public Map<String, Parameter> getParameters(Locale locale) {
+	public Map<String, Parameter> getParameters(Locale locale,String thm) {
 		Map<String, Parameter> parameters = new HashMap<String, Parameter>();
 		for (Parameter parameter : parametersList) {
-			if (parameter.contains((Locale.ROOT))
-					|| parameter.contains(locale)) {
-				parameters.put(parameter.getKey(), parameter);
+			if ((parameter.contains((Locale.ROOT))|| parameter.contains(locale))) {
+				   for (CommandTheme ct: parameter.getCommandTheme()) {
+					   if(ct.evaluateTheme(thm)||ct.evaluateTheme(CommandThemeDefinitions.DEFAULT_THEME)){
+					   parameters.put(parameter.getKey(), parameter);
+					   }
+				}
+				   
 			}
 		}
 		return parameters;

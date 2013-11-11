@@ -15,6 +15,8 @@ import it.seda.template.container.Parameter;
 import it.seda.template.container.Screen;
 import it.seda.template.container.Template;
 import it.seda.template.container.TemplateContainer;
+import it.seda.template.container.command.CommandTheme;
+import it.seda.template.container.command.CommandThemeFactory;
 import it.seda.template.context.TemplateContext;
 import it.seda.template.context.TemplateResource;
 import it.seda.template.utils.Utils;
@@ -130,6 +132,8 @@ public class XMLContainerParser {
 					Parameter parameter = new Parameter();
 					parameter.setKey(paramNode.getStringAttribute("key"));
 					parameter.setValue(paramNode.getStringAttribute("value"));
+					CommandTheme ct=CommandThemeFactory.parseTheme(paramNode.getStringAttribute("themes"));
+					parameter.addCommandTheme(ct);
 					List<Locale> locales = localeElements(paramNode);
 					parameter.addLocales(locales);
 					screen.addParameter(parameter);

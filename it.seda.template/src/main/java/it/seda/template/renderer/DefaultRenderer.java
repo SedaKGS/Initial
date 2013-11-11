@@ -42,6 +42,7 @@ public class DefaultRenderer implements Renderer {
 		
 		Locale currentLocale = container.getTemplateContext().getCurrentLocale();
 		Theme currentTheme=RequestContextUtils.getTheme(request);
+		String themeName=currentTheme.getName();
 		
 		if (!container.containsScreen(url)) {
 			logger.debug("screen " + url + " rendering locale " + currentLocale + " not found");			
@@ -65,7 +66,7 @@ public class DefaultRenderer implements Renderer {
 		/*
 		 parameterContext.addAll(screen.getParameters());
 		 */
-		parameterContext.addAll(screen.getParameters(currentLocale));
+		parameterContext.addAll(screen.getParameters(currentLocale,themeName));
 		ParameterContext.register(request, parameterContext);
 		
 		// fase di render vero e proprio
