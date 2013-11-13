@@ -5,7 +5,6 @@ package it.seda.template.container.locale;
 
 import it.seda.template.container.Template;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -69,24 +68,24 @@ public class LocalizedTemplateContainer {
 		return getContainer(Locale.ROOT,true);
 	}
 	
-	public Template resolve(Locale locale, String tname) {
+	public Template resolve(Locale locale, String theme, String tname) {
 		LocalizedTemplate locTemplate=getContainer(locale);
 		if (locTemplate==null) {
 			locTemplate=getRootLocalizedTemplate();
 		}
-		return resolve(null, locTemplate, tname);
+		return resolve(null, locTemplate, theme, tname);
 	}
 	
-	private Template resolve(LocalizedTemplate parent, LocalizedTemplate locTemplate, String tname) {
+	private Template resolve(LocalizedTemplate parent, LocalizedTemplate locTemplate, String theme, String tname) {
 		Template template=null;
-		if (locTemplate.contains(tname)) {
-			template=locTemplate.getTemplate(tname);
-			logger.debug(resolveParentLocale(parent)+locTemplate.getLocale() + "." + tname + " resolved with " + template);
+		if (locTemplate.contains(theme, tname)) {
+			template=locTemplate.getTemplate(theme, tname);
+			logger.debug(resolveParentLocale(parent)+locTemplate.getLocale() + ".'" + theme +"'."+ tname + " resolved with " + template);
 		} else if (!locTemplate.isLocaleRoot()) {
-			logger.trace(locTemplate.getLocale() + "." + tname + " trying to resolve in root localized container");
-			return resolve(locTemplate, getRootLocalizedTemplate(), tname);
+			logger.trace(locTemplate.getLocale() + ".'" + theme +"'."+ tname + " trying to resolve in root localized container");
+			return resolve(locTemplate, getRootLocalizedTemplate(), theme, tname);
 		} else {
-			logger.warn(resolveParentLocale(parent)+locTemplate.getLocale() + "." + tname + " not resolved");
+			logger.warn(resolveParentLocale(parent)+locTemplate.getLocale() + ".'" + theme +"'."+ tname + " not resolved");
 		}
 		
 		return template;

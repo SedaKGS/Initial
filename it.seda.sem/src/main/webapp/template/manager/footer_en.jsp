@@ -1,1 +1,0 @@
-<p>footer per template en</p>

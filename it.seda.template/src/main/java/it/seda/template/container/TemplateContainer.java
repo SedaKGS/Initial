@@ -67,8 +67,8 @@ public class TemplateContainer {
 		return screenContainer.getScreen(url);
 	}
 
-	public Template getLocalizedTemplate(Locale locale, String tname) {
-		return localizedTemplateContainer.resolve(locale, tname);
+	public Template getLocalizedTemplate(Locale locale, String theme, String tname) {
+		return localizedTemplateContainer.resolve(locale, theme, tname);
 	}
 
 	@Override

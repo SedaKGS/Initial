@@ -13,7 +13,6 @@ it\seda\template\xparser\TokenHandler.class
 it\seda\template\utils\Utils.class
 it\seda\template\utils\ThemeComparator.class
 it\seda\template\container\command\CommandThemeFactory.class
-it\seda\template\container\command\CommandThemeComparator.class
 it\seda\template\startup\ResourceNotFoundException.class
 it\seda\template\xparser\ParserException.class
 it\seda\template\xparser\PropertyParser.class

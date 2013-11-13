@@ -1,8 +1,7 @@
 <templates>
 
 	<screen name="welcome" extends="base">
-		 <parameter key="content" value="/template/manager/formClient.jsp"/>
+		<parameter key="content" value="/template/events/welcome.jsp"/>
 	</screen>
-	
 
 </templates>

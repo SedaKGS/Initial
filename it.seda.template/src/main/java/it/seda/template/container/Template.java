@@ -8,6 +8,8 @@ import it.seda.template.context.TemplateResource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author f.ricci
@@ -17,6 +19,7 @@ public class Template {
 	
 	private boolean def;
 	private List<Locale> locales;
+	private Set<String> themes;	
 	private String name;
 	private String url;
 	private int priority;
@@ -47,6 +50,12 @@ public class Template {
 	public List<Locale> getLocales() {
 		return locales;
 	}	
+	public void addThemes(Set<String> themes) {
+		this.themes.addAll(themes);
+	}
+	public Set<String> getThemes() {
+		return themes;
+	}	
 	public String getName() {
 		return name;
 	}
@@ -62,11 +71,13 @@ public class Template {
 	
 	public Template() {
 		locales=new ArrayList<Locale>();
+		themes=new TreeSet<String>();
 	}
 	
 	@Override
 	public String toString() {
 		return "Template [default=" + def + ", name=" + name + ", url=" + url
+				+ ", themes=" + themes 
 				+ ", locales=" + locales + ", resource=" + resource + "]";
 	}
 

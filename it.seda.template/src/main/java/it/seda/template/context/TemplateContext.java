@@ -37,8 +37,10 @@ public class TemplateContext {
 	public String getWacName() {
 		return name;
 	}
-
 	
+	public WebApplicationContext getWebApplicationContext() {
+		return wac;
+	}	
 
 	public void setContainer(TemplateContainer container) {
 		this.container=container;

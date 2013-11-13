@@ -126,8 +126,9 @@ public class Screen {
 		for (Parameter parameter : parametersList) {
 			if ((parameter.contains((Locale.ROOT))|| parameter.contains(locale))) {
 				   for (CommandTheme ct: parameter.getCommandTheme()) {
-					   if(ct.evaluateTheme(thm)||ct.evaluateTheme(CommandTheme.DEFAULT_THEME)){
-					   parameters.put(parameter.getKey(), parameter);
+					   if(ct.evaluateTheme(thm)
+							   || ct.evaluateTheme(ct.getDefaultTheme())) {
+						   parameters.put(parameter.getKey(), parameter);
 					   }
 				}
 				   

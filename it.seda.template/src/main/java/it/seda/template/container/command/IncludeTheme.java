@@ -12,8 +12,8 @@ public class IncludeTheme extends AbstractCommandTheme {
 	/**
 	 * This is the class constructor.
 	 */
-	public IncludeTheme(TreeSet<String> themesSet) {
-		this.themesSet = themesSet;
+	public IncludeTheme(String defaultTheme, TreeSet<String> themesSet) {
+		super(defaultTheme, themesSet);
 	}
 
 	 /**
@@ -56,7 +56,10 @@ public class IncludeTheme extends AbstractCommandTheme {
 			return false;
 		}
 		CommandTheme commandTheme=(CommandTheme) ct;
-		if(themesSet.size()== commandTheme.getThemesSet().size()&& themesSet.containsAll(commandTheme.getThemesSet())) return true;
+		if(themesSet.size()== commandTheme.getThemesSet().size()
+				&& themesSet.containsAll(commandTheme.getThemesSet())) {
+			return true;
+		}
 		return false;
 	}
 	

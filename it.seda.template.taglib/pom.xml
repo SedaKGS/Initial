@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>it.seda.template</groupId>
 			<artifactId>it.seda.template</artifactId>
-			<version>0.0.1-20131031.153851-1</version>			
+			<version>0.0.2-SNAPSHOT</version>			
 		</dependency>			
 		<!-- Spring -->
 		<dependency>

@@ -25,9 +25,6 @@ public class AccountService {
 	@Inject private AccountMapper accountMapper;
 	@Inject private ShaPasswordEncoder passwordEncoder;
 	@Inject private SaltSource saltSource;
-	
-	
-	
 
 	public Account getAccountByUserName(String username) {
 		return accountMapper.getAccountByUsername(username);
@@ -76,7 +73,7 @@ public class AccountService {
 		Account tempAccount =new Account();
 		tempAccount.setUsername(signon.getUsername());
 		Object salt = saltSource.getSalt(new UserDetailsAdapter(tempAccount));	
-		signon.setPassword(passwordEncoder.encodePassword(signon.getUsername(),salt));
+		signon.setPassword(passwordEncoder.encodePassword(signon.getPassword(),salt));
 		
 		accountMapper.updateSignon(signon);
 	}	

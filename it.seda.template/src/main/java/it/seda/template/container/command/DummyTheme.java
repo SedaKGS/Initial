@@ -13,15 +13,15 @@ public class DummyTheme extends AbstractCommandTheme {
 	/**
 	 * This is the class constructor.
 	 */
-	public DummyTheme(TreeSet<String> themesSet) {
-		this.themesSet = themesSet;
+	public DummyTheme(String defaultTheme, TreeSet<String> themesSet) {
+		super(defaultTheme, themesSet);
 	}
 	 /**
-	  * This method returns always true.
+	  * This method returns always false.
 	  */
 	@Override
 	public boolean evaluateTheme(String theme) {
-		return true;
+		return false;
 	}
 	/**
 	 * Returns the set of the themes.
@@ -35,7 +35,8 @@ public class DummyTheme extends AbstractCommandTheme {
 	 */
 	@Override
 	boolean instanceOf(Object o) {
-		if(o!=null&&o instanceof DummyTheme) return true;
+		if(o!=null
+				&& o instanceof DummyTheme) return true;
 		return false;
 	}
 

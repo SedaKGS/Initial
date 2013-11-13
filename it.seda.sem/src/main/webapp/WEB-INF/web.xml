@@ -97,7 +97,7 @@
 
 
 	<welcome-file-list>
-		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>entrypoint.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>

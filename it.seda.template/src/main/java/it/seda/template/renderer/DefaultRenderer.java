@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.context.Theme;
+import org.springframework.web.servlet.ThemeResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 public class DefaultRenderer implements Renderer {
@@ -50,15 +51,15 @@ public class DefaultRenderer implements Renderer {
 		}		
 		Screen screen = container.getScreen(url);
 		
-		Template template = container.getLocalizedTemplate(currentLocale, screen.getTemplate());
+		Template template = container.getLocalizedTemplate(currentLocale, currentTheme.getName(), screen.getTemplate());
 		if (template==null) {
-			logger.debug(screen.getTemplate() +  " rendering locale " + currentLocale + " not found");			
-			throw new ServletException("template " + (screen.getTemplate()==null?"*default*":screen.getTemplate()) + " definition not found for "+screen+ ". Did you miss some configuration (template.xml)?");
+			logger.debug(screen.getTemplate() +  " rendering locale " + currentLocale + " and theme '" + currentTheme + "' not found");			
+			throw new ServletException("locale '" +currentLocale+ "' theme '" +currentTheme+ "' template " + (screen.getTemplate()==null?"*default*":screen.getTemplate()) + " definition not found for "+screen+". Did you miss some configuration (template.xml)?");
 		}
 		
 		
 		if (logger.isDebugEnabled()) {
-			logger.debug("locale '" +currentLocale+ "' rendering screen " + screen.getName() + " to " + template.getUrl());
+			logger.debug("locale '" +currentLocale+ "', theme '" +currentTheme+ "' rendering screen " + screen.getName() + " to " + template.getUrl());
 		}
 		
 		// prefase, caricamento degli atributi ereditati

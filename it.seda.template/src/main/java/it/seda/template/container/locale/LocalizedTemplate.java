@@ -8,6 +8,7 @@ import it.seda.template.container.Template;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,8 @@ public class LocalizedTemplate {
 	private Logger logger = LoggerFactory.getLogger(LocalizedTemplate.class);	
 	
 	private Locale locale;
-	private Map<String,Template> templates;
-	private Template defaultTemplate;
+	private Map<String, Map<String, Template>> templates;
+	private Map<String, Template> defaultTemplates;
 	private LocalizedTemplateContainer container;
 	public Locale getLocale() {
 		return locale;
@@ -32,67 +33,85 @@ public class LocalizedTemplate {
 		return Locale.ROOT.equals(locale);
 	}
 	
-	public boolean contains(String tname) {
+	public boolean contains(String theme, String tname) {
 		if (tname==null) {
-			return defaultTemplate!=null;
+			return defaultTemplates.get(theme)!=null;
 		}
-		return templates.containsKey(tname);
+		return getThemedTemplates(theme).containsKey(tname);
 	}
 	
-	public Template getTemplate(String tname) {
+	public Template getTemplate(String theme, String tname) {
 		if (tname==null) {
-			return defaultTemplate;
+			return defaultTemplates.get(theme);
 		}
-		return templates.get(tname);
+		return getThemedTemplates(theme).get(tname);		
 	}		
 	public LocalizedTemplate(Locale locale, LocalizedTemplateContainer container) {
 		this.locale=locale;
 		this.container=container;
-		this.templates=new HashMap<String, Template>();
+		this.templates=new HashMap<String, Map<String, Template>>();
+		this.defaultTemplates=new HashMap<String, Template>();
 	}
 	
 	public void setDefaultTemplate(Template defaultTemplate) {
-		if (this.defaultTemplate!=null) {
-			if (logger.isInfoEnabled()) {
-				logger.info(getMessage("template " + this.defaultTemplate + " will be replaced by " + defaultTemplate));
-				this.defaultTemplate.setDefault(false);
-				return;
-			}			
+		for (String theme : defaultTemplate.getThemes()) {
+			setDefaultTemplate(theme, defaultTemplate);
 		}
-		this.defaultTemplate=defaultTemplate;
+	}
+	
+	public void setDefaultTemplate(String theme, Template defaultTemplate) {
+		if (defaultTemplates.get(theme)!=null) {
+			if (logger.isInfoEnabled()) {
+				logger.info(getMessage("theme '" + theme + "' template " + defaultTemplates.get(theme) + " will be replaced by " + defaultTemplate));
+				defaultTemplates.get(theme).setDefault(false);
+			}							
+		}
+		defaultTemplates.put(theme,defaultTemplate);
 	}		
 	
 	public void addTemplate(Template template) {
-		if (templates.containsKey(template.getName())) {
-			if (logger.isWarnEnabled()) {
-				logger.warn(getMessage("duplicate template " + template.getName() + " discarded"));
-				return;
-			}						
-		}
-		template.setPriority(templates.size());
-		templates.put(template.getName(), template);
-		if (template.isDefault()) {
-			setDefaultTemplate(template);
+		for (String theme : template.getThemes()) {
+			Map<String, Template> themedTemplates=getThemedTemplates(theme);
+			if (themedTemplates.containsKey(template.getName())) {
+				if (logger.isWarnEnabled()) {
+					logger.warn(getMessage("theme '" + theme + "' duplicate template " + template.getName() + " discarded"));
+					return;
+				}
+			}
+			template.setPriority(themedTemplates.size());
+			themedTemplates.put(template.getName(), template);
+			if (template.isDefault()) {
+				setDefaultTemplate(theme, template);
+			}
 		}
 	}		
+
+	protected Map<String, Template> getThemedTemplates(String theme) {
+		Map<String, Template> themedTemplates = templates.get(theme);
+		if (themedTemplates==null) {
+			themedTemplates = new TreeMap<String, Template>();
+			templates.put(theme, themedTemplates);
+		}
+		return themedTemplates;
+	}
 	
 	private String getMessage(String message) {
 		return locale+" "+message;
 	}
 	
-	public Template resolveDefaultTemplate() {
-		if (defaultTemplate==null) {
-			for (String tname : templates.keySet()) {
-				if (templates.get(tname).getPriority()==0) {
-					defaultTemplate=templates.get(tname);
-					logger.warn("template " + tname + " set to default");
-					break;
+	public void resolveDefaultTemplate() {
+		for(String theme: templates.keySet()) {
+			if (!defaultTemplates.containsKey(theme)) {
+				Map<String, Template> themedTemplates=getThemedTemplates(theme);				
+				for (String tname : themedTemplates.keySet()) {
+					if (themedTemplates.get(tname).getPriority()==0) {
+						defaultTemplates.put(theme, themedTemplates.get(tname));
+						logger.warn("theme '" + theme + "'template " + tname + " set to default");
+						break;
+					}
 				}
 			}
-		}		
-		return defaultTemplate;
+		}
 	}
-
 	
-
 }

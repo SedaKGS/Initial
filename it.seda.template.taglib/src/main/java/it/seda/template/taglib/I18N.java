@@ -1,14 +1,18 @@
 package it.seda.template.taglib;
 
+import javax.servlet.http.HttpServletRequest;
+
 import it.seda.template.request.ParameterContext;
 import it.seda.template.utils.LocaleOrientation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.ui.context.Theme;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 
 
@@ -17,11 +21,20 @@ public class I18N {
 	static Logger logger = LoggerFactory.getLogger(I18N.class);
 
 	protected static ParameterContext getContext(){
-		RequestAttributes attributes=RequestContextHolder.getRequestAttributes();
-		ParameterContext parameterContext=ParameterContext.retrieve(((ServletRequestAttributes)attributes).getRequest());
+		ParameterContext parameterContext=ParameterContext.retrieve(getHttpRequest());
 		return parameterContext;
 	}
+	
+	protected static HttpServletRequest getHttpRequest(){
+		RequestAttributes attributes=RequestContextHolder.getRequestAttributes();
+		return ((ServletRequestAttributes)attributes).getRequest();
+	}	
 
+	protected static Theme getTheme() {
+		Theme theme = RequestContextUtils.getTheme(getHttpRequest());
+		return theme;
+	}
+	
 	protected static String getMessage(String key,Object [] args){
 		if(key==null) return null;
 		String message=null;
@@ -42,6 +55,17 @@ public class I18N {
 	public static String printMessage(String key){
 		return printMessage(key,null);
 	}
+	
+	public static String printMessageTheme(String key){
+		Theme theme = getTheme();
+		if (theme!=null) {
+			return theme.getMessageSource().getMessage(key, null, getContext().getLocale());
+		} 
+
+		logger.warn("ThemeResolver not found");
+		
+		return "";
+	}	
 	
 	public static String direction() {
 		return LocaleOrientation.getOrientation(getContext().getLocale())==LocaleOrientation.RIGHT_TO_LEFT?"rtl":"ltr";

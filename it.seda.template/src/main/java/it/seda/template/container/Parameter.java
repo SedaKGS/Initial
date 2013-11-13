@@ -1,7 +1,6 @@
 package it.seda.template.container;
 
 import it.seda.template.container.command.CommandTheme;
-import it.seda.template.container.command.CommandThemeComparator;
 import it.seda.template.renderer.Renderer;
 import it.seda.template.utils.LocaleComparator;
 
@@ -52,7 +51,6 @@ public class Parameter {
 	
 	public Parameter() {
 		locales=new TreeSet<Locale>(new LocaleComparator<Locale>());
-		//commandTheme=new TreeSet<CommandTheme>(new CommandThemeComparator<CommandTheme>());
 		commandTheme=new ArrayList<CommandTheme>();
 	}
 	

@@ -71,8 +71,11 @@
                 access="hasRole('ROLE_USER')"/>
 	-->                
  
+      <intercept-url pattern="/events/welcome"
+                access="hasAnyRole('ROLE_ADMIN,ROLE_USER,ROLE_ANONYMOUS')"/>
+                 
        <intercept-url pattern="/events/**"
-                access="hasAnyRole('ROLE_ADMIN,ROLSE_USER')"/>
+                access="hasAnyRole('ROLE_ADMIN,ROLE_USER')"/>
        	
 		<form-login login-page="/security/login" 
 		            authentication-failure-url="/security/login?failed=true"

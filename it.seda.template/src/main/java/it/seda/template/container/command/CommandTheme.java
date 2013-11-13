@@ -12,14 +12,18 @@ public interface CommandTheme {
 	static public final String INCLUDE="include(";
     static public final String EXCLUDE="exclude(";
     static public final String END=")";
-    static public final String DEFAULT_THEME="";
 	
     /**
-     * Method that checks if a theme has to be included or excluded
+     * returns the default theme name
+     */
+	String getDefaultTheme();    
+    
+    /**
+     * Checks if a theme has to be included or excluded
      */
 	boolean evaluateTheme(String theme);
 	/**
-     * Method that returns the set of themes in the current CommandTheme's implementation.
+     * Returns the set of themes in the current CommandTheme's implementation.
      */
 	TreeSet<String> getThemesSet();
 	

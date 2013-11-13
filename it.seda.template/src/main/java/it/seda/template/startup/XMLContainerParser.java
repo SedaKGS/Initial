@@ -1,16 +1,5 @@
 package it.seda.template.startup;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import it.seda.template.container.Parameter;
 import it.seda.template.container.Screen;
 import it.seda.template.container.Template;
@@ -23,6 +12,20 @@ import it.seda.template.utils.Utils;
 import it.seda.template.xparser.ParserException;
 import it.seda.template.xparser.XNode;
 import it.seda.template.xparser.XPathParser;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.ThemeResolver;
+import org.springframework.web.servlet.theme.AbstractThemeResolver;
 
 /**
  * 
@@ -41,11 +44,12 @@ public class XMLContainerParser {
 	private TemplateContext context;
 	private Map<String, Screen> temporaryScreens;
 	private TemplateResource currentResource;
-
+	private String defaultTheme;
 	public XMLContainerParser(TemplateContext context) {
 		this.context=context;
 		templateContainer=new TemplateContainer(context);
 		temporaryScreens=new HashMap<String, Screen>();
+		defaultTheme=context.getWebApplicationContext().getBean(AbstractThemeResolver.class).getDefaultThemeName();
 	}
 
 	public TemplateContainer parse() {
@@ -59,6 +63,12 @@ public class XMLContainerParser {
 			parse(resource);
 		}
 		
+		
+		templateContainer.resolveDefaultTemplates();
+
+		applyInheritance();
+		buildScreenContainer();	
+		
 		return templateContainer;
 	}
 
@@ -71,16 +81,12 @@ public class XMLContainerParser {
 		}
 		
 		parseContainer(parser.evalNode("/templates"));
-	
 	}
 	
 	private void parseContainer(XNode root) {
 		try {
 			templatesElement(root.evalNodes("template"));
-			templateContainer.resolveDefaultTemplates();
 			screensElement(root.evalNodes("screen"));
-			applyInheritance();
-			buildScreenContainer();
 		} catch (Exception e) {
 			throw new ParserException("Error parsing Procedure System. Cause: " + e, e);
 		}
@@ -97,7 +103,9 @@ public class XMLContainerParser {
 				template.setDefault(def);
 				template.setName(name);
 				template.setUrl(url);
-				
+
+				Set<String> themes = CommandThemeFactory.resolveThemes(defaultTheme, xNode.getStringAttribute("themes"));
+				template.addThemes(themes);
 //				List<Locale> locales = localesElement(xNode);
 				List<Locale> locales = localeElements(xNode);
 				template.addLocales(locales);
@@ -132,15 +140,12 @@ public class XMLContainerParser {
 					Parameter parameter = new Parameter();
 					parameter.setKey(paramNode.getStringAttribute("key"));
 					parameter.setValue(paramNode.getStringAttribute("value"));
-					CommandTheme ct=CommandThemeFactory.parseTheme(paramNode.getStringAttribute("themes"));
+					CommandTheme ct=CommandThemeFactory.parseTheme(defaultTheme, paramNode.getStringAttribute("themes"));
 					parameter.addCommandTheme(ct);
 					List<Locale> locales = localeElements(paramNode);
 					parameter.addLocales(locales);
 					screen.addParameter(parameter);
 				}
-				
-				
-				
 
 				temporaryScreens.put(name, screen);
 			}
