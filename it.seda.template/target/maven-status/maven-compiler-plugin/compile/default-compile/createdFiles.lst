@@ -8,7 +8,6 @@ it\seda\template\xparser\PropertyParser$VariableTokenHandler.class
 it\seda\template\context\ContextAccess.class
 it\seda\template\request\ServletRequest.class
 it\seda\template\xparser\XNode.class
-it\seda\template\container\command\CommandThemeDefinitions.class
 it\seda\template\xparser\TokenHandler.class
 it\seda\template\utils\Utils.class
 it\seda\template\utils\ThemeComparator.class

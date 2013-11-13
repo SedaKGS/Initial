@@ -1,7 +1,6 @@
 package it.seda.template.container;
 
 import it.seda.template.container.command.CommandTheme;
-import it.seda.template.container.command.CommandThemeDefinitions;
 import it.seda.template.context.TemplateResource;
 
 import java.util.ArrayList;
@@ -14,8 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This class contains all the attributes present in the tag screen that is
+ * used in the seda composition tool's configuration file (es. template.xml).
+ * In addition to these parameters this class contains a parameter list in wich every 
+ * element represents the tag attribute used in the same configuration file.
  * 
- * @author f.ricci
+ * <br>
+ * 
  * 
  */
 public class Screen {
@@ -30,95 +34,99 @@ public class Screen {
 
 	private TemplateResource resource;
     
+	/**
+	 * Returns the screen's name.
+	 */
 	public String getName() {
 		return name;
 	}
-
+    /**
+     * Sets the screen's name.
+     */
 	public void setName(String name) {
 		this.name = name;
 	}
-
+    /**
+     * Checks is a screen has already inherited a parameters's list.      
+     */
 	public boolean hasInerited() {
 		return inherited;
 	}
-
+    /**
+     * This method allow to inherit parameters from a parent screen.
+     */
 	public void inherit(Screen parent) {
+		List<Parameter> parameterListTemp=new ArrayList<Parameter>();
 		inherited = true;
-		int p = 0;
 		for (Parameter parameter : parent.getParametersList()) {
 			if (!parametersList.contains(parameter)) {
-				p++;
-				parametersList.add(parameter);
-			} else {
-				Parameter param = parametersList.get(parametersList
-						.indexOf(parameter));
-				int l = 0;
-				for (Locale locale : parameter.getLocales()) {
-					if (!param.getLocales().contains(locale)) {
-						param.addLocale(locale);
-						l++;
-					}
-				}
-				if (l > 0)
-					logger.debug(name + " inherited #" + l + " locales from "
-							+ parent.getName());
-				
-				//Theme
-				int t=0;
-				for(CommandTheme ct:parameter.getCommandTheme()){
-					if(!param.getCommandTheme().contains(ct)){
-						param.addCommandTheme(ct);
-						t++;
-					}
-				if(t>0)	
-					logger.debug(name + " inherited #" + t + " commandThemes from "
-							+ parent.getName());
-				}
-				//Theme
+				parameterListTemp.add(parameter);
 			}
 		}
-		logger.debug(name + " inherited #" + p + " parameters from "
+		parametersList.addAll(parameterListTemp);
+		logger.debug(name + " inherited #" + parameterListTemp.size() + " parameters from "
 				+ parent.getName());
 	}
-
+    /**
+     * Returns the screen's parameter list.
+     */
 	public List<Parameter> getParametersList() {
 		return this.parametersList;
 	}
-
+    /**
+     * Returns the template resource.
+     */
 	public TemplateResource getResource() {
 		return resource;
 	}
-
+	 /**
+     * Sets the template resource.
+     */
 	public void setResource(TemplateResource resource) {
 		this.resource = resource;
 	}
-
+    
+	/**
+	 * Returns the screen parent's name.
+	 */
 	public String getInherit() {
 		return inherit;
 	}
-
+	
+    /**
+     * Sets the screen parent's name.
+     */
 	public void setInherit(String inherit) {
 		this.inherit = inherit;
 	}
-
+    
+	/**
+	 *Checks if the screen has a parent. 
+	 */
 	public boolean hasInheritance() {
 		return inherit != null;
 	}
-
+    /**
+     * Returns the screen'template name.
+     */
 	public String getTemplate() {
 		return template;
 	}
-
+    /**
+     * Sets ther screen template's name.
+     */
 	public void setTemplate(String template) {
 		this.template = template;
 	}
-
+    /**
+     * Returns all the parameters of a given locale and theme.
+     */
 	public Map<String, Parameter> getParameters(Locale locale,String thm) {
 		Map<String, Parameter> parameters = new HashMap<String, Parameter>();
 		for (Parameter parameter : parametersList) {
 			if ((parameter.contains((Locale.ROOT))|| parameter.contains(locale))) {
 				   for (CommandTheme ct: parameter.getCommandTheme()) {
-					   if(ct.evaluateTheme(thm)||ct.evaluateTheme(CommandThemeDefinitions.DEFAULT_THEME)){
+					   if(ct.evaluateTheme(thm)||ct.evaluateTheme(CommandTheme.DEFAULT_THEME)){
 					   parameters.put(parameter.getKey(), parameter);
 					   }
 				}
@@ -127,17 +135,20 @@ public class Screen {
 		}
 		return parameters;
 	}
-
+    /**
+     * This is the screen's class constructor.
+     */
 	public Screen() {
 		parametersList = new ArrayList<Parameter>(4);
 
 	}
-
+    /*
+     * Adds a parameter to the parameter list.
+     */
 	public void addParameter(Parameter parameter) {
 		parametersList.add(parameter);
 
 	}
-
 	@Override
 	public String toString() {
 		return "Screen [name=" + name + ", inherit=" + inherit + ", template="
