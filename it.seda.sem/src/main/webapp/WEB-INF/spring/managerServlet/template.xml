@@ -17,15 +17,14 @@
 		<parameter key="header" value="/template/manager/header.jsp" >
 		  <locale>en</locale>
 		</parameter>
-		<parameter key="menu" value="/template/manager/menu.jsp">
+		<parameter key="menu" value="/template/manager/menu.jsp" themes="exclude(default)">
 		  <locale></locale>
 		</parameter>
-		<parameter key="footer" value="/template/manager/footer.jsp" themes="default">
-		  
-		  <locale></locale>
+		<parameter key="footer" value="/template/manager/footer.jsp" themes="include(default)">
+		  <locale>it</locale>
 		 </parameter>
-		 <parameter key="footer" value="/template/manager/footer_en.jsp" themes="notExists">
-		 
+		 <parameter key="footer" value="/template/manager/footer_en.jsp" themes="exclude(default)">
+		   <locale>en</locale>
 		 </parameter>
 		 <parameter key="body" value="/template/manager/pages/formClient.jsp">
 		   <locale>it</locale>
