@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 @SuppressWarnings("serial")
-public class IncludeTag extends TagSupport {
+public class IncludeTag extends TagSupport implements TryCatchFinally {
 
 	private Logger logger = LoggerFactory.getLogger(IncludeTag.class);
 	private SecurityHelper securityHelper;
@@ -80,9 +81,7 @@ public class IncludeTag extends TagSupport {
 			
 		} catch (Exception x) {
 			x.printStackTrace();
-		} finally {
-			recycle();
-		}
+		} 
 
 		return EVAL_PAGE;
 	}
@@ -101,12 +100,17 @@ public class IncludeTag extends TagSupport {
 		}
 		return securityHelper;
 	}
-	
-	private void recycle() {
+
+	@Override
+	public void doCatch(Throwable throwable) throws Throwable {
+		throw throwable;
+	}
+
+	@Override
+	public void doFinally() {
 		parameterName=null;
 		args=null;	
 		hasRoles=null;
-		
 	}	
 		
 }

@@ -46,6 +46,10 @@ public class ParameterContext {
 	public String getMessage(String code, Object[] args) {
 		return templateContext.getMessage(code, args);
 	}	
+
+	public Locale getLocale() {
+		return templateContext.getCurrentLocale();
+	}		
 	
 	public ParameterContext(TemplateContext context) {
 		this.templateContext=context;
@@ -57,6 +61,6 @@ public class ParameterContext {
 	
 	public static ParameterContext retrieve(HttpServletRequest request) {
 		return (ParameterContext) request.getAttribute(ATTR_REQUEST_PARAMETER);
-	}	
-	
+	}
+
 }
