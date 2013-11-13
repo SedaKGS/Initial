@@ -1,3 +1,4 @@
+it\seda\template\utils\LocaleOrientation.class
 it\seda\template\context\TemplateContext.class
 it\seda\template\container\Screen.class
 it\seda\template\container\command\ExcludeTheme.class
