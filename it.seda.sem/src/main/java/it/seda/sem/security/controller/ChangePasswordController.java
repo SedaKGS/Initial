@@ -1,6 +1,8 @@
-package it.seda.sem.security.password.changing;
+package it.seda.sem.security.controller;
 
-import it.seda.sem.mvc.manager.models.FormClient;
+import it.seda.sem.security.domain.Signon;
+import it.seda.sem.security.password.FormChangePassword;
+import it.seda.sem.security.service.AccountService;
 
 import java.util.List;
 
@@ -9,7 +11,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -17,13 +19,13 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value="/changePassword")
 public class ChangePasswordController {
 	
-	@Inject @Qualifier("passwordHandler")PasswordHandler changePassword;
+//	@Inject @Qualifier("passwordHandler")PasswordHandler changePassword;
+	@Inject AccountService accountService;
 	
 	private Logger logger = LoggerFactory.getLogger(ChangePasswordController.class);
 	@RequestMapping(method = RequestMethod.GET)
@@ -41,25 +43,32 @@ public class ChangePasswordController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public String addCustomer(@Valid  @ModelAttribute("changePassword") FormChangePassword formChangePassword, BindingResult result, ModelMap model) {
+	public String changePassword(@Valid  @ModelAttribute("changePassword") FormChangePassword formChangePassword, BindingResult result, ModelMap model) {
 		List<ObjectError> errors=null;
 		if (result.hasErrors()) {
 			errors=result.getAllErrors();
 			return "changePassword";
 		} else {		
-			logger.info("ChangePassword: dati inseriti correttamente");
+			logger.debug("ChangePassword: dati inseriti correttamente"); //TODO i18n
 		}
 		
-		boolean esito=changePassword.changePassword(formChangePassword);
-		formChangePassword.setEsito(esito);
-		model.addAttribute("changePasswordData", formChangePassword);
-		if(esito){
-			logger.info("ChangePassword: password cambiata");
-		}
-		else{
-			return "changePassword";
-		}
-		return "aggiornamentoRiuscito";
+//		boolean esito=changePassword.changePassword(formChangePassword);
+//		formChangePassword.setEsito(esito);
+//		model.addAttribute("changePasswordData", formChangePassword);
+//		if(esito){
+//			logger.info("ChangePassword: password cambiata");
+//		}
+//		else{
+//			return "changePassword";
+//		}
+		
+		Signon signon = new Signon();
+		signon.setPassword(formChangePassword.getNewPassword());
+		signon.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		accountService.updateSignon(signon);		
+		
+		return "changePassword";
 	}
 }
 

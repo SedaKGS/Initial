@@ -1,17 +1,11 @@
-package it.seda.sem.security.password.changing;
-
-import java.lang.annotation.Annotation;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+package it.seda.sem.security.password;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
-
 public class ChangePasswordValidator implements ConstraintValidator<NotEqualNewOld,FormChangePassword> {
 
+    private String KeyMessage;
 	
 	boolean compare(String pa,String pr){
 		if(pa.equals(pr)){
@@ -20,37 +14,35 @@ public class ChangePasswordValidator implements ConstraintValidator<NotEqualNewO
 		return false;
 	}
 
-	
-    private String KeyMessage;
 	@Override
 	public void initialize(NotEqualNewOld changePasswordValidation) {
-		this.KeyMessage=changePasswordValidation.value();
-		
+		this.KeyMessage=changePasswordValidation.message();
 	}
-    
-	
-	
-
 
 	@Override
 	public boolean isValid(FormChangePassword formChangePassword,
 			ConstraintValidatorContext constraintValidatorContext) {
-		String username=formChangePassword.getUsername();
-		String oldPassword=formChangePassword.getOldPassword();
+
 		String newPassword=formChangePassword.getNewPassword();
 		String confirm=formChangePassword.getConfirm();
-		replaceMessage(constraintValidatorContext);
-		return compare(newPassword,confirm);
+		
+		boolean valid = compare(newPassword,confirm);
+		
+//		if (!valid) {
+//			replaceMessage(constraintValidatorContext);			
+//		}
+		
+		return valid;
 	}
 
 	
 	public void replaceMessage(ConstraintValidatorContext constraintValidatorContext){
-		
 		if(KeyMessage!=null){
 			constraintValidatorContext.disableDefaultConstraintViolation();
 			constraintValidatorContext.buildConstraintViolationWithTemplate(
-					KeyMessage
+					"{it.seda.sem.security.password.NotEqualNewOld.message}"
 	            )
+//	            .addNode("confirm")
 	            .addConstraintViolation();
 			
 		}

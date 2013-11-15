@@ -1,4 +1,4 @@
-package it.seda.sem.security.password.changing;
+package it.seda.sem.security.password;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -17,11 +17,11 @@ import javax.validation.Payload;
 
 
 public @interface NotEqualNewOld {
-	 String message() default "{security.messages.notEqualsNewOld}";
+	 String message() default "{it.seda.sem.security.password.notequalsnewold}";
 
 	 Class<?>[] groups() default {};
 
 	 Class<? extends Payload>[] payload() default {};
 	    
-	 String value();
+//	 String value();
 }

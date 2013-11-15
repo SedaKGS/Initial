@@ -13,11 +13,13 @@
 	</c:if>
    <form:form method="POST" commandName="changePassword">
 		<table>
+
 		    <tr>
 		      <td>
 		         <form:errors path="*" class="errors"/>       
 		      </td>
 		    </tr>
+
 			<tr>
 				<td>Username :</td>
 				<td><form:input path="username" class="inputSignIn"/>

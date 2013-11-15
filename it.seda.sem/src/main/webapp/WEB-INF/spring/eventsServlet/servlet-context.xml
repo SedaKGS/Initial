@@ -14,7 +14,7 @@
 	
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<mvc:annotation-driven />	
+	<mvc:annotation-driven validator="validator" />	
 
 	<!-- Imports user-defined @Controller beans that process client requests -->
 	<import resource="controllers.xml" />

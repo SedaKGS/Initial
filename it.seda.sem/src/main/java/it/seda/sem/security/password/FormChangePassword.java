@@ -1,20 +1,16 @@
-package it.seda.sem.security.password.changing;
+package it.seda.sem.security.password;
 
 
 
 
-@NotEqualNewOld("{security.messages.notEqualsNewOld}")
+//@NotEqualNewOld(message="{security.messages.notEqualsNewOld}")
+@NotEqualNewOld
 public class FormChangePassword {
 	String username;
 	String oldPassword;
 	String newPassword;
 	String confirm;
 	boolean esito;
-    
-	
-	
-	
-	
 
 	public boolean isEsito() {
 		return esito;
