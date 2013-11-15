@@ -3,14 +3,22 @@ package it.seda.sem.security.password;
 
 
 
-//@NotEqualNewOld(message="{security.messages.notEqualsNewOld}")
-@NotEqualNewOld
+@NotEqualNewOld(message="{security.messages.notEqualsNewOld}", field = "NewOldError")
+//@NotEqualNewOld
 public class FormChangePassword {
-	String username;
-	String oldPassword;
 	String newPassword;
 	String confirm;
+	String newOldError;
 	boolean esito;
+	
+    
+	public String getNewOldError() {
+		return newOldError;
+	}
+
+	public void setNewOldError(String newOldError) {
+		this.newOldError = newOldError;
+	}
 
 	public boolean isEsito() {
 		return esito;
@@ -19,24 +27,6 @@ public class FormChangePassword {
 	public void setEsito(boolean esito) {
 		
 		this.esito = esito;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		
-		this.username = username;
-	}
-
-	public String getOldPassword() {
-		return oldPassword;
-	}
-
-	public void setOldPassword(String oldPassword) {
-		
-		this.oldPassword = oldPassword;
 	}
 
 	public String getNewPassword() {
@@ -59,10 +49,12 @@ public class FormChangePassword {
 
 	@Override
 	public String toString() {
-		return "FormChangePassword [username=" + username + ", oldPassword="
-				+ oldPassword + ", newPassword=" + newPassword + ", confirm="
-				+ confirm + ", esito=" + esito + "]";
+		return "FormChangePassword [newPassword=" + newPassword + ", confirm="
+				+ confirm + ", newOldError=" + newOldError + ", esito=" + esito
+				+ "]";
 	}
+
+	
 
 	
 

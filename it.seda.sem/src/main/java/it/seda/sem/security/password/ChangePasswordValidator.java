@@ -6,6 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 public class ChangePasswordValidator implements ConstraintValidator<NotEqualNewOld,FormChangePassword> {
 
     private String KeyMessage;
+    private String node;
 	
 	boolean compare(String pa,String pr){
 		if(pa.equals(pr)){
@@ -17,6 +18,7 @@ public class ChangePasswordValidator implements ConstraintValidator<NotEqualNewO
 	@Override
 	public void initialize(NotEqualNewOld changePasswordValidation) {
 		this.KeyMessage=changePasswordValidation.message();
+		this.node=changePasswordValidation.field();
 	}
 
 	@Override
@@ -28,9 +30,9 @@ public class ChangePasswordValidator implements ConstraintValidator<NotEqualNewO
 		
 		boolean valid = compare(newPassword,confirm);
 		
-//		if (!valid) {
-//			replaceMessage(constraintValidatorContext);			
-//		}
+		if (!valid) {
+			replaceMessage(constraintValidatorContext);			
+		}
 		
 		return valid;
 	}
@@ -40,9 +42,10 @@ public class ChangePasswordValidator implements ConstraintValidator<NotEqualNewO
 		if(KeyMessage!=null){
 			constraintValidatorContext.disableDefaultConstraintViolation();
 			constraintValidatorContext.buildConstraintViolationWithTemplate(
-					"{it.seda.sem.security.password.NotEqualNewOld.message}"
+					//"{it.seda.sem.security.password.NotEqualNewOld.message}"
+					KeyMessage
 	            )
-//	            .addNode("confirm")
+	            .addNode(node)
 	            .addConstraintViolation();
 			
 		}

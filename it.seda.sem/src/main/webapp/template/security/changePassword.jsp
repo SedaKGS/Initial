@@ -16,24 +16,9 @@
 
 		    <tr>
 		      <td>
-		         <form:errors path="*" class="errors"/>       
+		         <form:errors path="NewOldError" class="errors"/>       
 		      </td>
 		    </tr>
-
-			<tr>
-				<td>Username :</td>
-				<td><form:input path="username" class="inputSignIn"/>
-				</td>
-				<td><form:errors path="username" class="inputSignIn" cssStyle="color:red" />
-				</td>
-			</tr>
-			<tr>
-				<td>Vecchia password :</td>
-				<td><form:input path="oldPassword" class="inputSignIn"/>
-				</td>
-				<td><form:errors path="oldPassword" class="inputSignIn" cssStyle="color:red" />
-				</td>
-			</tr>
 			<tr>
 				<td>Nuova password :</td>
 				<td><form:input path="newPassword" class="inputSignIn"/>

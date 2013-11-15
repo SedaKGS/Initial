@@ -23,5 +23,5 @@ public @interface NotEqualNewOld {
 
 	 Class<? extends Payload>[] payload() default {};
 	    
-//	 String value();
+	 String field();
 }

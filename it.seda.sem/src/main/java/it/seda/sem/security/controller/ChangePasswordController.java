@@ -31,8 +31,6 @@ public class ChangePasswordController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String initForm(ModelMap model){
 		FormChangePassword formChangePassword = new FormChangePassword();
-		formChangePassword.setUsername("USERNAME");
-		formChangePassword.setOldPassword("OLD_PASSWORD");
 		formChangePassword.setNewPassword("NEW_PASSWORD");
 		formChangePassword.setConfirm("CONFIRM_NEW_PASSWORD");
 		formChangePassword.setEsito(true);
