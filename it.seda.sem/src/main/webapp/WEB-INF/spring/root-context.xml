@@ -53,11 +53,13 @@
 			<list>
 				<value>it/seda/sem/i18n/uimessages</value>
 				<value>it/seda/sem/i18n/validatorMessages</value>
+				<value>org/springframework/security/messages</value>
 				<!-- security localization work close to org.springframework.web.filter.RequestContextFilter 
 					or org.springframework.web.context.request.RequestContextListener -->
 				<!-- <value>it/seda/sem/i18n/security/messages</value> -->
 			</list>
 		</property>
+		<property name="fallbackToSystemLocale" value="false"/>
 	</bean>
 
 	<!-- locales handling ! -->

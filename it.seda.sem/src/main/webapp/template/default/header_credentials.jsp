@@ -12,7 +12,7 @@
        ${user.lastName}
     </td>
     <td>
-       <a href="<c:url value="/j_spring_security_logout" />">Logout</a>
+       <a href="<c:url value="/security/logout" />">Logout</a>
     </td>
   </tr>
   <tr>

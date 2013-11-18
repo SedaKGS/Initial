@@ -82,7 +82,7 @@
 			        default-target-url="/events/welcome" />
 		
 		<!-- Using "logout-success-url" attribute we delete the remember me cookie after logout -->	
-		<logout logout-success-url="/security/logout" 
+		<logout logout-success-url="/events/welcome" 
 				logout-url="/security/logout"/>
 
 		<remember-me />
