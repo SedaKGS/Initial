@@ -69,9 +69,8 @@
 		<property name="cookieMaxAge" value="864000" />
 	</bean>
 
-	<!-- Custom validator messages -->
-	<bean name="validator"
-		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	<!-- Custom validation messages -->
+	<bean name="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 		<property name="validationMessageSource">
 			<ref bean="messageSource" />
 		</property>

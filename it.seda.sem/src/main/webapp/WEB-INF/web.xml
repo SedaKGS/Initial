@@ -20,15 +20,10 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- i18n 
-	<listener>
-		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-	</listener>
-	-->
 	<!-- i18n --> 
 	<filter>
 		<filter-name>requestContextFilter</filter-name>
-		<filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>
+		<filter-class>it.seda.sem.security.filter.RequestContextFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
