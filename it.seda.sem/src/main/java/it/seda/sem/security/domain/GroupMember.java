@@ -9,13 +9,13 @@ package it.seda.sem.security.domain;
  */
 public class GroupMember {
 
-	private int groupId;
+	private String groupName;
 	private String username;
-	public int getGroupId() {
-		return groupId;
+	public String getGroupName() {
+		return groupName;
 	}
-	public void setGroupId(int groupId) {
-		this.groupId = groupId;
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 	public String getUsername() {
 		return username;
@@ -24,9 +24,15 @@ public class GroupMember {
 		this.username = username;
 	}
 	
+	public GroupMember(String groupName, String username) {
+		this.groupName = groupName;
+		this.username = username;
+	}
+	public GroupMember() {
+	}
 	@Override
 	public String toString() {
-		return "GroupMember [groupId=" + groupId + ", username=" + username
+		return "GroupMember [groupName=" + groupName + ", username=" + username
 				+ "]";
 	}
 

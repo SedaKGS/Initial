@@ -1,15 +1,19 @@
 @CHARSET "ISO-8859-1";
 
+html, body {
+    height: 100%;
+}
+
 #container {
 	width: 1280px;
-	height: 720px;
-	min-height: 720px;
+	min-height: 100%;
+    height: 100%;
+    margin: 0 auto -50px; 
 	max-width: 1024px;
-	margin: auto;
 }
 
 #header {
-	height: 14%;
+	height: 100px;
 }
 
 #headerLeft {
@@ -28,7 +32,9 @@
 }
 
 #content {
-	height: 72%;
+	position:relative;
+	z-index=-1;
+	height: 86%;
 }
 
 #contentLeft {
@@ -49,18 +55,25 @@
 #contentRight {
 	float: left;
 	width: 75%;
-	height: 100%;
+	/*height: 100%;*/
 	background-color: white;
 	vertical-align: middle;
 	text-align: center;
 }
 
 #footer {
-	height: 14%;
+	width: 1280px;
+	max-width: 1024px;
+	margin: auto;
+	height: 50px; 
+    clear: both;
 	background-color: blue;
 }
 
-
+#push{
+	height: 50px; 
+    clear: both;
+}
 
 .banner {
 	display: table-cell;
@@ -191,4 +204,9 @@ input[type=submit] {
 
 .errors{
  color:red;	
+}
+
+ .width{
+ width:100%;
+ }
 }

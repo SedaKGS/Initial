@@ -19,8 +19,24 @@
 		<result property="locked" column="locked" />
 		<result property="attempts" column="attempts" />
 	</resultMap>
- 
-
+	
+	
+	<resultMap id="accountTO" type="AccountTO">
+		<id property="username" column="username" />
+		<result property="firstName" column="firstName" />
+		<result property="lastName" column="lastName" />
+		<result property="email" column="email" />
+		<result property="enabled" column="enabled" />
+		<result property="groupName" column="groupName" />
+	</resultMap>
+	
+	<resultMap id="group" type="Group">
+		<id property="id" column="ID" />
+		<result property="groupName" column="GROUP_NAME" />
+		<result property="groupDescription" column="GROUP_DESCRIPTION" />
+	</resultMap>
+	
+	
 	<resultMap id="accountComplete" type="Account" extends="account">
 		<collection property="authorities" ofType="Authority">
 			<result column="authority" property="name" />
@@ -45,19 +61,73 @@
 		AND GROUP_MEMBERS.USERNAME = USERS.USERNAME
 		AND GROUP_AUTHORITIES.GROUP_ID = GROUP_MEMBERS.GROUP_ID
 	</select>
+	
+	<select id="getAccountTOByUsername" parameterType="string" resultMap="accountTO">
+		SELECT
+		USERS.username,
+		USERS.firstName,
+		USERS.lastName,
+		USERS.email,
+		USERS.enabled,
+		GROUPS.GROUP_NAME as "groupName"
+		FROM USERS 
+		INNER JOIN GROUP_MEMBERS
+		ON GROUP_MEMBERS.USERNAME = USERS.USERNAME
+		INNER JOIN GROUPS
+		ON GROUP_MEMBERS.GROUP_ID = GROUPS.ID	
+		WHERE USERS.USERNAME=#{username}
+		ORDER BY USERS.username
+	</select>
 
 	<select id="findPasswordByUsername" parameterType="Account" resultType="string">
 		SELECT SIGNON.password
 		  FROM SIGNON
 		 WHERE SIGNON.username = #{username}
 	</select>
-
-	<insert id="insertAccount" parameterType="Account">
+	
+	<select id="groupsList"  resultMap="group">
+		SELECT GROUPS.GROUP_DESCRIPTION,
+		       GROUPS.GROUP_NAME,
+		       GROUPS.ID 
+		  FROM GROUPS
+		ORDER BY GROUP_NAME 
+	</select>
+	
+	<select id="listAccount"  resultMap="accountTO">
+	  SELECT
+		USERS.username,
+		USERS.firstName,
+		USERS.lastName,
+		USERS.email,
+		USERS.enabled,
+		GROUPS.GROUP_NAME as "groupName"
+		FROM USERS 
+		INNER JOIN GROUP_MEMBERS
+		ON GROUP_MEMBERS.USERNAME = USERS.USERNAME
+		INNER JOIN GROUPS
+		ON GROUP_MEMBERS.GROUP_ID = GROUPS.ID
+		WHERE USERS.USERNAME!='admin'		
+		ORDER BY USERS.username
+	</select>
+	
+	<select id="listAccountCount"  resultType="int">
+	   SELECT COUNT(USERS.USERNAME)
+       FROM USERS
+       WHERE USERS.USERNAME!='admin'
+	</select>
+	
+	<insert id="insertAccount" parameterType="AccountTO">
 		INSERT INTO USERS
-		(username,firstName,lastName,email,expiration)
+		(username,firstName,lastName,email,expiration,enabled)
 		VALUES
-		(#{username}, #{firstName}, #{lastName}, #{email}, #{expiration})
+		(#{username}, #{firstName}, #{lastName}, #{email}, '2099-12-31', #{enabled})
 	</insert>
+	
+	<update id="updateAccountTO" parameterType="AccountTO">
+	   UPDATE USERS
+       SET firstName=#{firstName},lastName=#{lastName},email=#{email},enabled=#{enabled}
+       WHERE username=#{username}
+	</update>
 
 	<insert id="insertDefaultGroupMember" parameterType="string">
 		INSERT INTO GROUP_MEMBERS (group_id, username)
@@ -65,11 +135,6 @@
 		 WHERE group_name='users'
 	</insert>
 	
-	<insert id="insertAdminGroupMember" parameterType="string">
-		INSERT INTO GROUP_MEMBERS (group_id, username)
-		SELECT id,#{username} FROM GROUPS 
-		 WHERE group_name='administrators'
-	</insert>	
 
 	<delete id="deleteGroupMember" parameterType="GroupMember">
 	    DELETE FROM GROUP_MEMBERS
@@ -78,8 +143,20 @@
 	</delete>
 	
 	<delete id="insertGroupMember" parameterType="GroupMember">
-	    INSERT INTO GROUP_MEMBERS 
-	    VALUES (#{username}, #{groupId})
+	    INSERT INTO GROUP_MEMBERS (group_id, username)
+		SELECT id,#{username} FROM GROUPS 
+		 WHERE group_name=#{groupName}
+	</delete>
+	
+	<update id="updateGroupMember" parameterType="GroupMember">
+	  UPDATE GROUP_MEMBERS
+	   SET GROUP_MEMBERS.GROUP_ID=(SELECT GROUPS.ID FROM GROUPS WHERE GROUPS.GROUP_NAME=#{groupName})
+	   WHERE GROUP_MEMBERS.USERNAME=#{username}
+	</update>
+	
+	<delete id="deleteAccount" parameterType="string">
+	   DELETE FROM USERS
+       WHERE USERS.USERNAME=#{username}
 	</delete>
 
 	<update id="updateAccount" parameterType="Account">
@@ -97,6 +174,11 @@
 
 	<update id="updateSignon" parameterType="Signon">
 		UPDATE SIGNON SET PASSWORD = #{password}
+		WHERE USERNAME = #{username}
+	</update>
+	
+	<update id="updateCredentialsExpiration" parameterType="String">
+		UPDATE USERS SET CREDENTIALSEXPIRATION = CURRENT DATE+30 DAY
 		WHERE USERNAME = #{username}
 	</update>
 

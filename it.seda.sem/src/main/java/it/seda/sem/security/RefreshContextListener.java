@@ -1,8 +1,11 @@
 package it.seda.sem.security;
 
 import it.seda.sem.security.domain.Account;
+import it.seda.sem.security.domain.AccountTO;
 import it.seda.sem.security.service.AccountService;
+
 import javax.inject.Inject;
+
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,19 +33,17 @@ public class RefreshContextListener implements ApplicationListener<ContextRefres
 		
 		if (account==null) {
 			logger.warn("administrator account not found.... trying to create it..."); //TODO no i18n
-			final DateTime expiration = new DateTime(2099, 12, 31, 12, 0, 0, 0);
-			final DateTime credentialsExpiration = new DateTime(2099, 12, 30, 12, 0, 0, 0);
-			account=new Account();
-			account.setUsername(ADMIN_USER);
-			account.setFirstName("administrator");
-			account.setLastName("administrator");
-			account.setEnabled(true);
-			account.setLocked(false);			
-			account.setEmail("administrator@administrator.it");
-			account.setExpiration(expiration.toDate());
-			account.setCredentialsExpiration(credentialsExpiration.toDate());
+			//final DateTime expiration = new DateTime(2099, 12, 31, 12, 0, 0, 0);
+			//final DateTime credentialsExpiration = new DateTime(2099, 12, 30, 12, 0, 0, 0);
+			AccountTO accountto=new AccountTO();
+			accountto.setUsername(ADMIN_USER);
+			accountto.setGroupName("administrators");
+			accountto.setFirstName("administrator");
+			accountto.setLastName("administrator");			
+			accountto.setEmail("administrator@administrator.it");
+			accountto.setEnabled(true);
 
-			accountService.insertAdministrator(account);
+			accountService.insertAccount(accountto);
 			logger.warn("administrator account created..."); //TODO no i18n			
 		} else {
 			logger.warn("administrator account found"); //TODO no i18n

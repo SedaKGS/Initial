@@ -52,6 +52,9 @@ public class UserDetailsAdapter implements UserDetails {
 		this.account=account;
 	}
 	
+	public UserDetailsAdapter() {
+		super();
+	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> authorities =

@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceAdapter implements UserDetailsService {
 	
 	@Inject AccountService accountService;
-	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

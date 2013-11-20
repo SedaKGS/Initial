@@ -4,5 +4,13 @@
 		 <parameter key="content" value="/template/manager/formClient.jsp"/>
 	</screen>
 	
+	<screen name="account" extends="base">
+		 <parameter key="content" value="/template/manager/accountManager.jsp"/>
+	</screen>
+	
+	<screen name="error" extends="base">
+		 <parameter key="content" value="/template/manager/error.jsp"/>
+	</screen>
+	
 
 </templates>

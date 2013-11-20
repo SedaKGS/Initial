@@ -146,7 +146,7 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 		rowCellBuffer=new StringBuilder();
 		count=0;
 		
-		action = actionResolver().resolveAction(action,context);
+//		action = actionResolver().resolveAction(action,context);
 		
 		Object orderobject = pageContext.getAttribute("order");
 		if (orderobject==null) {

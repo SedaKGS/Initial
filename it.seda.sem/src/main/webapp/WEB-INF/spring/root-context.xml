@@ -84,5 +84,21 @@
 	<bean id="themeResolver" class="it.seda.template.spring.theme.URIBasedThemeResolver">
 		<property name="defaultThemeName" value="default"/>
 	</bean>
+	
+	<!-- Enable the Spring high level exception handler -->
+	<bean id="simpleMappingExceptionResolver"
+          class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <map>
+                <entry key="java.lang.throwable" value="errorPage"/>         
+            </map>
+        </property>
+        <!-- See note below on how this interacts with Spring Boot -->
+        <property name="defaultErrorView" value="error"/>
+        <property name="exceptionAttribute" value="ex"/>
+
+        <!-- Name of logger to use to log exceptions. Unset by default, so logging disabled -->
+        <property name="warnLogCategory" value="it.seda.sem.exception.logger"/>
+    </bean>
 
 </beans>

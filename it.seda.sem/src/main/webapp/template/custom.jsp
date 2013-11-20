@@ -5,7 +5,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="../resources/Seda.css">
 <link rel="stylesheet" type="text/css" href="${x:theme('css')}">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <title>${x:i18n('title')}</title>
 </head>
 <body dir="${x:i18ndir()}">
@@ -32,9 +36,11 @@
 				</div>
 			</div>
 		</div>
-		<div id="footer">
-			<x:include parameter="footer" />
+		<div id="push">
 		</div>
+	</div>
+	<div id="footer">
+			<x:include parameter="footer" />
 	</div>
 </body>
 </html>
