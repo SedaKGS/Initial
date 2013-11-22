@@ -33,7 +33,7 @@ html, body {
 
 #content {
 	position:relative;
-	z-index=-1;
+	z-index:0;
 	height: 86%;
 }
 
@@ -42,6 +42,7 @@ html, body {
 	width: 25%;
 	height: 100%;
 	background-color: rgb(230,230,230);
+	padding-bottom:50px;
 }
 
 #contentTop {
@@ -68,6 +69,7 @@ html, body {
 	height: 50px; 
     clear: both;
 	background-color: blue;
+	z-index:1;
 }
 
 #push{

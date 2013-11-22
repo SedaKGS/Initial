@@ -1,6 +1,6 @@
 <templates>
 
-	<screen name="welcome" extends="base">
+	<screen name="client" extends="base">
 		 <parameter key="content" value="/template/manager/formClient.jsp"/>
 	</screen>
 	

@@ -57,7 +57,7 @@ public class AccountController {
 	}
 	
 	/*
-	 * Method used to update an account given a username
+	 * Method used to update an account 
 	 */
 	
 	@RequestMapping(method=RequestMethod.PUT) 
@@ -69,7 +69,7 @@ public class AccountController {
 			               ModelMap model) {
     
 		if (!result.hasErrors()) {
-			logger.debug("ChangePassword: dati inseriti correttamente"); //TODO i18n		
+			logger.debug("Account Controller: dati inseriti correttamente"); //TODO i18n		
 			try{	
 				AccountTO ato=ObjectCopier.createObject(account, AccountTO.class);
 				accountService.updateAccountTO(ato);
@@ -165,7 +165,7 @@ public class AccountController {
 				account.setEsito("formAccount.esito.notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
 			}finally{
-				model.addAttribute("cliente",account);
+				model.addAttribute("accountData",account);
 			}
 
 		}
@@ -190,7 +190,9 @@ public class AccountController {
 		
 		Page<AccountTO> accountPage = new Page<AccountTO>(ar);
 		rbh.decorate(accountPage, totalRows);
-
+        
+		model.addAttribute("pageNumber", pageNumber);
+		model.addAttribute("rowsPerPage", rowsPerPage);
 		model.addAttribute("accountsPage", accountPage);
 	}
 }

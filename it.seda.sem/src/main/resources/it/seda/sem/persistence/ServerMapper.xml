@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="it.seda.sem.persistence.ServerMapper">
+
+	
+ 	 <!-- TABELLA CLIENTE --> 
+ 	 
+	<resultMap id="server" type="Server">
+		<id property="id" column="id" />
+		<result property="registrazione" column="regitrazione" />
+		<result property="ip" column="ip" />	
+		<result property="descrizione" column="descrizione" />
+		<result property="nome" column="nome" />
+	</resultMap>
+	
+	<insert id="insertServer" parameterType="Server">
+	  INSERT INTO SERVER
+	  (registrazione,descrizione,nome)
+	  VALUES
+	  (CURRENT TIMESTAMP,#{descrizione},#{nome})
+	</insert>
+	
+	<update id="updateClient" parameterType="Cliente">
+	  UPDATE CLIENTE
+       SET regitrazione=#{registrazione},descrizione=#{descrizione},nome=#{nome}
+       WHERE id=#{id}
+	</update>
+	
+	<delete id="deleteClient" parameterType="java.math.BigInteger">
+	   DELETE FROM CLIENTE
+	     WHERE id = #{id}   
+	</delete>
+	
+	<select id="getClient" parameterType="java.math.BigInteger" resultMap="cliente">
+	   SELECT regitrazione,descrizione,nome,id
+	   FROM CLIENTE
+	   WHERE id=#{id}
+	</select>
+	
+	<select id="listClientCount"  resultType="int">
+	   SELECT COUNT(REGITRAZIONE)
+	   FROM CLIENTE
+	</select>
+	
+	<select id="listClient"  resultMap="cliente">
+	   SELECT regitrazione,descrizione,nome,id
+	   FROM CLIENTE
+	   ORDER BY CLIENTE.REGITRAZIONE,CLIENTE.ID
+	</select>
+	
+</mapper>

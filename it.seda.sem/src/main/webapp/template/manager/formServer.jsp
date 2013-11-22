@@ -9,12 +9,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Form Client</title>
+<title>${x:i18n('formServer.page.Title')}</title>
 </head>
 <body>
-
-	
-	
 	<c:set value="POST" var="method"></c:set>
 	<c:if test="${action=='delete'}"> 
 	 <c:set value="DELETE" var="method"></c:set>
@@ -31,53 +28,54 @@
 	</c:url>
 	
     <div id="divErrors" class="errors">
-		 ${x:i18n('clientData.esito')}
+		 ${x:i18n('serverData.esito')}
 	</div>
 	
-	<h3> ${x:i18n('client.manager.title')}</h3>
+	<h3> ${x:i18n('server.manager.title')}</h3>
 	
 	<div id="formBox" style="background-color:rgb(240,240,240);margin-top:15px;margin-bottom:15px;padding-top: 10px;margin-left: 10px;padding-bottom: 10px;">
 	 <c:if test="${action=='edit'||action=='delete'}">
-	  <a href="<c:url value="/manager/client"/>" class="fright" style="margin-right:10px;"><input type="submit" value="${x:i18n('client.manager.newClient')}" style="width:100%;"/></a>
+	  <a href="<c:url value="/manager/client"/>" class="fright" style="margin-right:10px;"><input type="submit" value="${x:i18n('server.manager.newServer')}" style="width:100%;"/></a>
 	  </c:if>
 	 <form:form method="${method}" action="${actionForm}" commandName="clientData">
 	   <div class="seda-ui-divrow" style="height:0px;">
 	     <form:hidden  path="id" maxlength="15" class="seda-ui-inputrow"/> 
 	  </div>
-	  <div class="seda-ui-divrow" style="height:0px;">
-	     <form:hidden  path="registrazione" maxlength="15" class="seda-ui-inputrow"/> 
-	  </div>
 	  <div class="seda-ui-divrow">   
-	    <label class="seda-ui-labelrow" id="name">${x:i18n('client.manager.nome')}</label>
+	    <label class="seda-ui-labelrow" id="name">${x:i18n('server.manager.nome')}</label>
 	    <form:input readonly="${readOnly}" path="nome" maxlength="15" class="seda-ui-inputrow" style="width:300px"/>
 	  </div>
 	  <form:errors path="nome"  cssStyle="color:red"/>
 	 <div class="seda-ui-divrow">
-	  <label class="seda-ui-labelrow" id="descrizione">${x:i18n('client.manager.descrizione')}</label>
+	  <label class="seda-ui-labelrow" id="descrizione">${x:i18n('server.manager.descrizione')}</label>
 	  <form:input readonly="${readOnly}" path="descrizione"  class="seda-ui-inputrow" style="width:300px" />
+	 </div>
+	 <div class="seda-ui-divrow">
+	  <label class="seda-ui-labelrow" id="descrizione">${x:i18n('server.manager.ip')}</label>
+	  <form:input readonly="${readOnly}" path="ip"  class="seda-ui-inputrow" style="width:300px" />
 	 </div>
 	   <form:errors path="descrizione"  cssStyle="color:red"/>
 	 
 	 
 	  <c:if test="${action=='edit'}"> 
 	  
-	<input type="submit" value="${x:i18n('client.manager.modify')}" style="width: auto;"/>
+	<input type="submit" value="${x:i18n('server.manager.modify')}" style="width: auto;"/>
 	</c:if>
 	<c:if test="${action=='delete'}"> 
-		<input type="submit" value="${x:i18n('client.manager.cancel')}" style="width: auto;"/>
+		<input type="submit" value="${x:i18n('server.manager.cancel')}" style="width: auto;"/>
 	</c:if>
 	<c:if test="${action==null}"> 
-		<input type="submit" value="${x:i18n('client.manager.insert')}" style="width: auto;"/>
+		<input type="submit" value="${x:i18n('server.manager.insert')}" style="width: auto;"/>
 	</c:if>
 	</form:form>
 	</div>
 	
-	<x:datagrid action="" pageset="${clientsPage}" var="clientRow"  >
-	  <x:dgcolumn title="${x:i18n('client.manager.nome')}">${clientRow.nome}</x:dgcolumn>
-	  <x:dgcolumn title="${x:i18n('client.manager.descrizione')}">${clientRow.descrizione}</x:dgcolumn>
-	  <x:dgcolumn title="${x:i18n('account.manager.registrazione')}">${clientRow.registrazione}</x:dgcolumn>
-	  <x:dgcolumn title="edit"><a href="<c:url value="/manager/client/${clientRow.id}?action=edit&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Edit</a></x:dgcolumn>
-	  <x:dgcolumn title="cancel"><a href="<c:url value="/manager/client/${clientRow.id}?action=delete&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Cancel</a></x:dgcolumn>
+	<x:datagrid action="" pageset="${serversPage}" var="severRow"  >
+	  <x:dgcolumn title="${x:i18n('server.manager.nome')}">${serverRow.nome}</x:dgcolumn>
+	  <x:dgcolumn title="${x:i18n('server.manager.descrizione')}">${serverRow.descrizione}</x:dgcolumn>
+	  <x:dgcolumn title="${x:i18n('server.manager.registrazione')}">${serverRow.registrazione}</x:dgcolumn>
+	  <x:dgcolumn title="edit"><a href="<c:url value="/manager/client/${serverRow.id}?action=edit&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Edit</a></x:dgcolumn>
+	  <x:dgcolumn title="cancel"><a href="<c:url value="/manager/client/${serverRow.id}?action=delete&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Cancel</a></x:dgcolumn>
 	</x:datagrid>
 
 </body>

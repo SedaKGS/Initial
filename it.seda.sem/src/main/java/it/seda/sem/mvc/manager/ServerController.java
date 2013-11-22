@@ -1,5 +1,4 @@
 package it.seda.sem.mvc.manager;
-
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -10,10 +9,13 @@ import java.util.List;
 
 import it.seda.sem.domain.Cliente;
 import it.seda.sem.domain.ObjectCopier;
+import it.seda.sem.domain.Server;
 import it.seda.sem.jdbc.RowBoundsHelper;
 import it.seda.sem.manager.service.ClientService;
+import it.seda.sem.manager.service.ServerService;
 import it.seda.sem.mvc.manager.models.FormAccount;
 import it.seda.sem.mvc.manager.models.FormClient;
+import it.seda.sem.mvc.manager.models.FormServer;
 import it.seda.sem.security.domain.AccountTO;
 import it.seda.sem.security.exceptions.DuplicateAccountException;
 import it.seda.sem.security.service.AccountService;
@@ -38,93 +40,92 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-@RequestMapping(value="/client")
-public class ClientController {
+@RequestMapping(value="/server")
+public class ServerController {
 	
-    @Inject ClientService clientService;
+    @Inject ServerService serverService;
 	
-	private Logger logger = LoggerFactory.getLogger(ClientController.class);
-	
-	
-	
+	private Logger logger = LoggerFactory.getLogger(ServerController.class);
+    
 	/*
-	 * Method used to delete a client by id
+	 * Method used to delete a server by id
 	 */
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE) 
-	public String deleteClient(@PathVariable BigInteger id, 
+	public String deleteServer(@PathVariable BigInteger id, 
 			               @RequestParam(value="pageNumber", defaultValue="1") int pageNumber, 
 			               @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage,
 			               ModelMap model) {
     
 		
-	clientService.deleteClient(id);
-	FormClient client=new FormClient();
-	client.setEsito("formAccount.esito.cancel");
+	serverService.deleteServer(id);
+	FormServer server=new FormServer();
+	server.setEsito("formAccount.esito.cancel");
 	refreshDatagrid(model, pageNumber, rowsPerPage);
 	
-	model.addAttribute("clientData", client);
-	return "client";
+	model.addAttribute("serverData", server);
+	return "server";
 	}
 	
 	
 	/*
-	 * Method used to update a client
+	 * Method used to update a server
 	 */
 	
 	@RequestMapping(method=RequestMethod.PUT) 
-	public String updateClient(
-			               @Valid @ModelAttribute("clientData") FormClient formClient,
+	public String updateServer(
+			               @Valid @ModelAttribute("serverData") FormServer formServer,
 			               BindingResult result,
 			               @RequestParam(value="pageNumber", defaultValue="1") int pageNumber, 
 			               @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage,
 			               ModelMap model) {
     
 		if (!result.hasErrors()) {
-			logger.debug("Client Manager: dati inseriti correttamente"); //TODO i18n		
+			logger.debug("Server Manager: dati inseriti correttamente"); //TODO i18n		
 			try{	
-				Cliente client=ObjectCopier.createObject(formClient, Cliente.class);
-				clientService.updateClient(client);
-				formClient.setEsito("formAccount.esito.ok");
+				Server server=ObjectCopier.createObject(formServer, Server.class);
+				serverService.updateServer(server);
+				formServer.setEsito("formServer.esito.ok");
 			}catch(Exception e){
-				formClient.setEsito("formAccount.esito.notOk");
+				formServer.setEsito("formServer.esito.notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
 			}finally{
-				model.addAttribute("cliente",formClient);
+				model.addAttribute("server",formServer);
 			}
 
 		}
 		refreshDatagrid(model, pageNumber, rowsPerPage);	
-		return "client";
-	}
+		return "server";
 	
-	
+
+}
+
+
 	/*
-	 * Method used to edit an account given an id
+	 * Method used to edit a server given an id
 	 */
 	@RequestMapping(value="/{id}", method=RequestMethod.GET) 
-	public String editAccount(@PathVariable BigInteger id, 
+	public String editServer(@PathVariable BigInteger id, 
 			                  @RequestParam(value="pageNumber", defaultValue="1") int pageNumber, 
 			                  @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage,
 			                  @RequestParam(value="action",required=false) String action,
 			                  ModelMap model) {
 	
 		
-    Cliente client=clientService.getClient(id);
+    Server server=serverService.getServer(id);
     
-    FormClient formClient=new FormClient();
-    formClient.setId(client.getId());
-    formClient.setNome(client.getNome());
-    formClient.setDescrizione(client.getDescrizione());
-    formClient.setRegistrazione(client.getRegistrazione());
-    
-    
+    FormServer formServer=new FormServer();
+    formServer.setId(server.getId());
+    formServer.setNome(server.getNome());
+    formServer.setDescrizione(server.getDescrizione());
    
     
-    model.addAttribute("clientData",formClient);
+    model.addAttribute("clientData",formServer);
     model.addAttribute("action",action);
 	refreshDatagrid(model, pageNumber, rowsPerPage);
-	return "client";
+	return "server";
 	}
+	
+	
 	
 	/*
 	 * Give the requested page if the id is not specified
@@ -134,70 +135,86 @@ public class ClientController {
 			               @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage,
 			               ModelMap model){
  
-		FormClient formClient=new FormClient();
-		formClient.setRegistrazione(buildCurrentTime());
+		FormServer formServer=new FormServer();
 		refreshDatagrid(model, pageNumber, rowsPerPage);
-		model.addAttribute("clientData", formClient);
+		model.addAttribute("serverData", formServer);
 		//return form view
-		return "client";
+		return "server";
 	}
 	
+	
+	
 	/*
-	 * Inserts a new client
+	 * Inserts a new server
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String addClient(@Valid @ModelAttribute("clientData") FormClient formClient, 
+	public String addServer(@Valid @ModelAttribute("clientData") FormServer formServer, 
 			BindingResult result, 
 			ModelMap model,
 			@RequestParam(value="pageNumber", defaultValue="1") int pageNumber,
             @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage) {
 
 		if (!result.hasErrors()) {
-			logger.debug("Client Manager: dati inseriti correttamente"); //TODO i18n		
+			logger.debug("Server Manager: dati inseriti correttamente"); //TODO i18n		
 			try{	
-				Cliente client=ObjectCopier.createObject(formClient, Cliente.class);
-				clientService.insertClient(client);
-				formClient.setEsito("formAccount.esito.ok");
+				Server server=ObjectCopier.createObject(formServer, Server.class);
+				serverService.insertServer(server);
+				formServer.setEsito("formServer.esito.ok");
 			}
 			catch(Exception e){
-				formClient.setEsito("formAccount.esito.notOk");
+				formServer.setEsito("formServer.esito.notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
 			}finally{
-				model.addAttribute("clientData",formClient);
+				model.addAttribute("serverData",formServer);
 			}
 
 		}
-
 		refreshDatagrid(model, pageNumber, rowsPerPage);
-				
-		
-		return "client";
+		return "server";
 	}
 	
 	
 	protected void refreshDatagrid(ModelMap model, int pageNumber, int rowsPerPage) {
-		int totalRows=clientService.listClientCount();
-
+		int totalRows=serverService.listServerCount();
 		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
-		List<Cliente> ar=clientService.listClient(rbh.buildRowBounds());
-		
-		Page<Cliente> clientPage = new Page<Cliente>(ar);
-		rbh.decorate(clientPage, totalRows);
-		
+		List<Server> ar=serverService.listServer(rbh.buildRowBounds());	
+		Page<Server> serverPage = new Page<Server>(ar);
+		rbh.decorate(serverPage, totalRows);		
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("rowsPerPage", rowsPerPage);
-		model.addAttribute("clientsPage", clientPage);
+		model.addAttribute("serversPage", serverPage);
 	}
 	
 	
-	protected Timestamp buildCurrentTime(){
-		Date date= new Date();
-		return new Timestamp(date.getTime());
-	}
-	
-	
-	
+
 }
+
+
+	
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+
 	
 	
 	

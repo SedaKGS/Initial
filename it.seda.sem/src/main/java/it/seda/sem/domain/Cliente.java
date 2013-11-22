@@ -1,21 +1,20 @@
 package it.seda.sem.domain;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-public class Cliente {
+@SuppressWarnings("serial")
+public class Cliente implements Serializable {
 	
 	private BigInteger id;
-	private String cliente;
+	private String nome;
 	private String descrizione;
     private Timestamp registrazione;
     
-	public String getCliente() {
-		return cliente;
-	}
-	public void setCliente(String cliente) {
-		this.cliente = cliente;
-	}
+	
+    
+    
 	public String getDescrizione() {
 		return descrizione;
 	}
@@ -34,9 +33,18 @@ public class Cliente {
 	public void setRegistrazione(Timestamp registrazione) {
 		this.registrazione = registrazione;
 	}
+	
+	
+	
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 	@Override
 	public String toString() {
-		return "Clienti [id=" + id + ", cliente=" + cliente + ", descrizione="
+		return "Clienti [id=" + id + ", cliente=" + nome + ", descrizione="
 				+ descrizione + ", registrazione=" + registrazione + "]";
 	}
 	

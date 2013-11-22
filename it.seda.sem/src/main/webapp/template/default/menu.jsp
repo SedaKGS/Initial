@@ -12,7 +12,12 @@
  <tr>
   <td>
     <sec:authorize access="hasRole('ROLE_ADMIN')">
+    <div class="seda-ui-divrow">
      <a href="/sem/manager/account">${x:i18n('menu.accountManager.title')}</a>
+     </div>
+     <div class="seda-ui-divrow">
+      <a href="/sem/manager/client">${x:i18n('menu.clientManager.title')}</a>
+     </div>
     </sec:authorize>
   </td>
   </tr>

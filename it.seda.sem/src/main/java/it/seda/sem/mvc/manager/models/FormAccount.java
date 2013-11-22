@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class FormAccount {
 	
-	@Pattern(regexp="^[a-z0-9_-]{3,15}$",
+	@Pattern(regexp="^[A-Za-z0-9_-]{3,15}$",
 			message="{formAccount.userName.pattern}")
 	@NotEmpty(message="{formAccount.userName.notEmpty}")
 	private String username;

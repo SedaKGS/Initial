@@ -13,10 +13,7 @@
 </head>
 <body>
 
-	<c:url value="" var="actionForm">
-		<c:param name="pageSize" value="${pageSize}"/>
-		<c:param name="rowsPerPage" value="${rowsPerPage}"/>
-	</c:url>
+	
 	
 	<c:set value="POST" var="method"></c:set>
 	<c:if test="${action=='delete'}"> 
@@ -24,127 +21,84 @@
 	 <c:set value="true"   var="readOnly"></c:set>
 	</c:if>
 	<c:if test="${action=='edit'}">  
-	 <c:set value="PUT" var="method"></c:set>
+	  <c:set value="PUT" var="method"></c:set>
+	  <c:set value="/sem/manager/account/" var="actionForm"></c:set>
 	</c:if>
+	
+	<c:url value="/manager/account" var="actionForm">
+		<c:param name="pageNumber" value="${pageNumber}"/>
+		<c:param name="rowsPerPage" value="${rowsPerPage}"/>
+	</c:url>
 	
     <div id="divErrors" class="errors">
 		 ${x:i18n('accountData.esito')}
 	</div>
 	
 	<h3> ${x:i18n('account.manager.title')}</h3>
-	<form:form method="${method}" commandName="accountData">
-	<div id="formBox" style="background-color:rgb(240,240,240);margin-top:15px;margin-bottom:15px;padding-top: 10px;margin-left: 10px;">
-	 <div class="seda-ui-divrow">
-	  <label class="seda-ui-labelrow" id="username">${x:i18n('account.manager.username')}</label>  
-	  <form:input readonly="${readOnly}" path="username" maxlength="15" class="seda-ui-inputrow" />
-	 </div>
+	
+	<div id="formBox" style="background-color:rgb(240,240,240);margin-top:15px;margin-bottom:15px;padding-top: 10px;margin-left: 10px;padding-bottom: 10px;">
+	 <c:if test="${action=='edit'||action=='delete'}">
+	  <a href="<c:url value="/manager/account"/>" class="fright" style="margin-right:10px;"><input type="submit" value="${x:i18n('account.manager.newAccount')}" style="width:100%;"/></a>
+	  </c:if>
+	 <form:form method="${method}" action="${actionForm}" commandName="accountData">
+	  <div class="seda-ui-divrow"> 
+	   <c:if test="${action!='edit'}">  
+	     <label class="seda-ui-labelrow" id="username">${x:i18n('account.manager.username')}</label>
+	    <form:input readonly="${readOnly}" path="username" maxlength="15" class="seda-ui-inputrow"/>
+	   </c:if>
+	   <c:if test="${action=='edit'}">  
+	    <form:hidden  path="username" maxlength="15" class="seda-ui-inputrow"/>
+	   </c:if>
+	  </div>
 	  <form:errors path="username"  cssStyle="color:red"/>
 	 <div class="seda-ui-divrow">
 	  <label class="seda-ui-labelrow" id="firstname">${x:i18n('account.manager.firstname')}</label>
-	  <form:input readonly="${readOnly}" path="firstName" maxlength="15" class="seda-ui-inputrow" />
+	  <form:input readonly="${readOnly}" path="firstName"  class="seda-ui-inputrow" />
 	 </div>
 	   <form:errors path="firstName"  cssStyle="color:red"/>
 	 <div class="seda-ui-divrow">
 	  <label class="seda-ui-labelrow" id="lastname">${x:i18n('account.manager.lastname')}</label>
-	  <form:input readonly="${readOnly}" path="lastName" maxlength="15" class="seda-ui-inputrow"/>
+	  <form:input readonly="${readOnly}" path="lastName"  class="seda-ui-inputrow"/>
 	 </div>
 	  <form:errors path="lastName"  cssStyle="color:red" />
 	 <div class="seda-ui-divrow">
 	  <label class="seda-ui-labelrow" id="email">${x:i18n('account.manager.email')}</label>
-	  <form:input readonly="${readOnly}" path="email" maxlength="15" class="seda-ui-inputrow"/>
+	  <form:input readonly="${readOnly}" path="email"  class="seda-ui-inputrow"/>
 	 </div>
 	  <form:errors path="email"  cssStyle="color:red"/>
 	 <div class="seda-ui-divrow">
 	  <label class="seda-ui-labelrow" id="email">${x:i18n('account.manager.group')}</label>
 	  <form:select disabled="${readOnly}" path="groupName" class="seda-ui-inputrow">
                      <form:options items="${groupsMap}"  />
-      </form:select>
-	  
-	</div>
+      </form:select> 
+	 </div>
 	 <div class="seda-ui-divrow">
 	  <label class="seda-ui-labelrow" style="height:30px" id="checkboxLabelVoid"></label>
 	   <form:checkbox disabled="${readOnly}" path="enabled" class="fleft"/>
 	  <label  id="enabled" class="seda-ui-labelrow" style="text-align:left;padding-left:5px">${x:i18n('account.manager.enabled')}</label>
-	 </div>
+	  </div>
+	  <c:if test="${action=='edit'}"> 
+	  
+	<input type="submit" value="${x:i18n('account.manager.modify')}"/>
+	</c:if>
+	<c:if test="${action=='delete'}"> 
+		<input type="submit" value="${x:i18n('account.manager.cancel')}"/>
+	</c:if>
+	<c:if test="${action==null}"> 
+		<input type="submit" value="${x:i18n('account.manager.insert')}"/>
+	</c:if>
+	</form:form>
 	</div>
-	</form:form>
-	
-   <form:form method="${method}" commandName="accountData">
-		<table>
-		    <c:if test="${action!='edit'}">
-			<tr>
-				<td>${x:i18n('account.manager.username')}</td>
-				<td><form:input readonly="${readOnly}" path="username" maxlength="15"/>
-				</td>
-				<td><form:errors path="username"  cssStyle="color:red" />
-				</td>
-			</tr>
-			</c:if>
-			<tr>
-				<td>${x:i18n('account.manager.firstname')}</td>
-				<td><form:input readonly="${readOnly}" path="firstName" />
-				</td>
-				<td><form:errors path="firstName" cssStyle="color:red" />
-				</td>
-			</tr>
-			<tr>
-				<td>${x:i18n('account.manager.lastname')}</td>
-				<td><form:input readonly="${readOnly}" path="lastName" />
-				</td>
-				<td><form:errors path="lastName" cssStyle="color:red" />
-				</td>
-			</tr>
-			<tr>
-				<td>${x:i18n('account.manager.email')}</td>
-				<td><form:input readonly="${readOnly}" path="email" />
-				</td>
-				<td><form:errors path="email" cssStyle="color:red" />
-				</td>
-			</tr>
-			<tr>
-				<td>${x:i18n('account.manager.group')}</td>
-				<td>
-				  <form:select disabled="${readOnly}" path="groupName">
-                     <form:options items="${groupsMap}" />
-                  </form:select>
-				</td>
-				<td><form:errors path="groupName" cssStyle="color:red" />
-				</td>
-			</tr>
-			<tr>
-				<td>${x:i18n('account.manager.enabled')}</td>
-				<td>
-				 <form:checkbox disabled="${readOnly}" path="enabled"/>
-				</td>
-				<td>
-				 <form:errors path="enabled" cssStyle="color:red" />
-				</td>
-			</tr>
-			<tr>
-			    <c:if test="${action=='edit'}"> 
-				   <td colspan="3"><input type="submit" value="${x:i18n('account.manager.modify')}"/></td>
-				</c:if>
-				<c:if test="${action=='delete'}"> 
-				   <td colspan="3"><input type="submit" value="${x:i18n('account.manager.cancel')}"/></td>
-				</c:if>
-				<c:if test="${action==null}"> 
-				   <td colspan="3"><input type="submit" value="${x:i18n('account.manager.insert')}"/></td>
-				</c:if>
-			</tr>
-		</table>
-	</form:form>
-	
-	
 	
 	<x:datagrid action="" pageset="${accountsPage}" var="accountRow" >
-	  <x:dgcolumn title="username">${accountRow.username}</x:dgcolumn>
-	  <x:dgcolumn title="firstname">${accountRow.firstName}</x:dgcolumn>
-	  <x:dgcolumn title="lastName">${accountRow.lastName}</x:dgcolumn>
-	  <x:dgcolumn title="email">${accountRow.email}</x:dgcolumn>
-	  <x:dgcolumn title="groupName">${accountRow.groupName}</x:dgcolumn>
-	   <x:dgcolumn title="active">${accountRow.enabled}</x:dgcolumn>
-	  <x:dgcolumn title="edit"><a href="<c:url value="/manager/account/${accountRow.username}?action=edit"/>">Edit</a></x:dgcolumn>
-	  <x:dgcolumn title="cancel"><a href="<c:url value="/manager/account/${accountRow.username}?action=delete"/>">Cancel</a></x:dgcolumn>
+	  <x:dgcolumn title="${x:i18n('account.manager.username')}">${accountRow.username}</x:dgcolumn>
+	  <x:dgcolumn title="${x:i18n('account.manager.firstname')}">${accountRow.firstName}</x:dgcolumn>
+	  <x:dgcolumn title="${x:i18n('account.manager.lastname')}">${accountRow.lastName}</x:dgcolumn>
+	  <x:dgcolumn title="${x:i18n('account.manager.email')}">${accountRow.email}</x:dgcolumn>
+	  <x:dgcolumn title="${x:i18n('account.manager.group')}">${accountRow.groupName}</x:dgcolumn>
+	  <x:dgcolumn title="${x:i18n('account.manager.enabled')}">${accountRow.enabled}</x:dgcolumn>
+	  <x:dgcolumn title="edit"><a href="<c:url value="/manager/account/${accountRow.username}?action=edit&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Edit</a></x:dgcolumn>
+	  <x:dgcolumn title="cancel"><a href="<c:url value="/manager/account/${accountRow.username}?action=delete&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Cancel</a></x:dgcolumn>
 	</x:datagrid>
 
 </body>

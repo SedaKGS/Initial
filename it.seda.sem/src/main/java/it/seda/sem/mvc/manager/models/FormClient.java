@@ -1,5 +1,8 @@
 package it.seda.sem.mvc.manager.models;
 
+import java.math.BigInteger;
+import java.sql.Timestamp;
+
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -10,20 +13,23 @@ public class FormClient {
 	
 
 	@NotEmpty(message="{formClient.cliente.notEmpty}")
-	private String cliente;
+	private String nome;
 	
-	@Pattern(regexp="^[a-zA-Z0-9]+$",message="{formClient.descrizione.pattern}")
+	@Pattern(regexp="^[a-zA-Z0-9\\s'!@#%*)(+=._-]+$",message="{formClient.descrizione.pattern}")
 	private String descrizione;
 	
-	@Pattern(regexp="[0-9]{1,4}/[0-9]{1,2}/[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}",message="{formClient.registrazione.pattern}")
-    private String registrazione;
 	
+	private Timestamp registrazione;
+	
+	private String esito;
+	
+	private BigInteger id;
 	
 	public String getCliente() {
-		return cliente;
+		return nome;
 	}
 	public void setCliente(String cliente) {
-		this.cliente = cliente;
+		this.nome = cliente;
 	}
 	public String getDescrizione() {
 		return descrizione;
@@ -31,17 +37,39 @@ public class FormClient {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
-	public String getRegistrazione() {
+	public Timestamp getRegistrazione() {
 		return registrazione;
 	}
-	public void setRegistrazione(String registrazione) {
+	public void setRegistrazione(Timestamp registrazione) {
 		this.registrazione = registrazione;
+	}
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	public String getEsito() {
+		return esito;
+	}
+	public void setEsito(String esito) {
+		this.esito = esito;
+	}
+	public BigInteger getId() {
+		return id;
+	}
+	public void setId(BigInteger id) {
+		this.id = id;
 	}
 	@Override
 	public String toString() {
-		return "FormClient [cliente=" + cliente + ", descrizione="
-				+ descrizione + ", registrazione=" + registrazione + "]";
+		return "FormClient [nome=" + nome + ", descrizione=" + descrizione
+				+ ", registrazione=" + registrazione + ", esito=" + esito
+				+ ", id=" + id + "]";
 	}
+	
+	
+	
 	
     
     
