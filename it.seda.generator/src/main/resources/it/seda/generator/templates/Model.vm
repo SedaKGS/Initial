@@ -1,0 +1,40 @@
+package $model.getNamespace();
+
+import java.io.Serializable;
+
+#foreach($package in $modelsPackages)
+import $package
+#end
+
+
+public class $model.getName() implements Serializable{
+
+	
+	#foreach($field in $model.getAttributes())
+      private $field.printType() $field.getName();
+    #end
+	
+	#foreach($field in $model.getAttributes())
+	        
+      public  $field.printType() get$field.getNameUcase(){
+       return this.$field.getName();
+      }
+      
+       public void set$field.getNameUcase()($field.printType() $field.getName()){
+       this.$field.getName()=$field.getName();
+      }
+    #end
+    
+    
+    #*
+    public String toString() {
+    
+    return " Model#Name [
+    #firstModelName=" + $firstModelName + "
+    #foreach($field in $modelFieldsWithOutFirst)	
+		, $field.name=" + $fiels.name + "
+    #end
+    ]";
+    }*#
+	
+}
