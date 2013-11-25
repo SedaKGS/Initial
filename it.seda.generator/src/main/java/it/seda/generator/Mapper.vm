@@ -1,0 +1,20 @@
+package #mappers;
+
+import #annotations;
+import #models;
+
+
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+
+
+@#ModelNameRepository
+public interface #ModelNameMapper {
+	void insert#ModelName(#ModelName #modelName); 	
+	void update#ModelName(#ModelName #modelName);
+	void deleteClient($id.type #id); 
+    #ModelName  get#ModelNameBy#id($id.type #id); 
+    int list#ModelNameCount(); 
+	List<#ModelName> list#ModelName(RowBounds rowBounds); 
+}

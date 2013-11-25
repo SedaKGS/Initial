@@ -13,5 +13,9 @@
 	</screen>
 	
 	
+	<screen name="error" extends="base">
+		 <parameter key="content" value="/template/manager/error.jsp"/>
+	</screen>
+	
 
 </templates>

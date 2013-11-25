@@ -100,7 +100,7 @@ margin-bottom:10px;}
 .seda-ui-date{margin-left:7px;
 }
 .seda-ui-divrow{
-	height:30px;
+	min-height:30px;
 }
 .seda-ui-labelrow{
 	width: 170px;
@@ -112,6 +112,9 @@ margin-bottom:10px;}
 .seda-ui-inputrow{
 	float:left;
 	width: 250px;
+}
+.seda-ui-box{
+	min-height:30px;
 }
 .fleft{
 float:left;

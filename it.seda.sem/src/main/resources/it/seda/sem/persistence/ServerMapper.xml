@@ -5,11 +5,11 @@
 <mapper namespace="it.seda.sem.persistence.ServerMapper">
 
 	
- 	 <!-- TABELLA CLIENTE --> 
+ 	 <!-- TABELLA SERVER --> 
  	 
 	<resultMap id="server" type="Server">
 		<id property="id" column="id" />
-		<result property="registrazione" column="regitrazione" />
+		<result property="registrazione" column="registrazione" />
 		<result property="ip" column="ip" />	
 		<result property="descrizione" column="descrizione" />
 		<result property="nome" column="nome" />
@@ -17,37 +17,37 @@
 	
 	<insert id="insertServer" parameterType="Server">
 	  INSERT INTO SERVER
-	  (registrazione,descrizione,nome)
+	  (registrazione,descrizione,nome,ip)
 	  VALUES
-	  (CURRENT TIMESTAMP,#{descrizione},#{nome})
+	  (CURRENT TIMESTAMP,#{descrizione},#{nome},#{ip})
 	</insert>
 	
-	<update id="updateClient" parameterType="Cliente">
-	  UPDATE CLIENTE
-       SET regitrazione=#{registrazione},descrizione=#{descrizione},nome=#{nome}
+	<update id="updateServer" parameterType="Server">
+	  UPDATE SERVER
+       SET descrizione=#{descrizione},nome=#{nome},ip=#{ip}
        WHERE id=#{id}
 	</update>
 	
-	<delete id="deleteClient" parameterType="java.math.BigInteger">
-	   DELETE FROM CLIENTE
+	<delete id="deleteServer" parameterType="java.math.BigInteger">
+	   DELETE FROM SERVER
 	     WHERE id = #{id}   
 	</delete>
 	
-	<select id="getClient" parameterType="java.math.BigInteger" resultMap="cliente">
-	   SELECT regitrazione,descrizione,nome,id
-	   FROM CLIENTE
+	<select id="getServer" parameterType="java.math.BigInteger" resultMap="server">
+	   SELECT registrazione,descrizione,nome,id,ip
+	   FROM SERVER
 	   WHERE id=#{id}
 	</select>
 	
-	<select id="listClientCount"  resultType="int">
-	   SELECT COUNT(REGITRAZIONE)
-	   FROM CLIENTE
+	<select id="listServerCount"  resultType="int">
+	   SELECT COUNT(REGISTRAZIONE)
+	   FROM SERVER
 	</select>
 	
-	<select id="listClient"  resultMap="cliente">
-	   SELECT regitrazione,descrizione,nome,id
-	   FROM CLIENTE
-	   ORDER BY CLIENTE.REGITRAZIONE,CLIENTE.ID
+	<select id="listServer"  resultMap="server">
+	   SELECT registrazione,descrizione,nome,id,ip
+	   FROM SERVER
+	   ORDER BY SERVER.REGISTRAZIONE,SERVER.ID
 	</select>
 	
 </mapper>

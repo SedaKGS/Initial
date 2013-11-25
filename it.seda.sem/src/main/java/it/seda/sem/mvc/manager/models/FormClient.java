@@ -15,11 +15,9 @@ public class FormClient {
 	@NotEmpty(message="{formClient.cliente.notEmpty}")
 	private String nome;
 	
-	@Pattern(regexp="^[a-zA-Z0-9\\s'!@#%*)(+=._-]+$",message="{formClient.descrizione.pattern}")
+	@Pattern(regexp="^$|^[a-zA-Z0-9\\s'!@#%*)(+=._-]+$",message="{formClient.descrizione.pattern}")
 	private String descrizione;
 	
-	
-	private Timestamp registrazione;
 	
 	private String esito;
 	
@@ -36,12 +34,6 @@ public class FormClient {
 	}
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
-	}
-	public Timestamp getRegistrazione() {
-		return registrazione;
-	}
-	public void setRegistrazione(Timestamp registrazione) {
-		this.registrazione = registrazione;
 	}
 	public String getNome() {
 		return nome;
@@ -64,7 +56,7 @@ public class FormClient {
 	@Override
 	public String toString() {
 		return "FormClient [nome=" + nome + ", descrizione=" + descrizione
-				+ ", registrazione=" + registrazione + ", esito=" + esito
+				+ ", esito=" + esito
 				+ ", id=" + id + "]";
 	}
 	

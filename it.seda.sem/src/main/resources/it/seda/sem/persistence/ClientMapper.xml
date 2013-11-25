@@ -11,19 +11,19 @@
 		<id property="id" column="id" />
 		<result property="nome" column="nome" />
 		<result property="descrizione" column="descrizione" />
-		<result property="registrazione" column="regitrazione" />	
+		<result property="registrazione" column="registrazione" />	
 	</resultMap>
 	
 	<insert id="insertClient" parameterType="Cliente">
 	  INSERT INTO CLIENTE
-	  (regitrazione,descrizione,nome)
+	  (registrazione,descrizione,nome)
 	  VALUES
 	  (CURRENT TIMESTAMP,#{descrizione},#{nome})
 	</insert>
 	
 	<update id="updateClient" parameterType="Cliente">
 	  UPDATE CLIENTE
-       SET regitrazione=#{registrazione},descrizione=#{descrizione},nome=#{nome}
+       SET descrizione=#{descrizione},nome=#{nome}
        WHERE id=#{id}
 	</update>
 	
@@ -33,20 +33,20 @@
 	</delete>
 	
 	<select id="getClient" parameterType="java.math.BigInteger" resultMap="cliente">
-	   SELECT regitrazione,descrizione,nome,id
+	   SELECT registrazione,descrizione,nome,id
 	   FROM CLIENTE
 	   WHERE id=#{id}
 	</select>
 	
 	<select id="listClientCount"  resultType="int">
-	   SELECT COUNT(REGITRAZIONE)
+	   SELECT COUNT(REGISTRAZIONE)
 	   FROM CLIENTE
 	</select>
 	
 	<select id="listClient"  resultMap="cliente">
-	   SELECT regitrazione,descrizione,nome,id
+	   SELECT registrazione,descrizione,nome,id
 	   FROM CLIENTE
-	   ORDER BY CLIENTE.REGITRAZIONE,CLIENTE.ID
+	   ORDER BY CLIENTE.REGISTRAZIONE,CLIENTE.ID
 	</select>
 	
 </mapper>

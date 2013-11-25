@@ -1,0 +1,60 @@
+package #services;
+
+import  #models.#ModelName;
+import  #forms.Form#Name;
+import  #mappers.#ModelNameMapper;
+import javax.inject.Inject;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+#foreach($package in $modelsPackages)
+  import $package
+#end
+
+
+
+@Service
+public class #NameService {
+	
+	
+	@Inject private #ModelNameMapper #modelNameMapper;
+
+	@Transactional("transactionBusinessManager")
+	public void insert#ModelName(#ModelName #modelName) {
+		#modelNameMapper.insert#ModelName(#modelName);
+		
+	}
+	
+	@Transactional("transactionBusinessManager")
+	public void update#ModelName(#ModelName #modelName) {
+		#modelNameMapper.updateClient(#modelName);
+	}
+	
+	
+	@Transactional("transactionBusinessManager")
+	public void deleteClient($id.type #id) {
+		#modelNameMapper.deleteClient(#id);
+	}
+	
+	@Transactional("transactionBusinessManager")
+	public #ModelName  get#ModelNameBy#id($id.type #id) {
+		#ModelName #modelName=#modelNameMapper.getClient(#id);
+		return #modelName;
+		
+	}
+	
+	@Transactional("transactionBusinessManager")
+	public int list#ModelNameCount() {
+		int rowsNumber=#modelNameMapper.list#ModelNameCount();
+		return rowsNumber;
+		
+	}
+	
+	@Transactional("transactionBusinessManager")
+	public List<#ModelName> list#ModelName(RowBounds rowBounds) {
+		List<#ModelName> cl=#modelNameMapper.list#ModelName(rowBounds);
+		return cl;
+		
+	}
+
+}
