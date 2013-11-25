@@ -6,13 +6,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="../resources/Seda.css">
+<link rel="stylesheet" type="text/css" href="../resources/timepicker/jquery-ui-timepicker-addon.css">
 <link rel="stylesheet" type="text/css" href="${x:theme('css')}">
-
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="../resources/timepicker/jquery-ui-timepicker-addon.js"></script>
+
+<script>
+$( document ).ready(function() {
+	// date picker i18N
+	$.datepicker.setDefaults( $.datepicker.regional[ "${pageContext.response.locale}" ] );
+});
+</script>
+
 <title>${x:i18n('title')}</title>
-</head>
+</head> 
 <body dir="${x:i18ndir()}">
 	<div id="container">
 		<div id="header">

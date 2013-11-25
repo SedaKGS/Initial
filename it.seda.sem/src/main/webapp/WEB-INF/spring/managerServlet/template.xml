@@ -11,6 +11,9 @@
 	<screen name="error" extends="base">
 		 <parameter key="content" value="/template/manager/error.jsp"/>
 	</screen>
-	
+
+	<screen name="testBind" extends="base">
+		<parameter key="content" value="/template/manager/testbind.jsp"/>	
+	</screen>	
 
 </templates>
