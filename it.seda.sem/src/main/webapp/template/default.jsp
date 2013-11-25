@@ -21,8 +21,9 @@ $( document ).ready(function() {
 });
 </script>
 
-<title>${x:i18n('title')}</title>
-</head> 
+<title>${x:i18n('application.title')}</title>
+</head>
+
 <body dir="${x:i18ndir()}">
 	<div id="container">
 		<div id="header">

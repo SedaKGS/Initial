@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="#mappers">
+
+	
+ 	 
+	<resultMap id="#modelName" type="#ModelName">
+		 <id property="#id" column="#id" />
+		#foreach($field in $modelFieldsWithOutFirst)
+	     <result property="$field.name" column="$field.name" />
+	    #	
+	</resultMap>
+	
+	<insert id="insert#ModelName" parameterType="#ModelName">
+	  INSERT INTO #ModelName
+	  (
+	  #foreach($field in $modelFieldsWithOutFirstandLast)
+	    $field.name,
+	   #
+	   $lastModelName
+	   )	
+	  VALUES
+	  (
+	  #foreach($field in $modelFieldsWithOutFirstandLast)
+	   '#'{$field.name},
+	  #
+	  '#'{$lastModelName}
+	  )
+	</insert>
+	
+	
+	<update id="update#ModelName" parameterType="#ModelName">
+	  UPDATE #ModelName
+       SET 
+       #foreach($field in $modelFieldsWithOutFirstandLast)
+       $field.name='#'{$field.name},
+       #
+       $lastModelName='#'{$lastModelName} 
+       WHERE #id='#'{#id}
+	</update>
+	
+	
+	<delete id="delete#ModelName" parameterType="#idType">
+	   DELETE FROM #ModelName
+	     WHERE #id = '#'{#id}   
+	</delete>
+	
+	<select id="get#ModelName" parameterType="#idType" resultMap="#modelName">
+	   SELECT 
+	     #firstModelName
+	     #foreach($field in $modelFieldsWithOutFirst)
+	     ,$field.name
+	   FROM #ModelName
+	   WHERE #id='#'{#id}
+	</select>
+	
+	<select id="list#ModelNameCount"  resultType="int">
+	   SELECT COUNT(#firstModelName)
+	   FROM #ModelName
+	</select>
+	
+	<select id="list#ModelName"  resultMap="#modelName">
+	   SELECT 
+	     #firstModelName
+	     #foreach($field in $modelFieldsWithOutFirst)
+	     ,$field.name
+	   FROM #ModelName
+	   ORDER BY #ModelName.#firstModelName
+	</select>
+	
+</mapper>

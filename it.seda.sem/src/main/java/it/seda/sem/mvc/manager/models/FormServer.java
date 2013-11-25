@@ -1,7 +1,7 @@
 package it.seda.sem.mvc.manager.models;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.validation.constraints.Pattern;
 
@@ -10,9 +10,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class FormServer {
     
 	
-	private Timestamp registrazione;
 	
-	@Pattern(regexp="^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+	
+	@Pattern(regexp="^$|^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
 			message="{formServer.ip.pattern}")
 	private String ip;
 	
@@ -25,12 +25,8 @@ public class FormServer {
 	
 	private BigInteger id;
 	private String esito;
-	public Timestamp getRegistrazione() {
-		return registrazione;
-	}
-	public void setRegistrazione(Timestamp registrazione) {
-		this.registrazione = registrazione;
-	}
+	
+	
 	public String getIp() {
 		return ip;
 	}
@@ -63,7 +59,7 @@ public class FormServer {
 	}
 	@Override
 	public String toString() {
-		return "FormServer [registrazione=" + registrazione + ", ip=" + ip
+		return "FormServer [ip=" + ip
 				+ ", descrizione=" + descrizione + ", nome=" + nome + ", id="
 				+ id + ", esito=" + esito + "]";
 	}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="it.seda.sem.persistence.SocietaMapper">
+
+	
+ 	 <!-- TABELLA SOCIETA --> 
+ 	 
+	<resultMap id="societa" type="Societa">
+		<id property="id" column="id" />
+		<result property="nome" column="nome" />
+		<result property="descrizione" column="descrizione" />	
+	</resultMap>
+	
+	<insert id="insertSocieta" parameterType="Societa">
+	  INSERT INTO SOCIETA
+	  (descrizione,nome)
+	  VALUES
+	  (#{descrizione},#{nome})
+	</insert>
+	
+	<update id="updateSocieta" parameterType="Societa">
+	  UPDATE SOCIETA
+       SET descrizione=#{descrizione},nome=#{nome}
+       WHERE id=#{id}
+	</update>
+	
+	<delete id="deleteSocieta" parameterType="java.math.BigInteger">
+	   DELETE FROM SOCIETA
+	     WHERE id = #{id}   
+	</delete>
+	
+	<select id="getSocieta" parameterType="java.math.BigInteger" resultMap="societa">
+	   SELECT descrizione,nome,id
+	   FROM SOCIETA
+	   WHERE id=#{id}
+	</select>
+	
+	<select id="listSocietaCount"  resultType="int">
+	   SELECT COUNT(ID)
+	   FROM SOCIETA
+	</select>
+	
+	<select id="listSocieta"  resultMap="societa">
+	   SELECT descrizione,nome,id
+	   FROM SOCIETA
+	   ORDER BY SOCIETA.NOME,SOCIETA.ID
+	</select>
+	
+</mapper>

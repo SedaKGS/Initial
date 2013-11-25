@@ -84,9 +84,9 @@ public class ClientController {
 			try{	
 				Cliente client=ObjectCopier.createObject(formClient, Cliente.class);
 				clientService.updateClient(client);
-				formClient.setEsito("formAccount.esito.ok");
+				formClient.setEsito("formClient.esito.ok");
 			}catch(Exception e){
-				formClient.setEsito("formAccount.esito.notOk");
+				formClient.setEsito("formClient.esito.notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
 			}finally{
 				model.addAttribute("cliente",formClient);
@@ -109,13 +109,12 @@ public class ClientController {
 			                  ModelMap model) {
 	
 		
-    Cliente client=clientService.getClient(id);
-    
+    Cliente client=clientService.getClient(id); 
     FormClient formClient=new FormClient();
     formClient.setId(client.getId());
     formClient.setNome(client.getNome());
     formClient.setDescrizione(client.getDescrizione());
-    formClient.setRegistrazione(client.getRegistrazione());
+    
     
     
    
@@ -135,7 +134,6 @@ public class ClientController {
 			               ModelMap model){
  
 		FormClient formClient=new FormClient();
-		formClient.setRegistrazione(buildCurrentTime());
 		refreshDatagrid(model, pageNumber, rowsPerPage);
 		model.addAttribute("clientData", formClient);
 		//return form view
@@ -157,10 +155,10 @@ public class ClientController {
 			try{	
 				Cliente client=ObjectCopier.createObject(formClient, Cliente.class);
 				clientService.insertClient(client);
-				formClient.setEsito("formAccount.esito.ok");
+				formClient.setEsito("formClient.esito.ok");
 			}
 			catch(Exception e){
-				formClient.setEsito("formAccount.esito.notOk");
+				formClient.setEsito("formClient.esito.notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
 			}finally{
 				model.addAttribute("clientData",formClient);
@@ -188,13 +186,6 @@ public class ClientController {
 		model.addAttribute("rowsPerPage", rowsPerPage);
 		model.addAttribute("clientsPage", clientPage);
 	}
-	
-	
-	protected Timestamp buildCurrentTime(){
-		Date date= new Date();
-		return new Timestamp(date.getTime());
-	}
-	
 	
 	
 }

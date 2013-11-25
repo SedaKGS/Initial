@@ -89,7 +89,7 @@ public class ServerController {
 				formServer.setEsito("formServer.esito.notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
 			}finally{
-				model.addAttribute("server",formServer);
+				model.addAttribute("serverData",formServer);
 			}
 
 		}
@@ -117,9 +117,10 @@ public class ServerController {
     formServer.setId(server.getId());
     formServer.setNome(server.getNome());
     formServer.setDescrizione(server.getDescrizione());
+    formServer.setIp(server.getIp());
    
     
-    model.addAttribute("clientData",formServer);
+    model.addAttribute("serverData",formServer);
     model.addAttribute("action",action);
 	refreshDatagrid(model, pageNumber, rowsPerPage);
 	return "server";
@@ -148,7 +149,7 @@ public class ServerController {
 	 * Inserts a new server
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String addServer(@Valid @ModelAttribute("clientData") FormServer formServer, 
+	public String addServer(@Valid @ModelAttribute("serverData") FormServer formServer, 
 			BindingResult result, 
 			ModelMap model,
 			@RequestParam(value="pageNumber", defaultValue="1") int pageNumber,

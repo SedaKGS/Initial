@@ -4,14 +4,18 @@
 		 <parameter key="content" value="/template/manager/formClient.jsp"/>
 	</screen>
 	
+	<screen name="server" extends="base">
+		 <parameter key="content" value="/template/manager/formServer.jsp"/>
+	</screen>
+	
+	<screen name="societa" extends="base">
+		 <parameter key="content" value="/template/manager/formSocieta.jsp"/>
+	</screen>
+	
 	<screen name="account" extends="base">
 		 <parameter key="content" value="/template/manager/accountManager.jsp"/>
 	</screen>
 	
-	<screen name="error" extends="base">
-		 <parameter key="content" value="/template/manager/error.jsp"/>
-	</screen>
-
 	<screen name="testBind" extends="base">
 		<parameter key="content" value="/template/manager/testbind.jsp"/>	
 	</screen>	
