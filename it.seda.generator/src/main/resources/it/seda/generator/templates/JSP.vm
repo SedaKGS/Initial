@@ -1,0 +1,152 @@
+#set($baseUrl=$jsp.getController().getBaseUrl())
+#set($S="${")
+#set($ModelLower=$jsp.getModel().getLowerName())
+#set($ModelUpper=$jsp.getModel().getUpperName())
+#set($FormUpper=$jsp.getForm().getName())
+#set($FormLower=$jsp.getForm().getLowerName())
+#set($Data="Data")
+#set($Page="Page")
+#set($title=".title")
+#set($new=".new")
+##set($fields=$jsp.getModel().getAttributes())
+#set($fields=$jsp.getForm().getFormAttributes())
+#set($fieldsList=$jsp.getForm().getListAttributes())
+#set($dot=".")
+#set($baseUrl=$jsp.getModel().getBaseUrl())
+#set($idUrl=$jsp.getController().getBaseUrl())
+#set($esito="esito")
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+     #set($idUrl=$idUrl+"/"+$S+$ModelLower+$Data+$dot+$field.getName()+"}")
+#end
+#end	
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="x" uri="http://template.seda.it/tags" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<c:set value="POST" var="method"></c:set>
+  <c:if test="$S action=='delete'}"> 
+    <c:set value="DELETE" var="method"></c:set>
+    <c:set value="true"   var="readOnly"></c:set>
+  </c:if>
+
+<c:if test="$S action=="edit"}">  
+  <c:set value="PUT" var="method"></c:set>
+</c:if>
+	
+<c:url value="$baseUrl" var="actionForm">
+   <c:param name="pageNumber" value="$S pageNumber}"/>
+   <c:param name="rowsPerPage" value="$S rowsPerPage}"/>
+</c:url>
+	
+<c:if test="$S action=='delete'}">
+   <c:url value="$idUrl" var="actionForm">  
+   <c:param name="pageNumber" value="$S pageNumber}"/>
+   <c:param name="rowsPerPage" value="$S rowsPerPage}"/>
+</c:url>
+	</c:if> 
+	
+<div id="divErrors" class="errors">
+    $S x:i18n('$ModelLower$Data$dot$esito')}
+</div>
+	
+<div class="title" style="text-align:center">
+    <h3> $S x:i18n('$FormLower$title')}</h3>
+</div>
+	
+	
+<div class="new$ModelUpper" style="margin-left:10px;min-width:70px;max-width:200px;">
+    <a href="<c:url value="$baseUrl"/>" style="margin-right:10px;"><input type="submit" value="$S x:i18n('$FormLower$new')}" style="width:100%;"/></a>
+</div> 
+	  
+<form:form method="$S method}" action="$S actionForm}" commandName="$ModelLower$Data">
+  <div id="formBox" style="background-color:rgb(240,240,240);margin-top:15px;margin-bottom:15px;padding-top: 10px;margin-left: 10px;padding-bottom: 10px;"> 
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+       <div class="seda-ui-divrow" style="height:0px;">
+           <form:input readonly="true"  path="$field.getName()" maxlength="15" class="seda-ui-inputrow"/> 
+       </div>                         
+#end	                   
+#end	 
+#foreach($field in $fields)
+#if($field.getNumericListType()>0) se è una lista
+#if($field.getNumericInputType()>0) se ho definuto un input
+       <div class="seda-ui-divrow ">   
+          <label class="seda-ui-labelrow" id="$field.getName()">$S x:i18n('$FormLower$ModelUpper$dot$field.getName()')}</label> 
+          <form:$field.getInputType() path="$jsp.getForm().getListAddedName($field.getName())"  class="seda-ui-inputrow" style="width:200px">
+            <form:options items="$S $field.getName()}" />
+          </form:$field.getInputType()>
+	      <form:errors path="$jsp.getForm().getListAddedName($field.getName())"  cssStyle="color:red;float:left;margin-left: 10px;"/>
+	  </div>
+#end
+#if($field.getNumericInputType()==0) se noon ho definito un input
+        <div class="seda-ui-divrow ">   
+             <label class="seda-ui-labelrow" id="$field.getName()">$S x:i18n('$FormLower$ModelUpper$dot$field.getName()')}</label> 
+             <form:select path="$jsp.getForm().getListAddedName($field.getName())"  class="seda-ui-inputrow" style="width:200px">
+             <form:options items="$S $field.getName()}" />
+             </form:select>
+             <form:errors path="$jsp.getForm().getListAddedName($field.getName())"  cssStyle="color:red;float:left;margin-left: 10px;"/>
+        </div>
+#end
+#end
+#if($field.getNumericListType()==0) se non è una lista
+#if($field.getNumericInputType()==0) se non ho definito input
+#if($field.getNumericBooleanType()>0) se è un booleano
+        <div class="seda-ui-divrow ">   
+             <label class="seda-ui-labelrow" id="$field.getName()">$S x:i18n('$FormLower$ModelUpper$dot$field.getName()')}</label>
+             <form:checkbox readonly="$S readOnly}" path="$field.getName()" maxlength="$field.maxlenght" class="seda-ui-inputrow" style="width:200px"/>
+             <form:errors path="$field.getName()"  cssStyle="color:red;float:left;margin-left: 10px;"/>
+        </div>
+#end
+#if($field.getNumericBooleanType()==0) se non è un booleano
+        <div class="seda-ui-divrow ">   
+             <label class="seda-ui-labelrow" id="$field.getName()">$S x:i18n('$FormLower$ModelUpper$dot$field.getName()')}</label>
+             <form:input readonly="$S readOnly}" path="$field.getName()" maxlength="$field.maxlenght" class="seda-ui-inputrow" style="width:200px"/>
+             <form:errors path="$field.getName()"  cssStyle="color:red;float:left;margin-left: 10px;"/>
+        </div>
+#end
+#end
+#if($field.getNumericInputType()>0) se ho definito un input
+#if($field.getNumericBooleanType()>0) se è un booleano
+        <div class="seda-ui-divrow ">   
+             <label class="seda-ui-labelrow" id="$field.getName()">$S x:i18n('$FormLower$ModelUpper$dot$field.getName()')}</label>
+             <form:$field.getInputType() readonly="$S readOnly}" path="$field.getName()" maxlength="$field.maxlenght" class="seda-ui-inputrow" style="width:200px"/>
+             <form:errors path="$field.getName()"  cssStyle="color:red;float:left;margin-left: 10px;"/>
+        </div>
+#end
+#if($field.getNumericBooleanType()==0) se è un booleano
+        <div class="seda-ui-divrow ">   
+              <label class="seda-ui-labelrow" id="$field.getName()">$S x:i18n('$FormLower$ModelUpper$dot$field.getName()')}</label>
+              <form:$field.getInputType() readonly="$S readOnly}" path="$field.getName()" maxlength="$field.maxlenght" class="seda-ui-inputrow" style="width:200px"/>
+              <form:errors path="$field.getName()"  cssStyle="color:red;float:left;margin-left: 10px;"/>
+        </div>
+#end
+#end
+#end
+#end	 
+        <c:if test="$S action=='edit'}"> 
+           <input type="submit" value="$S x:i18n('$FormLower$Name$modify')}" style="width: auto;"/>
+        </c:if>
+        <c:if test="$S action=='delete'}"> 
+           <input type="submit" value="$S x:i18n('$FormLower$Name$cancel')}" style="width: auto;"/>
+        </c:if>
+        <c:if test="$S action==null}"> 
+           <input type="submit" value="$S x:i18n('$FormLower$Name$edit')}" style="width: auto;"/>
+        </c:if>
+  </div>
+</form:form>
+		
+<x:datagrid action="" pageset="$S $ModelUpper$Page}" var="row$ModelUpper"  >
+#foreach($field in $fields)
+#if($field.getDatagrid()>0)	   	
+   <x:dgcolumn title="$S x:i18n('$FormLower$dot$field.name')}">$S row$ModelUpper.$field.name}</x:dgcolumn>
+#end
+#end
+</x:datagrid>

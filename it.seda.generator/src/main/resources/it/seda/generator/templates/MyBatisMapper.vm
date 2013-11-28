@@ -1,73 +1,98 @@
+#set($namesapces=$myBatisMapper.getClazz())
+#set($ModelLower=$myBatisMapper.getModel().getName())
+#set($ModelUpper=$myBatisMapper.getModel().getName())
+#set($Count="Count")
+#set($fields=$myBatisMapper.getModel().getAttributes())
+
+#set($lenght=0)
+#foreach($field in $fields)
+#field
+#if($field.getPk()==0 && $field.isNotList())
+#set($lenght=$lenght+1) 
+#end
+#end
+
+#set($lenghtPk=0)
+#foreach($field in $fields)
+#field
+#if($field.getPk()>0 && $field.isNotList())
+#set($lenghtPk=$lenghtPk+1) 
+#end
+#end
+
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="#mappers">
+<mapper namespace="$namesapces">
 
+<resultMap id="$ModelUpper" type="$ModelLower">
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+   <id property="$field.getName()"   column="$field.getColumn()">    
+#end
+#end
+#foreach($field in $fields)
+#if($field.getPk()==0 && $field.isNotList())
+   <result property="$field.getName()" column="$field.getColumn()" />    
+#end
+#end
+</resultMap>
 	
- 	 
-	<resultMap id="#modelName" type="#ModelName">
-		 <id property="#id" column="#id" />
-		#foreach($field in $modelFieldsWithOutFirst)
-	     <result property="$field.name" column="$field.name" />
-	    #	
-	</resultMap>
+<insert id="insert$ModelUpper" parameterType="$ModelUpper">
+INSERT INTO $ModelUpper
+   (
+#foreach($field in $fields)
+#if($field.getPk()==0 && $field.isNotList())
+#if($foreach.count<$lenght)
+    $field.getName(),  
+#end
+#if($foreach.count==$lenght)
+    $field.getName()
+#end
+#end
+#end
+   )	
+    VALUES
+    (
+#foreach($field in $fields)
+#if($field.getPk()==0 && $field.isNotList())
+#if($foreach.count<$lenght)
+    #{$field.getName()},  
+#end
+#if($foreach.count==$lenght)
+    #{$field.getName()}
+#end
+#end
+#end   
+    )
+</insert>
 	
-	<insert id="insert#ModelName" parameterType="#ModelName">
-	  INSERT INTO #ModelName
-	  (
-	  #foreach($field in $modelFieldsWithOutFirstandLast)
-	    $field.name,
-	   #
-	   $lastModelName
-	   )	
-	  VALUES
-	  (
-	  #foreach($field in $modelFieldsWithOutFirstandLast)
-	   '#'{$field.name},
-	  #
-	  '#'{$lastModelName}
-	  )
-	</insert>
+<update id="update$ModelUpper" parameterType="$ModelUpper">
+UPDATE $ModelUpper
+SET 
+#foreach($field in $fields)
+#if($field.getPk()==0 && $field.isNotList())
+#if($foreach.count<$lenght)
+    $field.getName()=#{$field.getName()},  
+#end
+#if($foreach.count==$lenght)
+    $field.getName()=#{$field.getName()}
+#end
+#end
+#end   
+WHERE 
+#if($field.getPk()>0 && $field.isNotList())
+#if($foreach.count<$lenghtPk)$lenghtPk
+    $field.getName()=#{$field.getName()} AND
+#end
+#if($foreach.count==$lenghtPk)
+    $field.getName()=#{$field.getName()}
+#end
+#end
+</update>	
 	
 	
-	<update id="update#ModelName" parameterType="#ModelName">
-	  UPDATE #ModelName
-       SET 
-       #foreach($field in $modelFieldsWithOutFirstandLast)
-       $field.name='#'{$field.name},
-       #
-       $lastModelName='#'{$lastModelName} 
-       WHERE #id='#'{#id}
-	</update>
-	
-	
-	<delete id="delete#ModelName" parameterType="#idType">
-	   DELETE FROM #ModelName
-	     WHERE #id = '#'{#id}   
-	</delete>
-	
-	<select id="get#ModelName" parameterType="#idType" resultMap="#modelName">
-	   SELECT 
-	     #firstModelName
-	     #foreach($field in $modelFieldsWithOutFirst)
-	     ,$field.name
-	   FROM #ModelName
-	   WHERE #id='#'{#id}
-	</select>
-	
-	<select id="list#ModelNameCount"  resultType="int">
-	   SELECT COUNT(#firstModelName)
-	   FROM #ModelName
-	</select>
-	
-	<select id="list#ModelName"  resultMap="#modelName">
-	   SELECT 
-	     #firstModelName
-	     #foreach($field in $modelFieldsWithOutFirst)
-	     ,$field.name
-	   FROM #ModelName
-	   ORDER BY #ModelName.#firstModelName
-	</select>
 	
 </mapper>

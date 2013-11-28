@@ -1,60 +1,67 @@
-package #services;
-
-import  #models.#ModelName;
-import  #forms.Form#Name;
-import  #mappers.#ModelNameMapper;
+package $service.getClazz()
+import  $service.getModel().getFullName();
+import  $service.getModelMapper().getClazz();
 import javax.inject.Inject;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-#foreach($package in $modelsPackages)
-  import $package
-#end
-
 
 
 @Service
-public class #NameService {
+public class $service.getName() {
+	
+	#set($ModelUpper=$service.getModelUpper())
+	#set($ModelLower=$service.getModelLower())
+	#set($mapper=$service.getMapperLower())
+	#set($insert=".insert")
+	#set($update=".update")
+	#set($delete=".delete")
+	#set($get=".get")
+	#set($ById="ById")
+	#set($Count="Count")
+	#set($list=".list")
+	#set($transactionManager=$service.getTransactionManager())
+	
+	@Inject private $service.getMapperUpper() $mapper;
+	
+	@Transactional("$transactionManager")
+	public void insert$ModelUpper($ModelUpper $ModelLower) {
+		$mapper$insert$ModelUpper($ModelLower);      
+	}
 	
 	
-	@Inject private #ModelNameMapper #modelNameMapper;
-
-	@Transactional("transactionBusinessManager")
-	public void insert#ModelName(#ModelName #modelName) {
-		#modelNameMapper.insert#ModelName(#modelName);
+	@Transactional("$transactionManager")
+	public void update$ModelUpper($ModelUpper $ModelLower) {
+		$mapper$update$ModelUpper($ModelLower);
+	}
+	
+	@Transactional("$transactionManager")
+	public void delete$ModelUpper($ModelUpper $ModelLower) {
+		$mapper$delete$ModelUpper($ModelLower);
+	}
+	
+	@Transactional("$transactionManager")
+	public $ModelUpper  get$ModelUpper$ById($ModelUpper $ModelLower) {
+		$ModelUpper tmp= $mapper$get$ModelUpper($ModelLower);
+		return tmp;
 		
 	}
 	
-	@Transactional("transactionBusinessManager")
-	public void update#ModelName(#ModelName #modelName) {
-		#modelNameMapper.updateClient(#modelName);
-	}
-	
-	
-	@Transactional("transactionBusinessManager")
-	public void deleteClient($id.type #id) {
-		#modelNameMapper.deleteClient(#id);
-	}
-	
-	@Transactional("transactionBusinessManager")
-	public #ModelName  get#ModelNameBy#id($id.type #id) {
-		#ModelName #modelName=#modelNameMapper.getClient(#id);
-		return #modelName;
-		
-	}
-	
-	@Transactional("transactionBusinessManager")
-	public int list#ModelNameCount() {
-		int rowsNumber=#modelNameMapper.list#ModelNameCount();
+	@Transactional("$transactionManager")
+	public int list$ModelUpper$Count() {
+		int rowsNumber=$mapper$list$ModelUpper$Count();
 		return rowsNumber;
 		
 	}
 	
-	@Transactional("transactionBusinessManager")
-	public List<#ModelName> list#ModelName(RowBounds rowBounds) {
-		List<#ModelName> cl=#modelNameMapper.list#ModelName(rowBounds);
+	@Transactional("$transactionManager")
+	public List<$ModelUpper> list$ModelUpper(RowBounds rowBounds) {
+		List<$ModelUpper> cl=$mapper$list$ModelUpper(rowBounds);
 		return cl;
 		
 	}
-
+	
+	
+	
+	
 }

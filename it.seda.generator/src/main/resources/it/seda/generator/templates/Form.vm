@@ -1,38 +1,66 @@
-package #forms;
+package $form.getClazz();
 
-#foreach($package in $formsPackages)
-import $package
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.NotEmpty;
+
+#set($Name=$form.getModelName())
+#set($Fields=$form.getFormAttributes())
+#set($listFields=$form.getListAttributes())
+#set($NotEmpty=".NotEmpty")
+#set($Pattern=".Pattern")
+
+
+public class $form.getName(){
+
+#foreach($field in $Fields)
+#if($field.NotEmpty>0) 
+        @NotEmpty(message="form$Name.$field.getName()$NotEmpty")
+#end
+#if($field.getPatternNumeric()>0)
+        @Pattern(regexp="$field.getPattern()",message="form$Name.$field.getName()$Pattern",)
+#end
+        private $field.printType() $field.getName();
+#end
+#foreach($field in $listFields)
+        private $field.printType() $field.getName();
+#end    
+    
+#foreach($field in $Fields)
+        public  $field.printType() get$field.getNameUcase(){
+           return this.$field.getName();
+        }
+    
+        public void set$field.getNameUcase()($field.printType() $field.getName()){
+           this.$field.getName()=$field.getName();
+        }
 #end
 
+#foreach($field in $listFields)
+        public  $field.printType() get$field.getNameUcase(){
+           return this.$field.getName();
+        }
+    
+        public void set$field.getNameUcase()($field.printType() $field.getName()){
+           this.$field.getName()=$field.getName();
+        }
+#end
+    
+    
+        public String toString(){
+           return " Form$Name [$Fields.get(0).getName()=" +  $Fields.get(0).getName() + "
+#foreach($field in $Fields)
+#if($foreach.count>1)	
+	          , $field.getName()=" + $field.getName() + "
+#end
+#end              
+#foreach($field in $listFields)	
+	          , $field.getName()=" + $field.getName() + "
+#end        ]";
+        }
+    
 
-public class Form#Name{
 
-    #foreach($field in $formFields)
-      $field.annotation
-      private $field.type $field.name;
-    #end
-    
-	#foreach($field in $formFields)
-	        
-      public  $field.type get#field.Name(){
-       return this.$field.name;
-      }
-      
-       public void set#field.Name($field.type $field.name){
-       this.$field.name=$field.name;
-      }
-    #end
-    
-    
-    public String toString() {
-    
-    return " Form#Name [
-    $firstFormName=" + $firstFormName + "
-    #foreach($field in $formFieldsWithOutFirst)	
-		, $field.name=" + $fiels.name + "
-    #end
-    ]";
-    }
-    
+
+
 
 }

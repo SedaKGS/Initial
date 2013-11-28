@@ -1,5 +1,7 @@
 package it.seda.generator;
 
+import it.seda.generator.util.GeneratorUtils;
+
 import java.math.BigDecimal;
 import java.util.*;
 import java.sql.ResultSet;
@@ -99,6 +101,9 @@ public class AliasRegistry {
 	}
 
 	public void registerAlias(String alias, String value) {
+		if(alias==null){
+			alias=GeneratorUtils.resolveClassName(value);
+		}
 		try {
 			registerAlias(alias, Class.forName(value));
 		} catch (ClassNotFoundException e) {

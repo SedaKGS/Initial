@@ -7,7 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import it.seda.sem.domain.Cliente;
 import it.seda.sem.mvc.annotations.BusinessRepository;
-import it.seda.sem.mvc.manager.models.FormClient;
+
 
 
 @BusinessRepository

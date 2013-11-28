@@ -1,0 +1,50 @@
+<models>
+
+<aliases>
+	<alias name="Attribute" class="it.seda.generator.domain.Attribute"/>
+</aliases>
+
+<!--  
+<model classpath="it.seda.test.Person">
+ <attribute column="ID"   name="id"   type="int"  pk="1">
+ </attribute>
+ <attribute column="NAME" name="name" type="string"  pk="2" form="1" datagrid="1" notempty="1" pattern="^a$">
+ </attribute>  
+ <attribute column="COGNOME" name="cognome" type="string"   form="2" datagrid="2">
+ </attribute>
+ <attribute column="INDIRIZZO" name="indirizzo" type="list"  generic="Attribute" form="3" datagrid="3">
+ </attribute>    
+</model>
+-->
+
+<model classpath="it.seda.test.Person">
+  <attribute column="ID"   name="id"   type="int"  pk="1">
+  </attribute>
+  <attribute column="NAME" name="name" type="string"  pk="2" >
+     <input type="input" form="1" datagrid="1"></input>
+     <validator notempty="1"  pattern="^a$"></validator>
+   </attribute>  
+   <attribute column="COGNOME" name="cognome" type="string">
+      <input form="2" datagrid="2"></input>
+    </attribute>
+    <attribute column="INDIRIZZO" name="indirizzo" type="list"  generic="Attribute">
+      <input type="select" form="3" datagrid="3"></input>
+    </attribute>    
+</model>
+
+
+<mapper classpath="it.seda.test.Mapper" annotation="it.seda.sem.mvc.annotations.BusinessRepository"></mapper>
+
+<myBatis classpath="it.seda.test.Mapper"></myBatis>
+
+<service classpath="it.seda.test.Service" transaction="transactionBusinessManager"> </service>
+
+<controller classpath="it.seda.test.Controller" baseurl="/account/manager" pageNumber="3" rowsPerPage="18"> </controller>
+
+<form classpath="it.seda.test.Form"></form>
+
+<messages validator="it.seda.test.Validator" message="it.seda.test.Messages"></messages>
+
+<jsp classpath="it.seda.test.JspPage"></jsp>
+
+</models>
