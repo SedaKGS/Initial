@@ -1,0 +1,12 @@
+#set($Fields=$messages.getForm().getFormAttributes())
+#set($Name=$messages.getForm().getModelName())
+#set($NotEmpty=".NotEmpty")
+#set($Pattern=".Pattern")
+#foreach($field in $Fields)
+#if($field.NotEmpty>0)
+form$Name.$field.getName()$NotEmpty=field=$field.getName(): cannot be empty
+#end
+#if($field.getPatternNumeric()>0)
+form$Name.$field.getName()$Pattern=field=$field.getName(): Regex constrain violation
+#end
+#end

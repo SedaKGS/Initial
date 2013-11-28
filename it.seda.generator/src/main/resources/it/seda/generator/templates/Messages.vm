@@ -1,0 +1,23 @@
+#set($Fields=$messages.getForm().getFormAttributes())
+#set($Name=$messages.getForm().getModelName())
+#set($FormLower=$messages.getForm().getLowerName())
+#set($esito=".esito")
+#set($ok=".ok")
+#set($notOk=".notOk")
+#set($title=".title")
+#set($modify=".modify")
+#set($insert=".insert")
+#set($cancel=".cancel")
+#set($new=".new")
+#set($title=".title")
+$FormLower$Name$esito$ok=Insert esito OK
+$FormLower$Name$esito$notOk=Insert esito not_OK
+$FormLower$Name$title=Insert Title
+$FormLower$Name$modify=Insert Modify 
+$FormLower$Name$esito$cancel=Insert cancel
+$FormLower$Name$insert=Insert insert
+$FormLower$new=new 
+$FormLower$title=Insert title
+#foreach($field in $Fields)	
+form$Name.$field.getName()=Insert $field.getName()
+#end

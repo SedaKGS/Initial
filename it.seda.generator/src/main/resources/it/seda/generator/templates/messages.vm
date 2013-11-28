@@ -1,9 +1,0 @@
-form#Name.esito.ok=Insert esito OK
-form#Name.esito.notOk=Insert esito not_OK
-form#Name.title=Insert Title
-#formName.modify=Insert Modify 
-#formName.cancel=Insert cancel
-#formName.insert=Insert insert
-#foreach($field in $modelFields)	
-#formName.$field.name=Insert $field.name
-#end

@@ -4,15 +4,16 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
+@SuppressWarnings("serial")
 public class Server implements Serializable{
 
-	
+
 	private String ip;
 	private String descrizione;
 	private String nome;
 	private BigInteger id;
 	private Timestamp registrazione;
-	
+
 	public String getIp() {
 		return ip;
 	}
@@ -37,8 +38,8 @@ public class Server implements Serializable{
 	public void setId(BigInteger id) {
 		this.id = id;
 	}
-	
-	
+
+
 	public Timestamp getRegistrazione() {
 		return registrazione;
 	}
@@ -51,8 +52,8 @@ public class Server implements Serializable{
 				+ ", descrizione=" + descrizione + ", nome=" + nome + ", id="
 				+ id + "]";
 	} 
-	
-	
-	
+
+
+
 
 }

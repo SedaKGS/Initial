@@ -1,0 +1,224 @@
+package  $controller.getNamespace();
+
+import it.seda.sem.domain.ObjectCopier;
+import it.seda.sem.jdbc.RowBoundsHelper;
+import it.seda.template.taglib.DatagridTag.Page;
+import $controller.getForm().getClazz();
+import $controller.getModel().getClazz();
+import $controller.getService().getClazz();
+import javax.inject.Inject;
+import javax.validation.Valid;
+import org.apache.ibatis.session.RowBounds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
+#set($ModelLower=$controller.getModel().getLowerName())
+#set($ModelUpper=$controller.getModel().getUpperName())
+#set($service=$controller.getService().getName())
+#set($nameService=$controller.getService().getLowerName())
+#set($class=".class")
+#set($delete=".delete")
+#set($FormUpper=$controller.getForm().getName())
+#set($FormLower=$controller.getForm().getLowerName())
+#set($Data="Data")
+#set($Page="Page")
+#set($Count="Count")
+#set($ById="ById")
+#set($setEsito=".setEsito")
+#set($cancel=".cancel")
+#set($esito=".esito")
+#set($ok=".ok")
+#set($notOk=".notOk")
+#set($set=".set")
+#set($get=".get")
+#set($list=".list")
+#set($insert=".insert")
+#set($update=".update")
+#set($fields=$controller.getModel().getAttributes())
+#set($pgNmb=$controller.getPageNumber())
+#set($rwspg=$controller.getRowsPerPage())
+#set($baseUrl=$controller.getBaseUrl())
+
+
+
+@Controller
+@RequestMapping(value="$baseUrl")
+public class $controller.getName() {
+
+    @Inject $service $nameService;
+    private Logger logger = LoggerFactory.getLogger($controller.getName()$class);
+	
+    /*
+     * Method used to delete  $ModelUpper by primary key
+    */
+    @RequestMapping(
+                    value="
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+                           /{$field.getName()}
+#end	                   
+#end
+                    ",method=RequestMethod.DELETE) 
+    public String deleteName(
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+                             @PathVariable $field.printType() $field.getName(),
+#end
+#end
+                             @RequestParam(value="pageNumber", defaultValue="$pgNmb")  int pageNumber, 
+                             @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
+                             ModelMap model) {
+			                   
+    $ModelUpper $ModelLower=new $ModelUpper();
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+    $ModelLower$set$field.getNameUcase()($field.getName())
+#end
+#end			                   
+    $nameService$delete$ModelUpper($ModelLower);
+    $FormUpper $FormLower=new $FormUpper();
+    $FormLower$setEsito("$FormLower$esito$cancel");
+    refreshDatagrid(model, pageNumber, rowsPerPage);
+    model.addAttribute("$ModelLower$Data", $ModelLower);
+    return "$ModelLower";
+    }
+	
+
+    /*
+     * Method used to update  $ModelUpper
+    */
+    @RequestMapping(method=RequestMethod.PUT) 
+    public String update$ModelUpper(
+                                    @Valid @ModelAttribute("$ModelLower$Data") $FormUpper $FormLower,
+                                    BindingResult result,
+                                    @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber, 
+                                    @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
+                                    ModelMap model) {
+    
+    if (!result.hasErrors()) {
+    logger.debug("$controller.getName(): dati inseriti correttamente"); //TODO i18n		
+	try{	
+        $ModelUpper $ModelLower =ObjectCopier.createObject($FormLower, $ModelUpper$class);
+        $nameService$update$ModelUpper($ModelLower);
+        $FormLower$setEsito("$FormLower$esito$ok");
+       }catch(Exception e){
+        form#Name.setEsito("$FormLower$esito$notOk");
+        logger.error("Err",e); //TODO i18n errore inserimento
+       }finally{
+        model.addAttribute("$FormLower",$FormLower);
+       }
+     }
+     refreshDatagrid(model, pageNumber, rowsPerPage);				
+     return "$ModelLower";
+     }
+	
+
+    /*
+     * Method used to edit $ModelUpper given the primary key
+    */
+    @RequestMapping(value="
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+                           /{$field.getName()}
+#end	                   
+#end
+                           ", 
+                    method=RequestMethod.GET) 
+    public String edit$ModelUpper(
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+                            @PathVariable $field.printType() $field.getName(),
+#end
+#end 
+                            @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber, 
+                            @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
+                            @RequestParam(value="action",required=false) String action,
+                            ModelMap model) {
+     $ModelUpper $ModelLower=new $ModelUpper();
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+     $ModelLower$set$field.getNameUcase()($field.getName())
+#end
+#end	                         
+     $ModelUpper $ModelLower=$nameService$get$ModelUpper$ById($ModelLower);
+     $FormUpper $FormLower=new $FormUpper();
+#foreach($field in $controller.getForm().getFormAttributes())
+     $FormLower$set$field.getNameUcase()($ModelLower$get$field.getNameUcase());
+#end
+     model.addAttribute("$ModelLower$Data",$FormLower);
+     model.addAttribute("action",action);
+     refreshDatagrid(model, pageNumber, rowsPerPage);
+     return "$ModelLower";
+    }
+	
+			
+    /*
+     * Give a void page if the primary key is not specified
+    */
+    @RequestMapping(method = RequestMethod.GET)
+    public String initForm(
+                           @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber,
+                           @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
+                           ModelMap model){
+ 
+     $FormUpper $FormLower=new $FormUpper();
+     refreshDatagrid(model, pageNumber, rowsPerPage);
+     model.addAttribute("$ModelLower$Data", $FormLower);
+     return "$ModelLower";
+    }
+
+	/*
+	 * Inserts a new $ModelUpper
+	 */
+	@RequestMapping(method = RequestMethod.POST)
+	public String add$ModelUpper(@Valid @ModelAttribute("$ModelLower$Data") $FormUpper $FormLower, 
+                                 BindingResult result, 
+                                 ModelMap model,
+                                 @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber,
+                                 @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage) {
+            
+		if (!result.hasErrors()) {
+			logger.debug("$controller.getName(): dati inseriti correttamente"); //TODO i18n		
+			try{
+			    $ModelUpper $ModelLower=ObjectCopier.createObject($FormLower, $ModelUpper$class);
+				$nameService$insert$ModelUpper($ModelLower);
+				$FormLower$setEsito("$FormLower$esito$ok");
+			}catch(Exception e){
+				account$setEsito("$FormLower$esito$notOk");
+				logger.error("Err",e); //TODO i18n errore inserimento
+			}finally{
+				model.addAttribute("$FormLower",$FormLower);
+			}
+		}
+		refreshDatagrid(model, pageNumber, rowsPerPage);
+		return "$ModelLower";
+	}
+	
+    /*
+     * Refresh datagrid
+    */
+     protected void refreshDatagrid(ModelMap model, int pageNumber, int rowsPerPage) {	
+        int totalRows=$nameService$list$ModelUpper$Count();
+        RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
+        List<$ModelUpper> ar=$nameService$list$ModelUpper(rbh.buildRowBounds());	
+        Page<$ModelUpper> page = new Page<$ModelUpper>(ar);
+        rbh.decorate(page, totalRows);   
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("rowsPerPage", rowsPerPage);
+        model.addAttribute("$ModelUpper$Page", page);
+     }	
+	
+
+
+
+
+
