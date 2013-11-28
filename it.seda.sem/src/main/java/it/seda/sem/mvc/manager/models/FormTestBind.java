@@ -1,45 +1,48 @@
 package it.seda.sem.mvc.manager.models;
 
-import org.joda.time.DateTime;
+import it.seda.sem.mvc.manager.DateTimeForm;
+import it.seda.sem.mvc.manager.ValidDateTime;
+
 import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 public class FormTestBind {
     
-	private DateTime date;
-	private DateTime time;
-	private DateTime datetime;
+	@ValidDateTime
+	private DateTimeForm date;
+	@ValidDateTime
+	private DateTimeForm time;
+	@ValidDateTime
+	private DateTimeForm datetime;
 	
-	public DateTime getDate() {
+	public DateTimeForm getDate() {
 		return date;
 	}
-	public void setDate(DateTime date) {
+	public void setDate(DateTimeForm date) {
 		this.date = date;
 	}
-	public DateTime getTime() {
+	public DateTimeForm getTime() {
 		return time;
 	}
-	public void setTime(DateTime time) {
+	public void setTime(DateTimeForm time) {
 		this.time = time;
 	}
-	public DateTime getDatetime() {
+	public DateTimeForm getDatetime() {
 		return datetime;
 	}
-	public void setDatetime(DateTime datetime) {
+	public void setDatetime(DateTimeForm datetime) {
 		this.datetime = datetime;
 	}
 	
 
 	
 	public FormTestBind() {
+		// ragionare sulla eventuale data di default
 		LocaleContext localeContext = LocaleContextHolder.getLocaleContext();
-//		DateTime
-//		date=new DateTime(zone);
-//		time;
-//		datetime;		
 		
+		date = new DateTimeForm();
+		time = new DateTimeForm();
+		datetime = new DateTimeForm();		
 	}
 	
 	

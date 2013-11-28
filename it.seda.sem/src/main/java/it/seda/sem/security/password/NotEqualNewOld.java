@@ -10,12 +10,10 @@ import static java.lang.annotation.RetentionPolicy.*;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Target( { TYPE,METHOD, FIELD, ANNOTATION_TYPE })
+@Target( { TYPE, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = ChangePasswordValidator.class)
 @Documented
-
-
 public @interface NotEqualNewOld {
 	 String message() default "{it.seda.sem.security.password.notequalsnewold}";
 

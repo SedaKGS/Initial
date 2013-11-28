@@ -1,37 +1,60 @@
 package it.seda.sem.mvc.manager;
-import it.seda.sem.domain.ObjectCopier;
-import it.seda.sem.domain.Server;
-import it.seda.sem.jdbc.RowBoundsHelper;
 import it.seda.sem.manager.service.ServerService;
-import it.seda.sem.mvc.manager.models.FormServer;
-import it.seda.template.taglib.DatagridTag.Page;
+import it.seda.sem.mvc.manager.models.FormTestBind;
 
-import java.math.BigInteger;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping(value="/server")
+@RequestMapping(value="/testbind")
 public class TestBindController {
 	
     @Inject ServerService serverService;
 	
-	private Logger logger = LoggerFactory.getLogger(TestBindController.class);
+	private Map<String,String> daysOfMonth = new LinkedHashMap<String,String>(31);
+	private Map<String,String> monthsOfYear = new LinkedHashMap<String,String>(12);	
+	private Map<String,String> years = new LinkedHashMap<String,String>(10);	
+	
+	private Map<String,String> hoursOfDay = new LinkedHashMap<String,String>(24);	
+	private Map<String,String> minutesOfHour = new LinkedHashMap<String,String>(60);
+	private Map<String,String> secondsOfMinute = new LinkedHashMap<String,String>(60);
+	
+	public TestBindController() {
+		for (int i = 0; i < 31; i++) {
+			daysOfMonth.put(String.valueOf(i+1), String.valueOf(i+1));
+		}
+		
+		for (int i = 0; i < 12; i++) {
+			monthsOfYear.put(String.valueOf(i+1), String.valueOf(i+1));
+		}
+		
+		for (int i = 2008; i < 2008+10; i++) {
+			years.put(String.valueOf(i+1), String.valueOf(i+1));
+		}
+		
+		for (int i = 0; i < 24; i++) {
+			hoursOfDay.put(String.valueOf(i+1), String.valueOf(i+1));
+		}
 
+		for (int i = 0; i < 60; i++) {
+			minutesOfHour.put(String.valueOf(i+1), String.valueOf(i+1));
+			secondsOfMinute.put(String.valueOf(i+1), String.valueOf(i+1));			
+		}								
+	}
+
+	
 	/*
 	 * Give the requested page if the id is not specified
 	 */
@@ -40,8 +63,11 @@ public class TestBindController {
 			               @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage,
 			               ModelMap model){
  
-		FormServer formServer=new FormServer();
-		model.addAttribute("testData", formServer);
+		FormTestBind formTestBind=new FormTestBind();
+		model.addAttribute("testData", formTestBind);
+
+		addChronos(model);
+		
 		return "testBind";
 	}
 	
@@ -49,29 +75,25 @@ public class TestBindController {
 	 * Inserts a new server
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String addServer(@Valid @ModelAttribute("clientData") FormServer formServer, 
+	public String addServer(@Valid @ModelAttribute("testData") FormTestBind formTestBind, 
 			BindingResult result, 
-			ModelMap model,
-			@RequestParam(value="pageNumber", defaultValue="1") int pageNumber,
-            @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage) {
+			ModelMap model) {
 
-		if (!result.hasErrors()) {
-			logger.debug("Server Manager: dati inseriti correttamente"); //TODO i18n		
-			try{	
-				Server server=ObjectCopier.createObject(formServer, Server.class);
-				serverService.insertServer(server);
-				formServer.setEsito("formServer.esito.ok");
-			}
-			catch(Exception e){
-				formServer.setEsito("formServer.esito.notOk");
-				logger.error("Err",e); //TODO i18n errore inserimento
-			}finally{
-				model.addAttribute("serverData",formServer);
-			}
+		model.addAttribute("testData",formTestBind);
 
-		}
-
+		addChronos(model);		
+		
 		return "testBind";
 	}
 	
+	
+	protected void addChronos(ModelMap model) {
+		model.addAttribute("daysOfMonth", daysOfMonth);
+		model.addAttribute("monthsOfYear", monthsOfYear);
+		model.addAttribute("years", years);
+		
+		model.addAttribute("hoursOfDay", hoursOfDay);		
+		model.addAttribute("minutesOfHour", minutesOfHour);
+		model.addAttribute("secondsOfMinute", secondsOfMinute);		
+	}
 }
