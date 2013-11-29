@@ -1,4 +1,4 @@
-package $form.getClazz();
+package $form.getNamespace();
 
 import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -14,19 +14,28 @@ public class $form.getName(){
 
 #foreach($field in $Fields)
 #if($field.NotEmpty>0) 
-        @NotEmpty(message="form$Name.$field.getName()$NotEmpty")
+        @NotEmpty(message="{form$Name.$field.getName()$NotEmpty}")
 #end
 #if($field.getPatternNumeric()>0)
-        @Pattern(regexp="$field.getPattern()",message="form$Name.$field.getName()$Pattern",)
+        @Pattern(regexp="$field.getPattern()",message="{form$Name.$field.getName()$Pattern}")
 #end
         private $field.printType() $field.getName();
 #end
 #foreach($field in $listFields)
         private $field.printType() $field.getName();
 #end    
-    
+        private String esito;
+        
+        public String getEsito(){
+           return this.esito;
+        }
+        
+        public void setEsito(String esito){
+           this.esito=esito;
+        }
+            
 #foreach($field in $Fields)
-        public  $field.printType() get$field.getNameUcase(){
+        public  $field.printType() get$field.getNameUcase()(){
            return this.$field.getName();
         }
     
@@ -36,7 +45,7 @@ public class $form.getName(){
 #end
 
 #foreach($field in $listFields)
-        public  $field.printType() get$field.getNameUcase(){
+        public  $field.printType() get$field.getNameUcase()(){
            return this.$field.getName();
         }
     
@@ -47,15 +56,15 @@ public class $form.getName(){
     
     
         public String toString(){
-           return " Form$Name [$Fields.get(0).getName()=" +  $Fields.get(0).getName() + "
+           return " Form$Name [$Fields.get(0).getName()=" +  $Fields.get(0).getName() + 
 #foreach($field in $Fields)
 #if($foreach.count>1)	
-	          , $field.getName()=" + $field.getName() + "
+	        " , $field.getName()=" + $field.getName() + 
 #end
 #end              
 #foreach($field in $listFields)	
-	          , $field.getName()=" + $field.getName() + "
-#end        ]";
+	        " , $field.getName()=" + $field.getName() + 
+#end        "]";
         }
     
 

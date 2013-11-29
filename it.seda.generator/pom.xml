@@ -142,7 +142,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<!-- Jackson JSON Processor -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>

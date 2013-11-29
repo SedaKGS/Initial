@@ -23,6 +23,8 @@ public class Attribute {
 	private int pk;
 	private int notEmpty;
 	private String pattern;
+	private String field;
+	private int auto;
 	
 	private String inputType;
 	
@@ -32,6 +34,18 @@ public class Attribute {
 	
 	
     
+	public int getAuto() {
+		return auto;
+	}
+	public void setAuto(int auto) {
+		this.auto = auto;
+	}
+	public String getField() {
+		return field;
+	}
+	public void setField(String field) {
+		this.field = field;
+	}
 	public String getInputType() {
 		return inputType;
 	}

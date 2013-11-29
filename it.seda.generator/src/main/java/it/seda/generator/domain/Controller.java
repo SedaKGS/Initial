@@ -1,8 +1,16 @@
 package it.seda.generator.domain;
 
+import java.io.StringWriter;
+
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+
+import it.seda.generator.ModelsContainer;
+import it.seda.generator.Render;
 import it.seda.generator.util.GeneratorUtils;
 
-public class Controller {
+public class Controller implements Render{
 	
 	private String clazz;
 	private String name;
@@ -13,17 +21,21 @@ public class Controller {
 	private String baseUrl;
 	private int pageNumber;
 	private int rowsPerPage;
-	
+	static private String RESOURCE="/it/seda/generator/templates/Controller.vm";
+	private ModelsContainer container;
 
-	public Controller(String clazz) {
-		this.clazz=clazz;
-		this.name=GeneratorUtils.resolveClassName(clazz);
+	public Controller(String clazz,ModelsContainer container) {
+		this.clazz=clazz+"Controller";
+		this.name=GeneratorUtils.resolveClassName(clazz)+"Controller";
 		this.namespace=GeneratorUtils.resolveClassNamespace(clazz);
+		this.container=container;
 	}
 	
-	
-	
-    
+	public static String getRESOURCE() {
+		return RESOURCE;
+	}
+
+
 	public String getBaseUrl() {
 		return baseUrl;
 	}
@@ -123,6 +135,27 @@ public class Controller {
 				+ namespace + ", service=" + service + ", model=" + model
 				+ ", form=" + form + ", pageNumber=" + pageNumber
 				+ ", rowsPerPage=" + rowsPerPage + "]";
+	}
+
+
+
+
+	@Override
+	public void render() {
+		this.service=this.container.getService();
+		this.form=this.container.getForm();
+		this.model=this.container.getModel();
+		VelocityEngine ve = new VelocityEngine();
+		ve.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
+		ve.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+		ve.init();
+		VelocityContext context = new VelocityContext();
+		context.put( "controller", this);
+		Template template = ve.getTemplate(this.RESOURCE);
+		StringWriter sw = new StringWriter();
+		template.merge( context, sw );
+		GeneratorUtils.printToFile(this.namespace,this.name,"java",sw.toString());
+		
 	}
 
 	

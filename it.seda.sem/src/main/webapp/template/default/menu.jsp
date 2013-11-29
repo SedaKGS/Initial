@@ -24,6 +24,9 @@
      <div class="seda-ui-divrow">
       <a href="/sem/manager/societa">${x:i18n('menu.societaManager.title')}</a>
      </div>
+      <div class="seda-ui-divrow">
+      <a href="/sem/manager/test">Test</a>
+     </div>
     </sec:authorize>
   </td>
   </tr>

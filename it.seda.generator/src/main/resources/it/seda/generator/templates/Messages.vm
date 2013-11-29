@@ -1,4 +1,5 @@
-#set($Fields=$messages.getForm().getFormAttributes())
+##set($Fields=$messages.getForm().getFormAttributes())
+#set($Fields=$messages.getModel().getAttributes())
 #set($Name=$messages.getForm().getModelName())
 #set($FormLower=$messages.getForm().getLowerName())
 #set($esito=".esito")
@@ -8,16 +9,18 @@
 #set($modify=".modify")
 #set($insert=".insert")
 #set($cancel=".cancel")
+#set($edit=".edit")
 #set($new=".new")
 #set($title=".title")
-$FormLower$Name$esito$ok=Insert esito OK
-$FormLower$Name$esito$notOk=Insert esito not_OK
-$FormLower$Name$title=Insert Title
-$FormLower$Name$modify=Insert Modify 
-$FormLower$Name$esito$cancel=Insert cancel
-$FormLower$Name$insert=Insert insert
-$FormLower$new=new 
-$FormLower$title=Insert title
+$FormLower$Name$ok = Insert esito OK
+$FormLower$Name$notOk = Insert esito not_OK
+$FormLower$Name$title = Insert Title
+$FormLower$Name$modify = Insert Modify 
+$FormLower$Name$cancel = Insert cancel
+$FormLower$Name$edit = Insert edit
+$FormLower$Name$insert = Insert insert
+$FormLower$Name$new = new 
+$FormLower$Name$title = Insert title
 #foreach($field in $Fields)	
-form$Name.$field.getName()=Insert $field.getName()
+$FormLower$Name.$field.getName()=Insert $field.getName()
 #end

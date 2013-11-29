@@ -10,7 +10,7 @@ public class $model.getName() implements Serializable{
 	
 	
 #foreach($field in $model.getAttributes())
-        public  $field.printType() get$field.getNameUcase(){
+        public  $field.printType() get$field.getNameUcase()(){
            return this.$field.getName();
         }
     
@@ -21,12 +21,12 @@ public class $model.getName() implements Serializable{
     
 #set($lenght=$model.getAttributes().get(0))
         public String toString(){
-           return " $model.getName() [$model.getAttributes().get(0).getName()=" +  $model.getAttributes().get(0).getName() + "
+           return " $model.getName() [$model.getAttributes().get(0).getName()=" +  $model.getAttributes().get(0).getName() + 
 #foreach($field in $model.getAttributes())
 #if($foreach.count>1)	
-	          , $field.getName()=" + $field.getName() + "
+	          ", $field.getName()=" + $field.getName() + 
 #end
-#end              ]";
+#end              "]";
         }
     
     

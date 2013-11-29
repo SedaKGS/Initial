@@ -3,7 +3,7 @@ CREATE TABLE cliente (
 		nome VARCHAR(50) NOT NULL,
 		descrizione VARCHAR(256) NOT NULL,
 		regitrazione TIMESTAMP NOT NULL with default,
-		constraint pk_cliente primary key(id),
+		constraint pk_cliente primary key(id)
 	);                   
 		                 
 CREATE UNIQUE INDEX cliente_uidx ON cliente (nome ASC);

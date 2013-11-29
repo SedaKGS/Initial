@@ -1,36 +1,32 @@
-#set($namesapces=$myBatisMapper.getClazz())
-#set($ModelLower=$myBatisMapper.getModel().getName())
+#set($namespaces=$myBatisMapper.getClazz())
+#set($ModelLower=$myBatisMapper.getModel().getLowerName())
 #set($ModelUpper=$myBatisMapper.getModel().getName())
 #set($Count="Count")
 #set($fields=$myBatisMapper.getModel().getAttributes())
-
-#set($lenght=0)
+#set($length=0)
+#set($dot=".")
+#set($count="Count")
 #foreach($field in $fields)
-#field
 #if($field.getPk()==0 && $field.isNotList())
-#set($lenght=$lenght+1) 
+#set($length=$length+1) 
 #end
 #end
-
-#set($lenghtPk=0)
+#set($lengthPk=0)
 #foreach($field in $fields)
-#field
 #if($field.getPk()>0 && $field.isNotList())
-#set($lenghtPk=$lenghtPk+1) 
+#set($lengthPk=$lengthPk+1) 
 #end
 #end
-
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="$namesapces">
+<mapper namespace="$namespaces">
 
-<resultMap id="$ModelUpper" type="$ModelLower">
+<resultMap id="$ModelLower" type="$ModelUpper">
 #foreach($field in $fields)
 #if($field.getPk()>0 && $field.isNotPkList())
-   <id property="$field.getName()"   column="$field.getColumn()">    
+   <id property="$field.getName()"   column="$field.getColumn()" />    
 #end
 #end
 #foreach($field in $fields)
@@ -43,56 +39,40 @@
 <insert id="insert$ModelUpper" parameterType="$ModelUpper">
 INSERT INTO $ModelUpper
    (
-#foreach($field in $fields)
-#if($field.getPk()==0 && $field.isNotList())
-#if($foreach.count<$lenght)
-    $field.getName(),  
-#end
-#if($foreach.count==$lenght)
-    $field.getName()
-#end
-#end
-#end
-   )	
-    VALUES
-    (
-#foreach($field in $fields)
-#if($field.getPk()==0 && $field.isNotList())
-#if($foreach.count<$lenght)
-    #{$field.getName()},  
-#end
-#if($foreach.count==$lenght)
-    #{$field.getName()}
-#end
-#end
-#end   
+    $myBatisMapper.getModel().getInsert()
+   )VALUES	
+   (
+   $myBatisMapper.getModel().getValues()
     )
 </insert>
 	
 <update id="update$ModelUpper" parameterType="$ModelUpper">
 UPDATE $ModelUpper
-SET 
-#foreach($field in $fields)
-#if($field.getPk()==0 && $field.isNotList())
-#if($foreach.count<$lenght)
-    $field.getName()=#{$field.getName()},  
-#end
-#if($foreach.count==$lenght)
-    $field.getName()=#{$field.getName()}
-#end
-#end
-#end   
-WHERE 
-#if($field.getPk()>0 && $field.isNotList())
-#if($foreach.count<$lenghtPk)$lenghtPk
-    $field.getName()=#{$field.getName()} AND
-#end
-#if($foreach.count==$lenghtPk)
-    $field.getName()=#{$field.getName()}
-#end
-#end
+   $myBatisMapper.getModel().getSet()
+   $myBatisMapper.getModel().getWhere()
 </update>	
-	
-	
+
+<delete id="delete$ModelUpper" parameterType="java.math.BigInteger">
+DELETE FROM $ModelUpper
+$myBatisMapper.getModel().getWhere()  
+</delete>	
+
+<select id="get$ModelUpper" parameterType="java.math.BigInteger" resultMap="$ModelLower">
+SELECT $myBatisMapper.getModel().getAll() 
+FROM $ModelUpper
+$myBatisMapper.getModel().getWhere()  
+</select>	
+
+
+<select id="list$ModelUpper$Count"  resultType="int">
+SELECT COUNT($fields.get(0).getName())
+FROM $ModelUpper
+</select>	
+
+<select id="list$ModelUpper"  resultMap="$ModelLower">
+SELECT  $myBatisMapper.getModel().getAll()
+FROM $ModelUpper
+$myBatisMapper.getModel().getOrder()
+</select>
 	
 </mapper>

@@ -52,8 +52,8 @@ public class XMLGeneratorParser {
 	private void parseRoot(XNode root){
 		try {
 			aliasesElement(root.evalNodes("aliases"));
-			modelElement(root.evalNodes("model"));
-			modelMapperElement(root.evalNodes("mapper"));
+			modelElement(root.evalNode("model"));
+			modelMapperElement(root.evalNode("mapper"));
 			serviceElement(root.evalNode("service"));
 			controllerElement(root.evalNode("controller"));
 			formElement(root.evalNode("form"));
@@ -68,7 +68,7 @@ public class XMLGeneratorParser {
 	private void  myBatisMapperElement(XNode myBatisMapper){
 		if(myBatisMapper!=null){
 			String clazz=myBatisMapper.getStringAttribute("classpath");
-			MyBatisMapper mapper=new MyBatisMapper(clazz);
+			MyBatisMapper mapper=new MyBatisMapper(clazz,container);
 			container.setMyBatisMapper(mapper);
 		}
 		
@@ -77,7 +77,7 @@ public class XMLGeneratorParser {
 	private void jspElement(XNode jsp){
 		if(jsp!=null){
 			String clazz=jsp.getStringAttribute("classpath");
-			JSP page=new JSP(clazz);
+			JSP page=new JSP(clazz,container);
 			container.setJsp(page);
 		}
 		
@@ -87,7 +87,7 @@ public class XMLGeneratorParser {
 		if(messages!=null){
 			String message=messages.getStringAttribute("message");
 			String validator=messages.getStringAttribute("validator");
-			I18NMessages i18n=new I18NMessages(message,validator);
+			I18NMessages i18n=new I18NMessages(message,validator,container);
 			container.setI18NMessages(i18n);
 		}
 		
@@ -96,7 +96,7 @@ public class XMLGeneratorParser {
 	private void formElement(XNode form){
 		if(form!=null){
 			String classpath=form.getStringAttribute("classpath");
-			Form ctr=new Form(classpath);
+			Form ctr=new Form(classpath,container);
 			container.setForm(ctr);
 		}
 		
@@ -108,10 +108,11 @@ public class XMLGeneratorParser {
 			String baseUrl=controller.getStringAttribute("baseurl");
 			int pageNumber=controller.getIntAttribute("pageNumber",1);
 			int rowsPerPage=controller.getIntAttribute("rowsPerPage",15);
-			Controller ctr=new Controller(classpath);
+			Controller ctr=new Controller(classpath,container);
 			ctr.setBaseUrl(baseUrl);
 			ctr.setPageNumber(pageNumber);
 			ctr.setRowsPerPage(rowsPerPage);
+			checkController(ctr);
 			container.setController(ctr);
 		}
 		
@@ -121,23 +122,19 @@ public class XMLGeneratorParser {
 		if(service!=null){
 			String classpath=service.getStringAttribute("classpath");
 			String transaction=service.getStringAttribute("transaction");
-			Service srv=new Service(classpath,transaction);
+			Service srv=new Service(classpath,transaction,container);
 			container.setService(srv);
 		}
 		
 	}
 	
-	private void modelMapperElement(List<XNode> mappersGr){
-		if(mappersGr!=null){
-			for (XNode mapper : mappersGr) {
-				ModelMapper mp=new ModelMapper(mapper.getStringAttribute("classpath"));
-				String annotation=mapper.getStringAttribute("annotation");
-				
+	private void modelMapperElement(XNode mapper){
+		if(mapper!=null){
+				ModelMapper mp=new ModelMapper(mapper.getStringAttribute("classpath"),container);
+				String annotation=mapper.getStringAttribute("annotation");				
 				mp.setAnnotation(annotation);
-				mp.setModel(container.getModelList().get(0));
-				container.addModelMapper(mp);
-			}
-			
+				mp.setModel(container.getModel());
+				container.setModelMapper(mp);	
 		}
 	}
 	
@@ -158,10 +155,9 @@ public class XMLGeneratorParser {
 		
 	}
 	
-	private void modelElement(List<XNode> models){
-		if(models!=null){
-			for (XNode model : models) {
-				Model mdl=new Model(model.getStringAttribute("classpath"));
+	private void modelElement(XNode model){
+		if(model!=null){
+				Model mdl=new Model(model.getStringAttribute("classpath"),container);
 				List<XNode> attributes=model.evalNodes("attribute");
 				for (XNode attribute : attributes) {	
 					
@@ -170,16 +166,20 @@ public class XMLGeneratorParser {
 					String type=attribute.getStringAttribute("type");
 					String generic=attribute.getStringAttribute("generic");
 					int pk=attribute.getIntAttribute("pk",0);
+					int auto=attribute.getIntAttribute("auto",0);
 					int form=0;
 					int datagrid=0;
 					int notEmpty=0;
+					
 					String inputType=null;
 					String pattern=null;
+					String field=null;
 					XNode inputNode =attribute.evalNode("input");
 					if(inputNode!=null){
 					form=inputNode.getIntAttribute("form",0);
 					inputType=inputNode.getStringAttribute("type");
 					datagrid=inputNode.getIntAttribute("datagrid",0);
+					field=inputNode.getStringAttribute("field");
 					}
 					
 					XNode validator = attribute.evalNode("validator");
@@ -200,16 +200,19 @@ public class XMLGeneratorParser {
 				    attr.setGeneric(aliasRegistry.resolveAlias(generic));
 				    attr.setPk(pk);
 				    attr.setForm(form);
+				    attr.setAuto(auto);
 				    attr.setDatagrid(datagrid);
 				    attr.setNotEmpty(notEmpty);
 				    attr.setPattern(pattern);
 				    attr.setInputType(inputType);
+				    attr.setField(field);
+				    chekAttribute(attr);
 				    mdl.addAttribute(attr);
 				    
 				}
 				
-				container.addModel(mdl);
-			}
+				container.setModel(mdl);
+			
 		}
 	}
 
@@ -232,7 +235,21 @@ public class XMLGeneratorParser {
 	}
 
 
+	public void chekAttribute(Attribute attribute){
+		if(attribute.getGeneric()!=null){
+			logger.warn(attribute.getName()+" non può essere primary key");
+			return;
+		}
+		
+		
+	}
 	
+	public void checkController(Controller controller){
+		if(controller.getName().equalsIgnoreCase("controller")){
+			logger.warn(controller.getName()+" non è un nome consentito");
+			return;
+		}
+	}
 
 	
 	

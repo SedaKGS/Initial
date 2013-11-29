@@ -1,10 +1,18 @@
 package it.seda.generator.domain;
 
+import java.io.StringWriter;
+
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+
+import it.seda.generator.ModelsContainer;
+import it.seda.generator.Render;
 import it.seda.generator.util.GeneratorUtils;
 
 
 
-public class ModelMapper {
+public class ModelMapper implements Render {
 	
 	private Model  model;
 	private String clazz;
@@ -13,17 +21,27 @@ public class ModelMapper {
 	private String annotationName;
 	private String annotationNamesapce;
 	private String annotationClazz;
-	
+	static private String RESOURCE="/it/seda/generator/templates/ModelMapper.vm";
+	private ModelsContainer container;
 
 	public ModelMapper() {
 		
 	}
     
-	public ModelMapper (String clazz) {
-		this.clazz=clazz;
-		this.mapperName=GeneratorUtils.resolveClassName(clazz);
+	public ModelMapper (String clazz,ModelsContainer container) {
+		this.clazz=clazz+"Mapper";
+		this.mapperName=GeneratorUtils.resolveClassName(clazz)+"Mapper";
 		this.mapperNamespace=GeneratorUtils.resolveClassNamespace(clazz);
+		this.container=container;
 	}
+	
+	
+
+	public static String getRESOURCE() {
+		return RESOURCE;
+	}
+
+	
 
 	public Model getModel() {
 		return model;
@@ -103,6 +121,20 @@ public class ModelMapper {
 				+ ", mapperName=" + mapperName + ", mapperNamespace="
 				+ mapperNamespace + ", annotationName=" + annotationName
 				+ ", annotationNamesapce=" + annotationNamesapce + "]";
+	}
+
+	@Override
+	public void render() {
+		VelocityEngine ve = new VelocityEngine();
+		ve.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
+		ve.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+		ve.init();
+		VelocityContext context = new VelocityContext();
+		context.put( "mapper", this);
+		Template template = ve.getTemplate(this.RESOURCE);
+		StringWriter sw = new StringWriter();
+		template.merge( context, sw );
+		GeneratorUtils.printToFile(this.mapperNamespace,this.mapperName,"java",sw.toString());	
 	}
 	
 	
