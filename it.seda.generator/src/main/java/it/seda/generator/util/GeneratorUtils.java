@@ -1,7 +1,22 @@
 package it.seda.generator.util;
 
-public class GeneratorUtils {
 
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class GeneratorUtils {
+    
+	private static Logger logger = LoggerFactory.getLogger(GeneratorUtils.class);
+	
 	private GeneratorUtils() {
 		// TODO Auto-generated constructor stub
 	}
@@ -51,5 +66,32 @@ public class GeneratorUtils {
 			}
 		}
 		return stringBuilder.toString();
+	}
+	
+	
+	static public void printToFile(String path,String name,String ext,String body){
+		BufferedWriter writer = null;
+		File file=new File(path.replace(".", "\\"));
+		if (!file.exists()) {
+			if (file.mkdirs()) {
+				logger.info(name+"."+ext+" : Directory creata!");
+			} else {
+				logger.info(name+"."+ext+" : Crazione directory fallita!");
+			}
+		}
+		file=new File(path.replace(".", "\\")+"\\"+name+"."+ext);
+		try {
+			file.createNewFile();
+			writer = new BufferedWriter(new FileWriter(file));
+			writer.write(body);
+			writer.close();
+		} catch (IOException e) {
+			logger.info(name+"."+ext+" : Problemi nella creazione del file!");
+			e.printStackTrace();
+			return;
+		}
+		
+		
+		
 	}
 }

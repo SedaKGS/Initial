@@ -19,5 +19,10 @@
 	<screen name="testBind" extends="base">
 		<parameter key="content" value="/template/manager/testbind.jsp"/>	
 	</screen>	
+	
+	<screen name="test" extends="base">
+		<parameter key="content" value="/template/manager/Test.jsp"/>	
+	</screen>	
+		
 
 </templates>

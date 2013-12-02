@@ -14,8 +14,8 @@ import java.util.List;
 
 public class ModelsContainer {
 	
-	private List<Model> modelList;
-	private List<ModelMapper> modelMapper;
+	private Model model;
+	private ModelMapper modelMapper;
 	private Service service;
 	private Controller controller;
 	private Form form;
@@ -74,34 +74,28 @@ public class ModelsContainer {
 	}
 
 	public ModelsContainer() {
-		modelList=new ArrayList<Model>(1);
-		modelMapper=new ArrayList<ModelMapper>(1);
+		
 		
 	}
 
-	public List<Model> getModelList() {
-		return modelList;
-	}
-
-	public void setModelList(List<Model> modelList) {
-		this.modelList = modelList;
+	
+	public void setModel(Model model){
+		this.model=model;
 	}
 	
-	public void addModel(Model model){
-		modelList.add(model);
+	public Model getModel(){
+		return this.model;
 	}
 
-	public List<ModelMapper> getModelMapper() {
+	public ModelMapper getModelMapper() {
 		return modelMapper;
 	}
 
-	public void setModelMapper(List<ModelMapper> modelMapper) {
+	public void setModelMapper(ModelMapper modelMapper) {
 		this.modelMapper = modelMapper;
 	}
 	
-	public void addModelMapper(ModelMapper modelMapper){
-		this.modelMapper.add(modelMapper);
-	}
+	
 	
 	
 	

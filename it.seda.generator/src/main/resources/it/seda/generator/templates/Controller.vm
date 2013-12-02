@@ -6,6 +6,7 @@ import it.seda.template.taglib.DatagridTag.Page;
 import $controller.getForm().getClazz();
 import $controller.getModel().getClazz();
 import $controller.getService().getClazz();
+import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import org.apache.ibatis.session.RowBounds;
@@ -47,11 +48,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 #set($pgNmb=$controller.getPageNumber())
 #set($rwspg=$controller.getRowsPerPage())
 #set($baseUrl=$controller.getBaseUrl())
-
-
+#set($listFields=$controller.getForm().getListAttributes())
+#set($dot=".")
+#set($idUrl="")
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+     #set($idUrl=$idUrl+"/"+"{"+$field.getName()+"}")
+#end
+#end
 
 @Controller
-@RequestMapping(value="$baseUrl")
+@RequestMapping(value="/$baseUrl")
 public class $controller.getName() {
 
     @Inject $service $nameService;
@@ -60,14 +67,8 @@ public class $controller.getName() {
     /*
      * Method used to delete  $ModelUpper by primary key
     */
-    @RequestMapping(
-                    value="
-#foreach($field in $fields)
-#if($field.getPk()>0 && $field.isNotPkList())
-                           /{$field.getName()}
-#end	                   
-#end
-                    ",method=RequestMethod.DELETE) 
+    @RequestMapping(value="$idUrl", 
+                    method=RequestMethod.DELETE) 
     public String deleteName(
 #foreach($field in $fields)
 #if($field.getPk()>0 && $field.isNotPkList())
@@ -81,7 +82,7 @@ public class $controller.getName() {
     $ModelUpper $ModelLower=new $ModelUpper();
 #foreach($field in $fields)
 #if($field.getPk()>0 && $field.isNotPkList())
-    $ModelLower$set$field.getNameUcase()($field.getName())
+    $ModelLower$set$field.getNameUcase()($field.getName());
 #end
 #end			                   
     $nameService$delete$ModelUpper($ModelLower);
@@ -111,7 +112,7 @@ public class $controller.getName() {
         $nameService$update$ModelUpper($ModelLower);
         $FormLower$setEsito("$FormLower$esito$ok");
        }catch(Exception e){
-        form#Name.setEsito("$FormLower$esito$notOk");
+        $FormLower$setEsito("$FormLower$esito$notOk");
         logger.error("Err",e); //TODO i18n errore inserimento
        }finally{
         model.addAttribute("$FormLower",$FormLower);
@@ -125,13 +126,7 @@ public class $controller.getName() {
     /*
      * Method used to edit $ModelUpper given the primary key
     */
-    @RequestMapping(value="
-#foreach($field in $fields)
-#if($field.getPk()>0 && $field.isNotPkList())
-                           /{$field.getName()}
-#end	                   
-#end
-                           ", 
+    @RequestMapping(value="$idUrl", 
                     method=RequestMethod.GET) 
     public String edit$ModelUpper(
 #foreach($field in $fields)
@@ -146,10 +141,10 @@ public class $controller.getName() {
      $ModelUpper $ModelLower=new $ModelUpper();
 #foreach($field in $fields)
 #if($field.getPk()>0 && $field.isNotPkList())
-     $ModelLower$set$field.getNameUcase()($field.getName())
+     $ModelLower$set$field.getNameUcase()($field.getName());
 #end
 #end	                         
-     $ModelUpper $ModelLower=$nameService$get$ModelUpper$ById($ModelLower);
+     $ModelLower=$nameService$get$ModelUpper$ById($ModelLower);
      $FormUpper $FormLower=new $FormUpper();
 #foreach($field in $controller.getForm().getFormAttributes())
      $FormLower$set$field.getNameUcase()($ModelLower$get$field.getNameUcase());
@@ -193,7 +188,7 @@ public class $controller.getName() {
 				$nameService$insert$ModelUpper($ModelLower);
 				$FormLower$setEsito("$FormLower$esito$ok");
 			}catch(Exception e){
-				account$setEsito("$FormLower$esito$notOk");
+				$FormLower$setEsito("$FormLower$esito$notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
 			}finally{
 				model.addAttribute("$FormLower",$FormLower);
@@ -217,6 +212,11 @@ public class $controller.getName() {
         model.addAttribute("$ModelUpper$Page", page);
      }	
 	
+	
+		
+		
+		
+}
 
 
 

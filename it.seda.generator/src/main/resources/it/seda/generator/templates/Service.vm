@@ -1,7 +1,8 @@
-package $service.getClazz()
+package $service.getNamespace();
 import  $service.getModel().getFullName();
 import  $service.getModelMapper().getClazz();
 import javax.inject.Inject;
+import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,7 @@ public class $service.getName() {
 	
 	@Transactional("$transactionManager")
 	public $ModelUpper  get$ModelUpper$ById($ModelUpper $ModelLower) {
-		$ModelUpper tmp= $mapper$get$ModelUpper($ModelLower);
+		$ModelUpper tmp= $mapper$get$ModelUpper$ById($ModelLower);
 		return tmp;
 		
 	}

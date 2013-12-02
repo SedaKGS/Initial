@@ -1,10 +1,9 @@
-package $mapper.getMapperNamespace()
+package $mapper.getMapperNamespace();
 
 import org.apache.ibatis.session.RowBounds;
 import java.util.List;
 import $mapper.getModel().getFullName();
 import $mapper.getAnnotationClazz();
-import java.util.List;
 import org.apache.ibatis.session.RowBounds;
 
 
@@ -14,7 +13,7 @@ public interface $mapper.getMapperUpperName() {
 	void insert$mapper.getModel().getUpperName()($mapper.getModel().getUpperName() $mapper.getModel().getName()); 	
 	void update$mapper.getModel().getUpperName()($mapper.getModel().getUpperName() $mapper.getModel().getName());
 	void delete$mapper.getModel().getUpperName()($mapper.getModel().getUpperName() $mapper.getModel().getName()); 
-        $mapper.getModel().getUpperName()  get$mapper.getModel().getUpperName()ById($mapper.getModel().getUpperName() $mapper.getModel().getName()); 
-        int list$mapper.getModel().getUpperName()Count(); 
+    $mapper.getModel().getUpperName()  get$mapper.getModel().getUpperName()ById($mapper.getModel().getUpperName() $mapper.getModel().getName()); 
+    int list$mapper.getModel().getUpperName()Count(); 
 	List<$mapper.getModel().getUpperName()> list$mapper.getModel().getUpperName()(RowBounds rowBounds); 
 }
