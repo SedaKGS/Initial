@@ -1,9 +1,9 @@
-package it.seda.sem.mvc.manager;
+package it.seda.template.taglib.time;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class DateTimeValidator implements ConstraintValidator<ValidDateTime,DateTimeForm> {
+public class DateTimeValidator implements ConstraintValidator<ValidDateTime,DateTime> {
 
     private String KeyMessage;
 	
@@ -13,7 +13,7 @@ public class DateTimeValidator implements ConstraintValidator<ValidDateTime,Date
 	}
 
 	@Override
-	public boolean isValid(DateTimeForm dateTime, ConstraintValidatorContext constraintValidatorContext) {
+	public boolean isValid(DateTime dateTime, ConstraintValidatorContext constraintValidatorContext) {
 
 		
 		boolean valid = dateTime.isValid();

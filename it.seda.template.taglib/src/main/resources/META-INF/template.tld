@@ -199,6 +199,70 @@
 		</attribute>
 
 	</tag>
+	
+	<tag>
+		<description>
+      <![CDATA[
+      <p>
+      <b>Render a date time selector.</b>
+      </p>
+      <p>
+      Render a dat time selector in three dropdown list in according to the current locale.
+      </p>
+      <p>
+      You must specify <code>path</code>, <code>dateTime</code>, <code>selector</code> tag attributes.
+      </p>
+      ]]>
+      </description>
+		<name>datetime</name>
+		<tag-class>it.seda.template.taglib.DateTimeSelectorTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>
+         <![CDATA[
+         The attribute path for spring form data binding.
+         ]]>
+         </description>
+			<name>path</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+         <![CDATA[
+         Which part of date time will be prepared; one of it.seda.template.taglib.DateTimeSelectorTag.Selector: datetime, date, time. date is the default.
+         ]]>
+         </description>
+			<name>selector</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+         <![CDATA[
+         Date part dropdown list css class.
+         ]]>
+         </description>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>		
+		<attribute>
+			<description>
+         <![CDATA[
+         Date part separator span css class.
+         ]]>
+         </description>
+			<name>cssClassSep</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>		
+	</tag>	
+	
 	<!-- TEMPLATE FUNCTIONS -->
 	<function>
 		<description>Print i18n message.This function must be used with placeholder arguments 

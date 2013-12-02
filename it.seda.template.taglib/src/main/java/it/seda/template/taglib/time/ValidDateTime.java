@@ -1,4 +1,4 @@
-package it.seda.sem.mvc.manager;
+package it.seda.template.taglib.time;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;

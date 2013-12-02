@@ -65,7 +65,7 @@ public class IncludeTag extends TagSupport implements TryCatchFinally {
 		}
 		
 		ParameterContext parameterContext = ParameterContext.retrieve((HttpServletRequest)pageContext.getRequest());
-
+		
 		try {
 			if (parameterContext==null) {
 				logger.warn("template missing parameter context");
@@ -80,7 +80,7 @@ public class IncludeTag extends TagSupport implements TryCatchFinally {
 			}
 			
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.error(x.getMessage(), x);
 		} 
 
 		return EVAL_PAGE;

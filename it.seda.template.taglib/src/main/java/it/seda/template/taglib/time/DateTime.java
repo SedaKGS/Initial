@@ -1,4 +1,4 @@
-package it.seda.sem.mvc.manager;
+package it.seda.template.taglib.time;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,12 +10,16 @@ import java.util.Date;
  * @author f.ricci
  *
  */
-public class DateTimeForm {
+public class DateTime {
 
 	public final static String DATE_FORMAT="yyyy-MM-dd HH:mm:ss.SSS";
 	public final static String FORMATTER="%04d-%02d-%02d %02d:%02d:%02d.%03d";	
 	
 	private final static SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+
+	public static enum AMPM {
+		AM, PM;
+	}
 	
 	static {
 		sdf.setLenient(false);
@@ -37,6 +41,12 @@ public class DateTimeForm {
 	private String millisOfSecond;	
 	
 	
+	private String century;
+	private String yearOfCentury;
+	
+	private String hour;
+	private AMPM amPm;
+	
 	public boolean isValid() {
 		return valid;
 	}
@@ -52,6 +62,41 @@ public class DateTimeForm {
 	public Date getDate() {
 		return parsed;
 	}
+	
+	public String getCentury() {
+		return century;
+	}
+	
+	public void setCentury(String century) {
+		this.century=century;
+		rebuildYearFromYearOfCentury();
+	}
+	
+	public String getYearOfCentury() {
+		return yearOfCentury;
+	}
+	public void setYearOfCentury(String yearOfCentury) {
+		this.yearOfCentury=yearOfCentury;
+		rebuildYearFromYearOfCentury();
+	}
+	
+	public String getAmPm() {
+		return amPm.name();
+	}
+	
+	public void setAmPm(String ampm) {
+		this.amPm=AMPM.valueOf(ampm);
+		rebuildHourOfDayFromHour();
+	}
+	
+	public void setHour(String hour) {
+		this.hour=hour;
+		rebuildHourOfDayFromHour();		
+	}
+	
+	public String getHour() {
+		return hour;
+	}	
 	
 	public String getYear() {
 		return year;
@@ -132,11 +177,11 @@ public class DateTimeForm {
 		this.minuteOfHour=String.valueOf(minuteOfHour);
 		this.secondOfMinute=String.valueOf(secondOfMinute);
 		this.millisOfSecond=String.valueOf(millisOfSecond);		
-		
+
 		rebuild();
 	}
 	
-	public DateTimeForm() {
+	public DateTime() {
 
 		Calendar calendar = Calendar.getInstance();
 
@@ -146,7 +191,7 @@ public class DateTimeForm {
 
 	}
 	
-	public DateTimeForm (
+	public DateTime (
             int year,
             int monthOfYear,
             int dayOfMonth,
@@ -159,7 +204,7 @@ public class DateTimeForm {
     	
     }		
 	
-	public DateTimeForm (
+	public DateTime (
             int year,
             int monthOfYear,
             int dayOfMonth) {
@@ -168,7 +213,7 @@ public class DateTimeForm {
     	
     }
 
-	public DateTimeForm (
+	public DateTime (
             int hourOfDay,
             int minuteOfHour,
             int secondOfMinute,
@@ -182,12 +227,17 @@ public class DateTimeForm {
     }
 	
 	private void rebuild() {
+		rebuild(true);
+	}
+	
+	private void rebuild(boolean rebuildHours) {
 		
 		try {
-			final int year=Integer.parseInt(this.year);
+			
+			final int hourOfDay=rebuildHours?rebuildHourFromHourOfDay():Integer.parseInt(this.hourOfDay);
+			final int year=rebuildYearOfCenturyFromYear();
 			final int monthOfYear=Integer.parseInt(this.monthOfYear);
 			final int dayOfMonth=Integer.parseInt(this.dayOfMonth);
-			final int hourOfDay=Integer.parseInt(this.hourOfDay);
 			final int minuteOfHour=Integer.parseInt(this.minuteOfHour);
 			final int secondOfMinute=Integer.parseInt(this.secondOfMinute);
 			final int millisOfSecond=Integer.parseInt(this.millisOfSecond);
@@ -196,6 +246,7 @@ public class DateTimeForm {
 
 			parsed = sdf.parse(formatted);
 			
+			valid = true;
 		} catch (NumberFormatException x) {
 			message = String.format("Invalid date part %s",year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond);
 			valid = false;
@@ -206,6 +257,74 @@ public class DateTimeForm {
 		
 	}
 	
+	private void rebuildYearFromYearOfCentury() {
+		final int century = Integer.parseInt(this.century);
+		final int yearOfCentury = Integer.parseInt(this.yearOfCentury);
+		year=String.valueOf(century+yearOfCentury);
+		rebuild();
+	}
+	
+	private int rebuildYearOfCenturyFromYear() {
+		final int year = Integer.parseInt(this.year);
+		final int yl = this.year.length();
+		switch (yl) {
+		case 1:
+			century="0";
+			yearOfCentury=this.year;
+			break;
+		case 2:
+			century="0";
+			yearOfCentury=this.year;
+			break;
+		default:
+			century=this.year.substring(0,yl-1);
+			yearOfCentury=this.year.substring(yl-2);
+			break;
+		} 
+		return year;
+	}	
+	
+	private void rebuildHourOfDayFromHour() {
+		final int hour=Integer.parseInt(this.hour);
+		switch (amPm) {
+		case AM:
+			hourOfDay=this.hour;
+			break;
+
+		default:
+			if (hour==12) {
+				hourOfDay=String.valueOf(0);
+			} else {
+				hourOfDay=String.valueOf(hour+12);
+			}
+			break;
+		} 
+		
+		rebuild(false);
+	}
+	
+	private int rebuildHourFromHourOfDay() {
+		final int hourOfDay=Integer.parseInt(this.hourOfDay);
+		if (hourOfDay>12) {
+			hour=String.valueOf(hourOfDay-12);
+			amPm=AMPM.PM;
+		} else if (hourOfDay==0){
+			hour=String.valueOf(0);
+			amPm=AMPM.PM;
+		} else {
+			hour=String.valueOf(hourOfDay);
+			amPm=AMPM.AM;
+		}
+		return hourOfDay;
+	}	
+	
+	@Override
+	public String toString() {
+		return "DateTime [formatted=" + formatted + ", valid=" + valid
+				+ ", message=" + message + ", hour=" + hour + ", amPm=" + amPm
+				+ "]";
+	}
+
 	@SuppressWarnings("serial")
 	public class DateTimeException extends RuntimeException {
 

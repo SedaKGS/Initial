@@ -6,7 +6,6 @@ package it.seda.template.utils;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.Set;
 
 /**
