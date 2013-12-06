@@ -11,7 +11,7 @@ import it.seda.sem.domain.Cliente;
 import it.seda.sem.domain.ObjectCopier;
 import it.seda.sem.domain.Server;
 import it.seda.sem.jdbc.RowBoundsHelper;
-import it.seda.sem.manager.service.ClientService;
+import it.seda.sem.manager.service.ClienteService;
 import it.seda.sem.manager.service.ServerService;
 import it.seda.sem.mvc.manager.models.FormAccount;
 import it.seda.sem.mvc.manager.models.FormClient;

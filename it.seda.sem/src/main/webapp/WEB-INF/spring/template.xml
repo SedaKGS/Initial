@@ -2,8 +2,6 @@
 	<template name="default" url="/template/default.jsp" default="true"/>
 	<template name="custom" url="/template/custom.jsp" themes="custom" default="true"/>
   
-    
-    
 	<screen name="base">
 		<parameter key="headerLeft" value="/template/default/header_banner.jsp"/>
 		<parameter key="headerRight" value="/template/default/header_credentials.jsp"/>		
@@ -12,10 +10,8 @@
 		<parameter key="footer" value="/template/default/footer.jsp"/>
 	</screen>
 	
-	
 	<screen name="error" extends="base">
-		 <parameter key="content" value="/template/manager/error.jsp"/>
+		 <parameter key="content" value="/template/errors/error.jsp"/>
 	</screen>
-	
 
 </templates>

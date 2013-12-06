@@ -18,6 +18,11 @@ public interface Renderer {
 		}
 	};
 	
+	void setCssClass(String cssClass);
+	void setCssClassSep(String cssClassSep);
+	void setReadonly(boolean readonly);
+	void setEmptyopt(boolean emptyopt);
+	
 	void render(Writer writer) throws IOException;
 	
 }

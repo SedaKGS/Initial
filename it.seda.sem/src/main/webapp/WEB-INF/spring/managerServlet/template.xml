@@ -1,7 +1,7 @@
 <templates>
 
-	<screen name="client" extends="base">
-		 <parameter key="content" value="/template/manager/formClient.jsp"/>
+	<screen name="clienta" extends="base">
+		 <parameter key="content" value="/template/manager/clienteManager.jsp"/>
 	</screen>
 	
 	<screen name="server" extends="base">

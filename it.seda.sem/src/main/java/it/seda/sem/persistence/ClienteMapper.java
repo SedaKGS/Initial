@@ -11,19 +11,18 @@ import it.seda.sem.mvc.annotations.BusinessRepository;
 
 
 @BusinessRepository
-public interface ClientMapper {
+public interface ClienteMapper {
 
-	void insertClient(Cliente client);
+	void insertCliente(Cliente client);
 
-	void updateClient(Cliente client);
+	void updateCliente(Cliente client);
 
-	void deleteClient(BigInteger id);
+	void deleteCliente(BigInteger id);
 
-	Cliente getClient(BigInteger id);
+	Cliente getCliente(BigInteger id);
 
-	int listClientCount();
-
-	List<Cliente> listClient(RowBounds rowBounds);
-    
+	int listClientiCount();
+	
+	List<Cliente> listClienti(RowBounds rowBounds);
 
 }

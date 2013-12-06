@@ -15,10 +15,19 @@
 		up static resources in the ${webappRoot}/resources/ directory -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Business datasource (is the same of security data source) -->
+	<!-- Business datasource (can be different from security data source) -->
+	<!-- 
 	<bean id="dataSourceBusiness" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="java:comp/env/jdbc/SEMDataSource" />
 	</bean>
+	 -->
+	 <bean id="dataSourceBusiness" class="it.seda.sem.jdbc.datasource.RoutingDataSource">
+	 	<property name="targetDataSources">
+	 		<map>
+	 			<entry key="dataSourceRef" value="java:comp/env/jdbc/SEMDataSource"/>
+	 		</map>
+	 	</property>
+	 </bean>
 
 	<!-- transaction manager, use JtaTransactionManager for global tx -->
 	<bean id="transactionBusinessManager"
@@ -42,8 +51,7 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBusiness" />
 		<property name="basePackage" value="it.seda.sem.persistence" />
-		<property name="annotationClass"
-			value="it.seda.sem.mvc.annotations.BusinessRepository" />
+		<property name="annotationClass" value="it.seda.sem.mvc.annotations.BusinessRepository" />
 	</bean>
 
 	<!-- *********************** SPRING i18n BUNDLES ***************************** -->
@@ -83,8 +91,14 @@
 		<property name="basenamePrefix" value="it.seda.sem.theme.theme-"/>
 	</bean>
 
-	<bean id="themeResolver" class="it.seda.template.spring.theme.URIBasedThemeResolver">
+	<bean id="themeResolver" class="it.seda.template.spring.theme.URLBasedThemeResolver">
 		<property name="defaultThemeName" value="default"/>
+		<property name="definitions">
+			<map>
+				<entry key="http://localhost" value="default"/>
+				<entry key="http://127.0.0.1" value="custom"/>
+			</map>
+		</property>
 	</bean>
 	
 	<!-- Enable the Spring high level exception handler -->
@@ -92,7 +106,9 @@
           class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <map>
-                <entry key="java.lang.throwable" value="errorPage"/>         
+                <entry key="NoSuchRequestHandlingMethodException" 
+                		value="error404"/>
+                <entry key="java.lang.Throwable" value="error"/>         
             </map>
         </property>
         <!-- See note below on how this interacts with Spring Boot -->

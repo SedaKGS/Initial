@@ -14,7 +14,7 @@ import java.util.List;
  * @author f.ricci
  *
  */
-public class TimeRenderer implements Renderer {
+public class TimeRenderer extends AbstractRenderer {
 	
 	private DateTime dateTime;
 	protected SimpleDateFormat timeFormat;
@@ -26,16 +26,6 @@ public class TimeRenderer implements Renderer {
 	private int ax;
 	private int hx;
 	private int mx;
-	
-	private String cssClass;
-	private String cssClassSep;
-	
-	public void setCssClass(String cssClass) {
-		this.cssClass = cssClass;
-	}
-	public void setCssClassSep(String cssClassSep) {
-		this.cssClassSep = cssClassSep;
-	}
 	
 	public TimeRenderer(String path, DateTime dateTime, SimpleDateFormat timeFormat) {
 		this.path=path;
@@ -56,14 +46,14 @@ public class TimeRenderer implements Renderer {
 		
 		BoundedPartRenderer hours=null;
 		if (pattern.contains("HH")) {
-			hours = new BoundedPartRenderer(path, DateTimePart.HOUR_OF_DAY, hx, 0, 24, 2, '0', Integer.valueOf(dateTime.getHourOfDay()));
+			hours = new BoundedPartRenderer(path, DateTimePart.HOUR_OF_DAY, hx, 0, 24, 2, '0', nullOrInteger(dateTime.getHourOfDay()));
 		} else if (pattern.contains("H")) {
-			hours = new BoundedPartRenderer(path, DateTimePart.HOUR_OF_DAY, hx, 0, 24, 2, ' ', Integer.valueOf(dateTime.getHourOfDay()));
+			hours = new BoundedPartRenderer(path, DateTimePart.HOUR_OF_DAY, hx, 0, 24, 2, ' ', nullOrInteger(dateTime.getHourOfDay()));
 		} else {
 			if (pattern.contains("hh")) {
-				hours = new BoundedPartRenderer(path, DateTimePart.HOUR, hx, 1, 13, 2, '0', Integer.valueOf(dateTime.getHour()));
+				hours = new BoundedPartRenderer(path, DateTimePart.HOUR, hx, 1, 13, 2, '0', nullOrInteger(dateTime.getHour()));
 			} else {
-				hours = new BoundedPartRenderer(path, DateTimePart.HOUR, hx, 1, 13, 2, ' ', Integer.valueOf(dateTime.getHour()));
+				hours = new BoundedPartRenderer(path, DateTimePart.HOUR, hx, 1, 13, 2, ' ', nullOrInteger(dateTime.getHour()));
 			}
 			if (ax==-1) {
 				ax=mx+1;
@@ -75,7 +65,8 @@ public class TimeRenderer implements Renderer {
 				renderers.add(new FixedPartRenderer(ax-1, "&nbsp;", cssClassSep));
 			}
 		}
-		hours.setCssClass(cssClass);
+		applyToPart(hours);
+
 		renderers.add(hours);
 		renderers.add(new FixedPartRenderer(mx-1, ":", cssClassSep));
 		
@@ -86,7 +77,8 @@ public class TimeRenderer implements Renderer {
 			minutes = new BoundedPartRenderer(path, DateTimePart.MINUTE_OF_HOUR, mx, 1, 60, 2, ' ', Integer.valueOf(dateTime.getMinuteOfHour()));
 		}
 		
-		minutes.setCssClass(cssClass);
+		applyToPart(minutes);
+		
 		renderers.add(minutes);
 		
 		Collections.sort(renderers, PART_COMPARATOR);

@@ -23,12 +23,14 @@
 	<!-- i18n --> 
 	<filter>
 		<filter-name>requestContextFilter</filter-name>
-		<filter-class>it.seda.sem.security.filter.RequestContextFilter</filter-class>
+		<filter-class>it.seda.sem.security.filter.SecurityRequestContextFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
 		<filter-name>requestContextFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>		
+		<dispatcher>ERROR</dispatcher> <!-- per la gestione degli errori http altrimenti non porta i dati di sessione -->		
 	</filter-mapping>
 
 	<!-- Spring Security filter -->
@@ -40,10 +42,14 @@
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>		
+		<dispatcher>ERROR</dispatcher> <!-- per la gestione degli errori http altrimenti non porta i dati di sessione -->
 	</filter-mapping>
 	
 	
 	<!--  Hidden Method Filter -->
+	<!-- cosi possiamo gestire su qualsiasi richiesta i metodi statndard rest specificando il parametro method o
+	dal form spring  -->
 	<filter>
 	 <filter-name>hiddenHttpMethodFilter</filter-name>
 	 <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
@@ -112,9 +118,37 @@
 		<url-pattern>/events/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- Processes errors -->
+	<servlet>
+		<servlet-name>errorsServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/errorsServlet/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>errorsServlet</servlet-name>
+		<url-pattern>/errors/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- --> 
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errors/http/404</location>
+	</error-page> 
+	
+	<error-page>
+		<error-code>500</error-code>
+		<location>/errors/http/500</location>
+	</error-page>	
+
+	<!-- entry system -->
 	<welcome-file-list>
 		<welcome-file>entrypoint.jsp</welcome-file>
 	</welcome-file-list>
+
 
 </web-app>

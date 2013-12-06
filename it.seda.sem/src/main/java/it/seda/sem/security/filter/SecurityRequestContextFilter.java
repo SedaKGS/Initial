@@ -23,27 +23,10 @@ import org.springframework.web.servlet.LocaleResolver;
  * 
  * @author f.ricci
  */
-public class RequestContextFilter implements Filter {
+public class SecurityRequestContextFilter implements Filter {
 
-	private Logger logger = LoggerFactory.getLogger(RequestContextFilter.class);	
+	private Logger logger = LoggerFactory.getLogger(SecurityRequestContextFilter.class);	
 	
-	private boolean threadContextInheritable = false;
-	/**
-	 * Set whether to expose the LocaleContext and RequestAttributes as inheritable
-	 * for child threads (using an {@link java.lang.InheritableThreadLocal}).
-	 * <p>Default is "false", to avoid side effects on spawned background threads.
-	 * Switch this to "true" to enable inheritance for custom child threads which
-	 * are spawned during request processing and only used for this request
-	 * (that is, ending after their initial task, without reuse of the thread).
-	 * <p><b>WARNING:</b> Do not use inheritance for child threads if you are
-	 * accessing a thread pool which is configured to potentially add new threads
-	 * on demand (e.g. a JDK {@link java.util.concurrent.ThreadPoolExecutor}),
-	 * since this will expose the inherited context to such a pooled thread.
-	 */
-	public void setThreadContextInheritable(boolean threadContextInheritable) {
-		this.threadContextInheritable = threadContextInheritable;
-	}
-
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 	}
@@ -78,12 +61,12 @@ public class RequestContextFilter implements Filter {
 		
 		LocaleResolver localeResolver = ApplicationContextHolder.getContext().getBean(LocaleResolver.class);
 		if (localeResolver == null) {
-			LocaleContextHolder.setLocale(request.getLocale(), this.threadContextInheritable);
+			LocaleContextHolder.setLocale(request.getLocale(), true);
 		} else {
-			LocaleContextHolder.setLocale(localeResolver.resolveLocale(request), this.threadContextInheritable);			
+			LocaleContextHolder.setLocale(localeResolver.resolveLocale(request), true);			
 		}
 
-		RequestContextHolder.setRequestAttributes(requestAttributes, this.threadContextInheritable);
+		RequestContextHolder.setRequestAttributes(requestAttributes, true);
 		if (logger.isDebugEnabled()) {
 			logger.debug("Bound request context to thread: " + request);
 		}

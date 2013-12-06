@@ -13,13 +13,19 @@ import javax.validation.Payload;
 
 @Target( { FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = DateTimeValidator.class)
+@Constraint(validatedBy = DateTimeNotEmptyValidator.class)
 @Documented
-public @interface ValidDateTime {
-	 String message() default "it.seda.template.validation.validdatetime";
+public @interface NotEmptyDateTime {
+	
+	public enum DateTimePart {
+		DATE,TIME,DATETIME;
+	}
+	
+	 String message() default "it.seda.template.validation.notemptydatetime";
 
 	 Class<?>[] groups() default {};
 
 	 Class<? extends Payload>[] payload() default {};
-	    
+	 
+	 DateTimePart part() default DateTimePart.DATE;
 }

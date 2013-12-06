@@ -253,13 +253,35 @@
 		<attribute>
 			<description>
          <![CDATA[
-         Date part separator span css class.
+         Date time part separator css class (span element).
          ]]>
          </description>
 			<name>cssClassSep</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 			<type>java.lang.String</type>
+		</attribute>		
+		<attribute>
+			<description>
+         <![CDATA[
+         If this date time must be readonly.
+         ]]>
+         </description>
+			<name>readonly</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+		</attribute>		
+		<attribute>
+			<description>
+         <![CDATA[
+         If this date must be include an empty date selection.
+         ]]>
+         </description>
+			<name>emptyopt</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
 		</attribute>		
 	</tag>	
 	

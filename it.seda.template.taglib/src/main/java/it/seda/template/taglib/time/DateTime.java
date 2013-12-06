@@ -14,6 +14,7 @@ public class DateTime {
 
 	public final static String DATE_FORMAT="yyyy-MM-dd HH:mm:ss.SSS";
 	public final static String FORMATTER="%04d-%02d-%02d %02d:%02d:%02d.%03d";	
+	public final static String FORMATTER_S="%-4.4s-%-2.2s-%-2.2s %-2.2s:%-2.2s:%-2.2s.%-3.3s";
 	
 	private final static SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
@@ -161,6 +162,40 @@ public class DateTime {
 		rebuild();
 	}
 
+	public void emptyDateTime() {
+		emptyDate();
+		emptyTime();
+	}
+	
+	public void emptyDate() {
+		setYear("");
+		setMonthOfYear("");
+		setDayOfMonth("");
+	}
+
+	public void emptyTime() {
+		setHourOfDay("");
+		setMinuteOfHour("");
+		setSecondOfMinute("");
+		setMillisOfSecond("");
+	}
+	
+	public boolean isEmptyDate() {
+		return isEmpty(year) || isEmpty(monthOfYear) || isEmpty(dayOfMonth);
+	}
+	
+	public boolean isEmptyTime() {
+		return isEmpty(hourOfDay) || isEmpty(minuteOfHour) || isEmpty(secondOfMinute) || isEmpty(millisOfSecond);
+	}
+	
+	public boolean isEmptyDateTime() {
+		return isEmptyDate() || isEmptyTime();
+	}
+	
+	protected boolean isEmpty(String part) {
+		return part==null||part.isEmpty()||part.trim().length()==0;
+	}
+	
 	private void commonConstructor(int year,
             int monthOfYear,
             int dayOfMonth,
@@ -248,7 +283,7 @@ public class DateTime {
 			
 			valid = true;
 		} catch (NumberFormatException x) {
-			message = String.format("Invalid date part %s",year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond);
+			message = String.format("Invalid or blank date part "+FORMATTER_S,year,monthOfYear,dayOfMonth,hourOfDay,minuteOfHour,secondOfMinute,millisOfSecond);
 			valid = false;
 		} catch (ParseException x) {
 			message = x.getMessage();
@@ -269,10 +304,7 @@ public class DateTime {
 		final int yl = this.year.length();
 		switch (yl) {
 		case 1:
-			century="0";
-			yearOfCentury=this.year;
-			break;
-		case 2:
+		case 2:			
 			century="0";
 			yearOfCentury=this.year;
 			break;

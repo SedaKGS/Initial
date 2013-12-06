@@ -4,11 +4,9 @@ import it.seda.template.container.ContainerAccess;
 import it.seda.template.container.TemplateContainer;
 import it.seda.template.context.ContextAccess;
 import it.seda.template.context.TemplateContext;
-import it.seda.template.renderer.Renderer;
 import it.seda.template.renderer.DefaultRenderer;
-import it.seda.template.request.Request;
+import it.seda.template.renderer.Renderer;
 
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -16,9 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.JstlUtils;
 import org.springframework.web.servlet.support.RequestContext;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;

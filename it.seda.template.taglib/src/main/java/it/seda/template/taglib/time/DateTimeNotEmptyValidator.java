@@ -1,28 +1,43 @@
 package it.seda.template.taglib.time;
 
+import it.seda.template.taglib.time.NotEmptyDateTime.DateTimePart;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class DateTimeValidator implements ConstraintValidator<ValidDateTime,DateTime> {
+public class DateTimeNotEmptyValidator implements ConstraintValidator<NotEmptyDateTime,DateTime> {
 
     private String KeyMessage;
+    private DateTimePart dateTimePart;
 	
 	@Override
-	public void initialize(ValidDateTime validDateTime) {
-		this.KeyMessage=validDateTime.message();
+	public void initialize(NotEmptyDateTime notEmptyDateTime) {
+		this.KeyMessage=notEmptyDateTime.message();
+		this.dateTimePart=notEmptyDateTime.part();
 	}
 
 	@Override
 	public boolean isValid(DateTime dateTime, ConstraintValidatorContext constraintValidatorContext) {
 
+		boolean empty=false;
+		switch (dateTimePart) {
+		case DATE:
+			empty=dateTime.isEmptyDate();
+			break;
+		case TIME:
+			empty=dateTime.isEmptyTime();
+			break;			
+
+		default:
+			empty=dateTime.isEmptyDateTime();
+			break;
+		}
 		
-		boolean valid = dateTime.isValid();
-		
-		if (!valid) {
+		if (empty) {
 			replaceMessage(constraintValidatorContext);			
 		}
 		
-		return valid;
+		return !empty;
 	}
 
 	

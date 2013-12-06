@@ -10,6 +10,9 @@ import java.io.IOException;
 public interface PartRenderer {
 
 	int getPriority();
+	void setReadonly(boolean readonly);
+	void setEmptyOption(boolean emptyopt);
+	void setCssClass(String cssClass);
 	
 	String render() throws IOException;
 	

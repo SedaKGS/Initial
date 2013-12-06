@@ -51,6 +51,9 @@ public class DateTimeSelectorTag extends TagSupport implements TryCatchFinally {
 	private String cssClass;
 	private String cssClassSep;
 	
+	private boolean readonly;
+	private boolean emptyopt;
+	
 	public void setPath(String path) {
 		this.path=path;
 	}	
@@ -65,6 +68,14 @@ public class DateTimeSelectorTag extends TagSupport implements TryCatchFinally {
 	
 	public void setCssClassSep(String cssClassSep) {
 		this.cssClassSep=cssClassSep;
+	}	
+	
+	public void setReadonly(boolean readonly) {
+		this.readonly=readonly;
+	}
+	
+	public void setEmptyopt(boolean emptyopt) {
+		this.emptyopt=emptyopt;
 	}	
 	
 	public int doEndTag() throws JspTagException {
@@ -95,6 +106,8 @@ public class DateTimeSelectorTag extends TagSupport implements TryCatchFinally {
 			if (dateRenderer!=null) {
 				dateRenderer.setCssClass(cssClass);
 				dateRenderer.setCssClassSep(cssClassSep);
+				dateRenderer.setEmptyopt(emptyopt);
+				dateRenderer.setReadonly(readonly);
 				dateRenderer.render(pageContext.getOut());
 			}
 			
@@ -104,6 +117,8 @@ public class DateTimeSelectorTag extends TagSupport implements TryCatchFinally {
 				}
 				timeRenderer.setCssClass(cssClass);
 				timeRenderer.setCssClassSep(cssClassSep);
+				timeRenderer.setEmptyopt(emptyopt);
+				timeRenderer.setReadonly(readonly);
 				timeRenderer.render(pageContext.getOut());
 			}
 			
@@ -167,7 +182,9 @@ public class DateTimeSelectorTag extends TagSupport implements TryCatchFinally {
 		minYear=null;
 		maxYear=null;
 		cssClass=null;
-		cssClassSep=null;		
+		cssClassSep=null;
+		readonly=false;
+		emptyopt=false;
 	}
 
 }

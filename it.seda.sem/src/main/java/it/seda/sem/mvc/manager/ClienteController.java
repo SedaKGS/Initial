@@ -1,15 +1,16 @@
 package it.seda.sem.mvc.manager;
 
-import java.math.BigInteger;
-import java.util.List;
 import it.seda.sem.domain.Cliente;
 import it.seda.sem.domain.ObjectCopier;
-import it.seda.sem.jdbc.RowBoundsHelper;
-import it.seda.template.taglib.DatagridTag.Page;
-import it.seda.sem.manager.service.ClientService;
+import it.seda.sem.manager.service.ClienteService;
 import it.seda.sem.mvc.manager.models.FormClient;
+import it.seda.template.taglib.DatagridTag.Page;
+
+import java.math.BigInteger;
+
 import javax.inject.Inject;
 import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,14 +24,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping(value="/client")
-public class ClientController {
+@RequestMapping(value="/cliente")
+public class ClienteController {
 	
-    @Inject ClientService clientService;
+    @Inject ClienteService clientService;
 	
-	private Logger logger = LoggerFactory.getLogger(ClientController.class);
-	
-	
+	private Logger logger = LoggerFactory.getLogger(ClienteController.class);
 	
 	/*
 	 * Method used to delete a client by id
@@ -42,13 +41,13 @@ public class ClientController {
 			               ModelMap model) {
     
 		
-	clientService.deleteClient(id);
+	clientService.deleteCliente(id);
 	FormClient client=new FormClient();
 	client.setEsito("formAccount.esito.cancel");
 	refreshDatagrid(model, pageNumber, rowsPerPage);
 	
-	model.addAttribute("clientData", client);
-	return "client";
+	model.addAttribute("clienteData", client);
+	return "cliente";
 	}
 	
 	
@@ -58,7 +57,7 @@ public class ClientController {
 	
 	@RequestMapping(method=RequestMethod.PUT) 
 	public String updateClient(
-			               @Valid @ModelAttribute("clientData") FormClient formClient,
+			               @Valid @ModelAttribute("clienteData") FormClient formClient,
 			               BindingResult result,
 			               @RequestParam(value="pageNumber", defaultValue="1") int pageNumber, 
 			               @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage,
@@ -68,7 +67,7 @@ public class ClientController {
 			logger.debug("Client Manager: dati inseriti correttamente"); //TODO i18n		
 			try{	
 				Cliente client=ObjectCopier.createObject(formClient, Cliente.class);
-				clientService.updateClient(client);
+				clientService.updateCliente(client);
 				formClient.setEsito("formClient.esito.ok");
 			}catch(Exception e){
 				formClient.setEsito("formClient.esito.notOk");
@@ -79,7 +78,7 @@ public class ClientController {
 
 		}
 		refreshDatagrid(model, pageNumber, rowsPerPage);	
-		return "client";
+		return "cliente";
 	}
 	
 	
@@ -94,20 +93,16 @@ public class ClientController {
 			                  ModelMap model) {
 	
 		
-    Cliente client=clientService.getClient(id); 
+    Cliente client=clientService.getCliente(id); 
     FormClient formClient=new FormClient();
     formClient.setId(client.getId());
     formClient.setNome(client.getNome());
     formClient.setDescrizione(client.getDescrizione());
     
-    
-    
-   
-    
-    model.addAttribute("clientData",formClient);
+    model.addAttribute("clienteData",formClient);
     model.addAttribute("action",action);
 	refreshDatagrid(model, pageNumber, rowsPerPage);
-	return "client";
+	return "cliente";
 	}
 	
 	/*
@@ -120,9 +115,9 @@ public class ClientController {
  
 		FormClient formClient=new FormClient();
 		refreshDatagrid(model, pageNumber, rowsPerPage);
-		model.addAttribute("clientData", formClient);
+		model.addAttribute("clienteData", formClient);
 		//return form view
-		return "client";
+		return "cliente";
 	}
 	
 	/*
@@ -136,10 +131,10 @@ public class ClientController {
             @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage) {
 
 		if (!result.hasErrors()) {
-			logger.debug("Client Manager: dati inseriti correttamente"); //TODO i18n		
+			logger.debug("Customer Manager: dati inseriti correttamente"); //TODO i18n		
 			try{	
 				Cliente client=ObjectCopier.createObject(formClient, Cliente.class);
-				clientService.insertClient(client);
+				clientService.insertCliente(client);
 				formClient.setEsito("formClient.esito.ok");
 			}
 			catch(Exception e){
@@ -154,22 +149,17 @@ public class ClientController {
 		refreshDatagrid(model, pageNumber, rowsPerPage);
 				
 		
-		return "client";
+		return "cliente";
 	}
 	
 	
 	protected void refreshDatagrid(ModelMap model, int pageNumber, int rowsPerPage) {
-		int totalRows=clientService.listClientCount();
-
-		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
-		List<Cliente> ar=clientService.listClient(rbh.buildRowBounds());
 		
-		Page<Cliente> clientPage = new Page<Cliente>(ar);
-		rbh.decorate(clientPage, totalRows);
-		
+		Page<Cliente> clientiPage=clientService.listClienti(rowsPerPage, pageNumber);		
+	
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("rowsPerPage", rowsPerPage);
-		model.addAttribute("clientsPage", clientPage);
+		model.addAttribute("clientiPage", clientiPage);
 	}
 	
 	

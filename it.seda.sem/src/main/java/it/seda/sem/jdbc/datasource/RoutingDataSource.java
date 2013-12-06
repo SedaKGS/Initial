@@ -1,14 +1,15 @@
-package it.seda.sem.jdbc;
+package it.seda.sem.jdbc.datasource;
 
 import java.util.logging.Logger;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
-public class DefaultRoutingDataSource extends AbstractRoutingDataSource {
+public class RoutingDataSource extends AbstractRoutingDataSource {
 
 	@Override
 	protected Object determineCurrentLookupKey() {
-		return "java:comp/env/jdbc/SEMDataSource";
+		return DataSourceContextHolder.getDataSourceRef();
+//		return "java:comp/env/jdbc/SEMDataSource";
 	}
 	
 	//---------------------------------------------------------------------

@@ -34,7 +34,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/it.seda.template.jar" sourcepath="/it.seda.template"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/it.seda.template.taglib.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/it.seda.template.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

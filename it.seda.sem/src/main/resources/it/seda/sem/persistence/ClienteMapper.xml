@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="it.seda.sem.persistence.ClientMapper">
+<mapper namespace="it.seda.sem.persistence.ClienteMapper">
 
 	
  	 <!-- TABELLA CLIENTE --> 
@@ -14,36 +14,36 @@
 		<result property="registrazione" column="registrazione" />	
 	</resultMap>
 	
-	<insert id="insertClient" parameterType="Cliente">
+	<insert id="insertCliente" parameterType="Cliente">
 	  INSERT INTO CLIENTE
 	  (registrazione,descrizione,nome)
 	  VALUES
 	  (CURRENT TIMESTAMP,#{descrizione},#{nome})
 	</insert>
 	
-	<update id="updateClient" parameterType="Cliente">
+	<update id="updateCliente" parameterType="Cliente">
 	  UPDATE CLIENTE
        SET descrizione=#{descrizione},nome=#{nome}
        WHERE id=#{id}
 	</update>
 	
-	<delete id="deleteClient" parameterType="java.math.BigInteger">
+	<delete id="deleteCliente" parameterType="java.math.BigInteger">
 	   DELETE FROM CLIENTE
 	     WHERE id = #{id}   
 	</delete>
 	
-	<select id="getClient" parameterType="java.math.BigInteger" resultMap="cliente">
+	<select id="getCliente" parameterType="java.math.BigInteger" resultMap="cliente">
 	   SELECT registrazione,descrizione,nome,id
 	   FROM CLIENTE
 	   WHERE id=#{id}
 	</select>
 	
-	<select id="listClientCount"  resultType="int">
+	<select id="listClientiCount"  resultType="int">
 	   SELECT COUNT(REGISTRAZIONE)
 	   FROM CLIENTE
 	</select>
 	
-	<select id="listClient"  resultMap="cliente">
+	<select id="listClienti"  resultMap="cliente">
 	   SELECT registrazione,descrizione,nome,id
 	   FROM CLIENTE
 	   ORDER BY CLIENTE.REGISTRAZIONE,CLIENTE.ID
