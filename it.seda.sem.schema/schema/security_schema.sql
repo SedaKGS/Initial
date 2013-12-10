@@ -9,11 +9,13 @@ create table users (
 	expiration date not null,
 	credentialsExpiration date not null with default '1900-01-01',
 	
-	locked smallint not null with default 0,
 	attempts smallint not null with default 0,
+	lastAttempt timestamp,	
 	constraint pk_users primary key(username)
 );
-
+--alter table users add lastAttempt timestamp;
+--alter table users drop column lastAttempts;
+--call sysproc.admin_cmd('REORG TABLE USERS')
 create table signon (
 	password varchar(256) not null,
 	username varchar(128) not null,

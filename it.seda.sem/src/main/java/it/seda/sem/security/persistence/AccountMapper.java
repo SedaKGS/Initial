@@ -22,6 +22,8 @@ public interface AccountMapper {
 	void insertAccount(AccountTO account);
 	void updateAccountTO(AccountTO account);
 	void deleteAccount(String username);
+	void loginFailure(String username);	
+	void resetAttempts(String username);
 	
 	void insertDefaultGroupMember(String username);
 	void insertAdminGroupMember(String username);

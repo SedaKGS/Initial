@@ -11,7 +11,7 @@ public class AccountTO implements Serializable {
 	private String email;
 	private String groupName;
 	private boolean enabled;
-	
+	private short attempts;
 	
 	public static Account createAccount(AccountTO accountTO){
 		Account account=new Account();
@@ -55,13 +55,22 @@ public class AccountTO implements Serializable {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	public boolean isLocked() {
+		return attempts>=Account.MAX_FAILED_LOGIN_ATTEMPTS;
+	}
+	public short getAttempts() {
+		return attempts;
+	}
+	public void setAttempts(short attempts) {
+		this.attempts = attempts;
+	}
+
 	@Override
 	public String toString() {
 		return "AccountTO [username=" + username + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", email=" + email
-				+ ", groupName=" + groupName + ", enabled=" + enabled + "]";
-	}
-	
-
+				+ ", groupName=" + groupName + ", enabled=" + enabled
+				+ ", attempts=" + attempts + ", isLocked()=" + isLocked() + "]";
+	}	
 	
 }

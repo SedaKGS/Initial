@@ -6,10 +6,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="x" uri="http://template.seda.it/tags" %>
 
-
-
-	
-	
 	<c:set value="POST" var="method"></c:set>
 	<c:if test="${action=='delete'}"> 
 	 <c:set value="DELETE" var="method"></c:set>
@@ -32,15 +28,11 @@
 	</c:if> 
 	
 	
-    <div id="divErrors" class="errors">
-		 ${x:i18n('societaData.esito')}
-	</div>
+    <div id="divErrors" class="errors">${x:i18n(societaData.esito)}</div>
 	
 	<div class="title" style="text-align:center">
 	 <h3> ${x:i18n('societa.manager.title')}</h3>
 	</div>
-	
-	
 	
 	<div class="newSocieta" style="margin-left:10px;min-width:70px;max-width:200px;">
 	  <a href="<c:url value="/manager/societa"/>" style="margin-right:10px;"><input type="submit" value="${x:i18n('societa.manager.newSociety')}" style="width:100%;"/></a>

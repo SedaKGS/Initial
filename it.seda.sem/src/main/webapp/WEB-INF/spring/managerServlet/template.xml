@@ -1,15 +1,15 @@
 <templates>
 
-	<screen name="clienta" extends="base">
+	<screen name="cliente" extends="base">
 		 <parameter key="content" value="/template/manager/clienteManager.jsp"/>
 	</screen>
 	
 	<screen name="server" extends="base">
-		 <parameter key="content" value="/template/manager/formServer.jsp"/>
+		 <parameter key="content" value="/template/manager/serverManager.jsp"/>
 	</screen>
 	
 	<screen name="societa" extends="base">
-		 <parameter key="content" value="/template/manager/formSocieta.jsp"/>
+		 <parameter key="content" value="/template/manager/societaManager.jsp"/>
 	</screen>
 	
 	<screen name="account" extends="base">

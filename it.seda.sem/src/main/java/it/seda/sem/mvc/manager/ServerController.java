@@ -176,11 +176,8 @@ public class ServerController {
 	
 	
 	protected void refreshDatagrid(ModelMap model, int pageNumber, int rowsPerPage) {
-		int totalRows=serverService.listServerCount();
-		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
-		List<Server> ar=serverService.listServer(rbh.buildRowBounds());	
-		Page<Server> serverPage = new Page<Server>(ar);
-		rbh.decorate(serverPage, totalRows);		
+		Page<Server> serverPage = serverService.listServer(pageNumber, rowsPerPage);
+		
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("rowsPerPage", rowsPerPage);
 		model.addAttribute("serversPage", serverPage);

@@ -58,6 +58,14 @@
 	    <level value="debug" />
 	</logger>
 	
+	<logger name="org.springframework.jdbc.datasource">
+	    <level value="debug" />
+	</logger>
+	
+	<logger name="org.springframework.transaction">
+	   <level value="debug" />
+	</logger>	
+	
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="console" />

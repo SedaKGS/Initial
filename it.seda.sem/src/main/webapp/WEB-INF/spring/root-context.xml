@@ -16,11 +16,12 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Business datasource (can be different from security data source) -->
-	<!-- 
+	 <!--	 
 	<bean id="dataSourceBusiness" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="java:comp/env/jdbc/SEMDataSource" />
 	</bean>
-	 -->
+ 	-->
+ 		
 	 <bean id="dataSourceBusiness" class="it.seda.sem.jdbc.datasource.RoutingDataSource">
 	 	<property name="targetDataSources">
 	 		<map>
@@ -30,14 +31,15 @@
 	 </bean>
 
 	<!-- transaction manager, use JtaTransactionManager for global tx -->
-	<bean id="transactionBusinessManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="transactionBusinessManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSourceBusiness" />
 	</bean>
 
-	<!-- enable transaction with annotations -->
+	<!-- enable transaction with annotations 
 	<tx:annotation-driven />
-
+		MUST BE INCLUDED IN EVERY DISPATCH SERVELET CONFIGURATIONS (see controllers.xml)
+		OTHERWISE PUT HERE ALL component scan
+	-->
 	<!-- enable autowire/inject -->
 	<context:annotation-config />
 

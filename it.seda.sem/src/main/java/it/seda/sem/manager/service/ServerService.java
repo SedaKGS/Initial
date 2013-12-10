@@ -1,10 +1,15 @@
 package it.seda.sem.manager.service;
 
+import it.seda.sem.domain.Cliente;
 import it.seda.sem.domain.Server;
+import it.seda.sem.jdbc.RowBoundsHelper;
 import it.seda.sem.persistence.ServerMapper;
+import it.seda.template.taglib.DatagridTag.Page;
 
 import java.math.BigInteger;
 import java.util.List;
+
+
 
 
 
@@ -20,40 +25,40 @@ public class ServerService {
     
 	@Inject private ServerMapper serverMapper;
 	
-	@Transactional("transactionBusinessManager")
+	@Transactional
 	public void insertServer(Server server) {
 		serverMapper.insertServer(server);
 		
 	}
 	
-	@Transactional("transactionBusinessManager")
+	@Transactional
 	public void updateServer(Server server) {
 		serverMapper.updateServer(server);
 	}
 	
-	@Transactional("transactionBusinessManager")
+	@Transactional
 	public void deleteServer(BigInteger id) {
 		serverMapper.deleteServer(id);
 	}
 	
-	@Transactional("transactionBusinessManager")
 	public Server  getServer(BigInteger id) {
 		Server server=serverMapper.getServer(id);
 		return server;
 		
 	}
 	
-	@Transactional("transactionBusinessManager")
-	public int listServerCount() {
-		int rowsNumber=serverMapper.listServerCount();
-		return rowsNumber;
+	@Transactional
+	public Page<Server> listServer(int pageNumber, int rowsPerPage) {
+		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
 		
-	}
-	
-	@Transactional("transactionBusinessManager")
-	public List<Server> listServer(RowBounds rowBounds) {
-		List<Server> cl=serverMapper.listServer(rowBounds);
-		return cl;
+		int totalRows=serverMapper.listServerCount();
+		
+		List<Server> serverList=serverMapper.listServer(rbh.buildRowBounds());
+		
+		Page<Server> serverPage=new Page<Server>(serverList);
+		rbh.decorate(serverPage, totalRows);
+		
+		return serverPage;
 		
 	}
 

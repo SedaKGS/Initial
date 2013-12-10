@@ -5,6 +5,7 @@
 <mapper namespace="it.seda.sem.security.persistence.AccountMapper">
 
 	<!-- 
+	Preferiamo usar le cache di Spring
 	<cache />
  	-->
 	<resultMap id="account" type="Account">
@@ -18,6 +19,7 @@
 		<result property="credentialsExpiration" column="credentialsExpiration" />
 		<result property="locked" column="locked" />
 		<result property="attempts" column="attempts" />
+		<result property="lastAttempt" column="lastAttempt" />
 	</resultMap>
 	
 	
@@ -28,6 +30,7 @@
 		<result property="email" column="email" />
 		<result property="enabled" column="enabled" />
 		<result property="groupName" column="groupName" />
+		<result property="attempts" column="attempts" />		
 	</resultMap>
 	
 	<resultMap id="group" type="Group">
@@ -53,8 +56,8 @@
 		USERS.registration,
 		USERS.expiration,
 		USERS.credentialsExpiration,
-		USERS.locked,
 		USERS.attempts,
+		USERS.lastAttempt,
 		GROUP_AUTHORITIES.authority as "authority"
 		FROM USERS, GROUP_MEMBERS, GROUP_AUTHORITIES
 		WHERE USERS.USERNAME = #{username}
@@ -69,6 +72,7 @@
 		USERS.lastName,
 		USERS.email,
 		USERS.enabled,
+		USERS.attempt,		
 		GROUPS.GROUP_NAME as "groupName"
 		FROM USERS 
 		INNER JOIN GROUP_MEMBERS
@@ -100,6 +104,8 @@
 		USERS.lastName,
 		USERS.email,
 		USERS.enabled,
+		USERS.attempts,
+		USERS.lastAttempt,
 		GROUPS.GROUP_NAME as "groupName"
 		FROM USERS 
 		INNER JOIN GROUP_MEMBERS
@@ -125,9 +131,26 @@
 	
 	<update id="updateAccountTO" parameterType="AccountTO">
 	   UPDATE USERS
-       SET firstName=#{firstName},lastName=#{lastName},email=#{email},enabled=#{enabled}
+       SET firstName=#{firstName}
+         , lastName=#{lastName}
+         , email=#{email}
+         , enabled=#{enabled}
        WHERE username=#{username}
 	</update>
+
+	<update id="loginFailure" parameterType="string">
+	   UPDATE USERS
+	      SET attempts=attempts+1
+	        , lastAttempt=CURRENT TIMESTAMP
+       WHERE username=#{username}
+	</update>
+	
+	<update id="resetAttempts" parameterType="string">
+	   UPDATE USERS
+	      SET attempts=0
+	        , lastAttempt=null
+       WHERE username=#{username}
+	</update>	
 
 	<insert id="insertDefaultGroupMember" parameterType="string">
 		INSERT INTO GROUP_MEMBERS (group_id, username)

@@ -14,6 +14,11 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class Account implements Serializable {
 
+	// let us put max failed login attempts at 5
+	// lo ptremmo registrare anche su di un bean che carica le informazioni
+	// da qualche parametrizzazione da qualche parte dell'universo
+	public static final short MAX_FAILED_LOGIN_ATTEMPTS = 5;
+ 	
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -25,8 +30,8 @@ public class Account implements Serializable {
 	private Date expiration;
 	private Date credentialsExpiration;
 	
-	private boolean locked;
 	private short attempts;
+	private Date lastAttempt;
 	
 	public String getUsername() {
 		return username;
@@ -89,10 +94,7 @@ public class Account implements Serializable {
 		return credentialsExpiration.before(date);
 	}
 	public boolean isLocked() {
-		return locked;
-	}
-	public void setLocked(boolean locked) {
-		this.locked = locked;
+		return attempts>=Account.MAX_FAILED_LOGIN_ATTEMPTS;
 	}
 	public short getAttempts() {
 		return attempts;
@@ -100,13 +102,22 @@ public class Account implements Serializable {
 	public void setAttempts(short attempts) {
 		this.attempts = attempts;
 	}
+	public Date getLastAttempt() {
+		return lastAttempt;
+	}
+	public void setLastAttempt(Date lastAttempt) {
+		this.lastAttempt = lastAttempt;
+	}
 	
 	@Override
 	public String toString() {
 		return "Account [username=" + username + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email + ", roles="
-				+ authorities + ", enabled=" + enabled + ", registration="
-				+ registration + ", expiration=" + expiration + "]";
+				+ ", lastName=" + lastName + ", email=" + email
+				+ ", authorities=" + authorities + ", enabled=" + enabled
+				+ ", registration=" + registration + ", expiration="
+				+ expiration + ", credentialsExpiration="
+				+ credentialsExpiration + ", attempts=" + attempts
+				+ ", lastAttempt=" + lastAttempt + "]";
 	}
 	
 }

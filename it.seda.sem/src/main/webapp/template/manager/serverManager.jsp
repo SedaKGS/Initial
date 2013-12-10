@@ -33,9 +33,7 @@
 	</c:url>
 	</c:if> 
 	
-    <div id="divErrors" class="errors">
-		 ${x:i18n('serverData.esito')}
-	</div>
+    <div id="divErrors" class="errors">${x:i18n(serverData.esito)}</div>
 	
 	<div class="title" style="text-align:center">
 	   <h3> ${x:i18n('server.manager.title')}</h3>

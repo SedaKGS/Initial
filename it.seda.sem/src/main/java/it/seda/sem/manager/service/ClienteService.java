@@ -19,27 +19,27 @@ public class ClienteService {
 	
 	@Inject private ClienteMapper clienteMapper;
 
-	@Transactional("transactionBusinessManager")
+	@Transactional
 	public void insertCliente(Cliente client) {
 		clienteMapper.insertCliente(client);
-		
 	}
-	
-	@Transactional("transactionBusinessManager")
+
+	@Transactional
 	public void updateCliente(Cliente client) {
 		clienteMapper.updateCliente(client);
 	}
-	
-	@Transactional("transactionBusinessManager")
+
+	@Transactional
 	public void deleteCliente(BigInteger id) {
 		clienteMapper.deleteCliente(id);
 	}
-	
+
 	public Cliente  getCliente(BigInteger id) {
 		Cliente cliente=clienteMapper.getCliente(id);
 		return cliente;
 	}
-	
+
+	@Transactional(readOnly=true)
 	public Page<Cliente> listClienti(int pageNumber, int rowsPerPage) {
 		
 		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
@@ -47,10 +47,10 @@ public class ClienteService {
 		
 		List<Cliente> clientiList=clienteMapper.listClienti(rbh.buildRowBounds());		
 		
-		Page<Cliente> clientPage=new Page<Cliente>(clientiList);
-		rbh.decorate(clientPage, totalrows);
+		Page<Cliente> clientiPage=new Page<Cliente>(clientiList);
+		rbh.decorate(clientiPage, totalrows);
 		
-		return clientPage;
+		return clientiPage;
 		
 	}
 

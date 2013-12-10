@@ -10,13 +10,15 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	<!-- 
+		*** DispatcherServlet Context: defines this servlet's request-processing infrastructure *** 
+	-->
 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<mvc:annotation-driven validator="validator" />	
 
-	<!-- Imports user-defined @Controller beans that process client requests -->
-	<import resource="controllers.xml" />
+	<!-- User-defined @Controller beans that process client requests -->
+	<context:component-scan base-package="it.seda.sem.mvc.security" />
 
 	<!-- Seda templating -->
 	<bean class="it.seda.template.spring.TemplateViewResolver">

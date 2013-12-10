@@ -43,7 +43,7 @@ public class ClienteController {
 		
 	clientService.deleteCliente(id);
 	FormClient client=new FormClient();
-	client.setEsito("formAccount.esito.cancel");
+	client.setEsito("formClient.esito.cancel");
 	refreshDatagrid(model, pageNumber, rowsPerPage);
 	
 	model.addAttribute("clienteData", client);
@@ -73,7 +73,7 @@ public class ClienteController {
 				formClient.setEsito("formClient.esito.notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
 			}finally{
-				model.addAttribute("cliente",formClient);
+				model.addAttribute("clienteData",formClient);
 			}
 
 		}
@@ -94,10 +94,8 @@ public class ClienteController {
 	
 		
     Cliente client=clientService.getCliente(id); 
-    FormClient formClient=new FormClient();
-    formClient.setId(client.getId());
-    formClient.setNome(client.getNome());
-    formClient.setDescrizione(client.getDescrizione());
+
+    FormClient formClient=ObjectCopier.createObject(client, FormClient.class);
     
     model.addAttribute("clienteData",formClient);
     model.addAttribute("action",action);
@@ -154,8 +152,7 @@ public class ClienteController {
 	
 	
 	protected void refreshDatagrid(ModelMap model, int pageNumber, int rowsPerPage) {
-		
-		Page<Cliente> clientiPage=clientService.listClienti(rowsPerPage, pageNumber);		
+		Page<Cliente> clientiPage=clientService.listClienti(pageNumber, rowsPerPage);		
 	
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("rowsPerPage", rowsPerPage);
@@ -164,19 +161,3 @@ public class ClienteController {
 	
 	
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-

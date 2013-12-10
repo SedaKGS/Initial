@@ -8,9 +8,6 @@
 
 <title>${x:i18n('formClient.page.Title')}</title>
 
-
-
-
 <c:set value="POST" var="method"></c:set>
 <c:if test="${action=='delete'}">
 	<c:set value="DELETE" var="method"></c:set>
@@ -31,9 +28,9 @@
 		<c:param name="rowsPerPage" value="${rowsPerPage}" />
 	</c:url>
 </c:if>
+ 
 
-
-<div id="divErrors" class="errors">${x:i18n('clienteData.esito')}</div>
+<div id="divErrors" class="errors">${x:i18n(clienteData.esito)}</div>
 
 <div class="title" style="text-align: center">
 	<h3>${x:i18n('client.manager.title')}</h3>
@@ -90,15 +87,15 @@
 </form:form>
 
 
-<x:datagrid action="" pageset="${clientsPage}" var="clientRow">
+<x:datagrid action="" pageset="${clientiPage}" var="clientRow">
 	<x:dgcolumn title="${x:i18n('client.manager.nome')}">${clientRow.nome}</x:dgcolumn>
 	<x:dgcolumn title="${x:i18n('client.manager.descrizione')}">${clientRow.descrizione}</x:dgcolumn>
 	<x:dgcolumn title="${x:i18n('client.manager.registrazione')}">${clientRow.registrazione}</x:dgcolumn>
 	<x:dgcolumn title="edit">
-		<a href="<c:url value="/manager/client/${clientRow.id}?action=edit&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Edit</a>
+		<a href="<c:url value="/manager/cliente/${clientRow.id}?action=edit&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Edit</a>
 	</x:dgcolumn>
 	<x:dgcolumn title="cancel">
-		<a href="<c:url value="/manager/client/${clientRow.id}?action=delete&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Cancel</a>
+		<a href="<c:url value="/manager/cliente/${clientRow.id}?action=delete&pageNumber=${pageNumber}&rowsPerPage=${rowsPerPage}"/>">Cancel</a>
 	</x:dgcolumn>
 </x:datagrid>
 

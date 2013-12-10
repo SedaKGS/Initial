@@ -8,14 +8,47 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing 
-		infrastructure -->
+	<!-- 
+		*** DispatcherServlet Context: defines this servlet's request-processing infrastructure *** 
+	-->
 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<mvc:annotation-driven validator="validator" />
 
-	<!-- Imports user-defined @Controller beans that process client requests -->
-	<import resource="controllers.xml" />
+	<!-- business datasource -->
+	<bean id="dataSourceBusiness" class="it.seda.sem.jdbc.datasource.RoutingDataSource">
+	 	<property name="targetDataSources">
+	 		<map>
+	 			<entry key="dataSourceRef" value="java:comp/env/jdbc/SEMDataSource"/>
+	 		</map>
+	 	</property>
+	 </bean>
+
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceBusiness" />
+	</bean>
+
+	<!-- define the SqlSessionFactory -->
+	<bean id="sqlSessionFactoryBusiness" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSourceBusiness" />
+		<property name="typeAliasesPackage" value="it.seda.sem.domain" />
+	</bean>
+
+	<!-- scan for mybatis mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBusiness" />
+		<property name="basePackage" value="it.seda.sem.persistence" />
+		<property name="annotationClass" value="it.seda.sem.mvc.annotations.BusinessRepository" />
+	</bean>
+
+	<!-- enable transaction with annotations -->
+	<tx:annotation-driven />
+
+	<!-- Scans user-defined @Controller, @Service, @Component, @Repository beans that process client requests -->
+	<context:component-scan base-package="it.seda.sem.mvc.manager" />
+	<context:component-scan base-package="it.seda.sem.mvc.manager.models" />
+	<context:component-scan base-package="it.seda.sem.manager.service" />
 
 	<!-- Seda templating -->
 	<bean class="it.seda.template.spring.TemplateViewResolver">
@@ -27,12 +60,6 @@
 		</property>
 	</bean>
 
-	<!-- 
-	<bean id="themeSource" class="org.springframework.ui.context.support.ResourceBundleThemeSource">
-		<property name="basenamePrefix" value="it.seda.sem.theme.theme-"/>
-	</bean>
-	 -->
-	
 	<!-- Enables the Spring locale interceptor -->
 	<mvc:interceptors>
 		<bean name="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
