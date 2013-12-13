@@ -9,8 +9,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.context.MessageSource;
-
 /**
  * 
  * @author f.ricci

@@ -4,6 +4,7 @@ import it.seda.template.container.TemplateContainer;
 import it.seda.template.context.locale.LocaleResolver;
 import it.seda.template.context.locale.URLResource;
 import it.seda.template.startup.ResourceNotFoundException;
+import it.seda.template.startup.ResourceUtils;
 import it.seda.template.utils.Utils;
 
 import java.net.MalformedURLException;
@@ -30,7 +31,6 @@ public class TemplateContext {
 	private ServletContext servletContext;
 	private LocaleResolver localeResolver;
 	private TemplateContainer container;
-	
 	
 	private List<TemplateResource> resources;
 	
@@ -75,7 +75,8 @@ public class TemplateContext {
 	}
 	
 	public String getMessage(String code, Object[] args) {
-		return wac.getMessage(code, args, localeResolver.getLocale());
+		return getMessage(code, localeResolver.getLocale(), args);
+//		return wac.getMessage(code, args, localeResolver.getLocale());
 	}		
 	
 	public String getMessage(String code, Locale locale) {
@@ -98,50 +99,9 @@ public class TemplateContext {
 			definitions=new String[]{"WEB-INF/template.xml"};
 		}
 		
-		for (String definition : definitions) {
-			addResource(definition);
-		}
+		resources=ResourceUtils.stringArrayToResources(definitions, servletContext);
 	}		
 	
-	public void addResource(String definition) {
-		if (resources==null) {
-			resources=new ArrayList<TemplateResource>(5);
-		}
-		TemplateResource templateResource = getResource(definition);
-		if (templateResource!=null) {
-			resources.add(templateResource);	
-		} else {
-			throw new ResourceNotFoundException(definition);
-		}
-	}
-	
-	
-    public TemplateResource getResource(String localePath) {
-        try {
-            URL url = servletContext.getResource(localePath);
-            if (url != null) {
-                return new URLResource(localePath, url);
-            } else {
-                return null;
-            }
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
-
-    public TemplateResource getResource(TemplateResource base, Locale locale) {
-        try {
-            URL url = servletContext.getResource(base.getLocalePath(locale));
-            if (url != null) {
-                return new URLResource(base.getPath(), locale, url);
-            } else {
-                return null;
-            }
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
-
 	@Override
 	public String toString() {
 		return "TemplateContext ["+wac.getDisplayName()+"]";

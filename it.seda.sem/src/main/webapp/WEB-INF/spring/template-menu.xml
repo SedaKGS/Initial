@@ -1,0 +1,41 @@
+<!-- this requires Spring security for allowed-roles configuration -->
+<menus>
+   <menu id='manager'>
+      <paths><match pattern='/manager/**'/></paths>
+	  <allowed-roles><role name='ROLE_ADMIN'/></allowed-roles>      
+   </menu>
+   <menu id='manager.account' order="1" path='/manager/account'>
+      <allowed-roles><role name='ROLE_ADMIN'/></allowed-roles>
+      <paths><match pattern='/manager/account/**'/></paths>
+   </menu>
+   <menu id='manager.cliente' order="2" path='/manager/cliente'>
+      <allowed-roles><role name='ROLE_ADMIN'/></allowed-roles>
+      <paths><match pattern='/manager/cliente/**'/></paths>
+   </menu>
+   <menu id='manager.server' order="3" path='/manager/server'>
+      <allowed-roles><role name='ROLE_ADMIN'/></allowed-roles>
+      <paths><match pattern='/manager/server/**'/></paths>
+   </menu>
+   <menu id='manager.societa' order="4" path='/manager/societa'>
+      <allowed-roles><role name='ROLE_ADMIN'/></allowed-roles>
+      <paths><match pattern='/manager/societa/**'/></paths>
+   </menu>
+   <!--  -->
+   <menu id='credentials' order="1">
+		<allowed-roles><role name='ROLE_ANONYMOUS'/></allowed-roles>
+		<paths><match pattern='/security/**'/></paths>   
+   </menu>   
+   <menu id='credentials.login' path='/security/login'>
+      <allowed-roles><role name='ROLE_ANONYMOUS'/></allowed-roles>
+      <paths><match pattern='/security/login/**'/></paths>
+   </menu>
+   <!--  -->                  
+   <menu id='events' order="1" path='/events/welcome'>
+      <allowed-roles>
+      	<role name='ROLE_ANONYMOUS'/>
+      	<role name='ROLE_USER'/>
+      	<role name='ROLE_ADMIN'/>
+      </allowed-roles>
+	  <paths><match pattern='/events/**'/></paths>            	
+   </menu>
+</menus>

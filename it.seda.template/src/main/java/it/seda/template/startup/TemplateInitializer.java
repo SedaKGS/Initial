@@ -31,5 +31,4 @@ public class TemplateInitializer {
 		ContainerAccess.destroy(context);
 	}
 	
-	
 }

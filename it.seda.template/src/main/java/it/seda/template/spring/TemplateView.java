@@ -2,11 +2,13 @@ package it.seda.template.spring;
 
 import it.seda.template.container.ContainerAccess;
 import it.seda.template.container.TemplateContainer;
+import it.seda.template.container.menu.MenuItem;
 import it.seda.template.context.ContextAccess;
 import it.seda.template.context.TemplateContext;
 import it.seda.template.renderer.DefaultRenderer;
 import it.seda.template.renderer.Renderer;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -28,11 +30,11 @@ public class TemplateView extends AbstractUrlBasedView {
 
 	private Renderer renderer;
 
-	private boolean exposeForwardAttributes = false;
+	protected boolean exposeForwardAttributes = false;
 
-	private boolean exposeJstlAttributes = true;
+	protected boolean exposeJstlAttributes = true;
 
-	private TemplateContext applicationContext;
+	protected TemplateContext applicationContext;
 
 	/**
 	 * Set the {@link Renderer} to use.
@@ -78,9 +80,12 @@ public class TemplateView extends AbstractUrlBasedView {
 		TemplateContainer container = ContainerAccess.retrieve(getWebApplicationContext());
 		if (container == null) {
 			throw new ServletException("Template container is not initialized. " +
-					"Have you added a TemplateConfigurer to your web application context?");
+					"Have you added a TemplateViewResolver to your web application context?");
 		}
 
+		List<MenuItem> menu = container.getMenuHandler().resolve(request);
+		model.put("menu_items", menu);
+		
 		exposeModelAsRequestAttributes(model, request);
 		JstlUtils.exposeLocalizationContext(new RequestContext(request, servletContext));
 
@@ -101,5 +106,5 @@ public class TemplateView extends AbstractUrlBasedView {
 
 		container.render(getUrl(), request, response);
 	}
-	
+
 }

@@ -3,6 +3,9 @@
  */
 package it.seda.template.spring;
 
+import it.seda.template.container.menu.MenuConfigurer;
+import it.seda.template.container.menu.MenuHandler;
+import it.seda.template.container.menu.DefaultMenuConfigurer;
 import it.seda.template.context.TemplateContext;
 import it.seda.template.renderer.DefaultRenderer;
 import it.seda.template.renderer.Renderer;
@@ -20,7 +23,9 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
  */
 public class TemplateViewResolver extends UrlBasedViewResolver implements InitializingBean, DisposableBean {
 	
-	private Renderer renderer;	
+	private Renderer renderer;
+	private MenuHandler menuHandler;
+	private MenuConfigurer menuConfigurer;
 	
 	public TemplateViewResolver() {}
 
@@ -36,18 +41,20 @@ public class TemplateViewResolver extends UrlBasedViewResolver implements Initia
 	/**
 	 * Set the {@link Renderer} to use. If not set, by default
 	 * {@link it.seda.template.renderer.DefaultRenderer} is used.
-	 * @see TilesView#setRenderer(Renderer)
+	 * @see TemplateView#setRenderer(Renderer)
 	 */
 	public void setRenderer(Renderer renderer) {
 		this.renderer = renderer;
 	}	
 	
-	@Override
-	protected TemplateView buildView(String viewName) throws Exception {
-		TemplateView view = (TemplateView) super.buildView(viewName);
-		view.setRenderer(this.renderer);
-		return view;
-	}	
+	/**
+	 * Set the {@link MenuConfigurer} to use. If not set, by default
+	 * {@link it.seda.template.container.menu.DefaultMenuConfigurer} is used.
+	 * @see TemplateView#setMenuHandler(MenuHandler)
+	 */	
+	public void setMenuConfigurer(MenuConfigurer menuConfigurer) {
+		this.menuConfigurer = menuConfigurer;
+	}
 	
 	/*1*/
 	/**
@@ -61,11 +68,9 @@ public class TemplateViewResolver extends UrlBasedViewResolver implements Initia
 		if (definitions != null) {
 			String defs = StringUtils.arrayToCommaDelimitedString(definitions);
 			if (logger.isInfoEnabled()) {
-				logger.info("TemplateConfigurer: adding definitions [" + defs + "]");
+				logger.info("TemplateViewResolver: adding definitions [" + defs + "]");
 			}
 		}
-		
-		
 	}
 	/*1*/
 
@@ -76,19 +81,36 @@ public class TemplateViewResolver extends UrlBasedViewResolver implements Initia
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		TemplateContext applicationContext = new TemplateContext((WebApplicationContext) getApplicationContext());
-		applicationContext.loadDefinitions(definitions);
+		TemplateContext templateContext = new TemplateContext((WebApplicationContext) getApplicationContext());
+		templateContext.loadDefinitions(definitions);
 		if (initializer==null) {
 			initializer=new TemplateInitializer();
 		}
-		initializer.initialize(applicationContext);
+		initializer.initialize(templateContext);
 		if (renderer==null) {
-			renderer=new DefaultRenderer(applicationContext.getContainer());
+			renderer=new DefaultRenderer(templateContext.getContainer());
 		}
 		else{
-			renderer.setContainer(applicationContext.getContainer());
+			renderer.setContainer(templateContext.getContainer());
 		}
 		
+		if (menuConfigurer==null) {
+			menuConfigurer=new DefaultMenuConfigurer();
+		}
+		
+		if (menuHandler==null) {
+			menuHandler = menuConfigurer.configure(templateContext.getServletContext());	
+		}
+		
+		templateContext.getContainer().setMenuHandler(menuHandler);
 	}
+
+	/* view builder */
+	@Override
+	protected TemplateView buildView(String viewName) throws Exception {
+		TemplateView view = (TemplateView) super.buildView(viewName);
+		view.setRenderer(this.renderer);
+		return view;
+	}	
 	
 }

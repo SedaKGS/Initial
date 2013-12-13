@@ -1,4 +1,4 @@
-package it.seda.template.taglib.security;
+package it.seda.template.spring.security;
 
 import java.util.Set;
 

@@ -22,7 +22,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<ul>
+			<ul class="languages">
 				<li><a href="?language=it">${x:i18n('language.italian')}</a></li>
 				<li><a href="?language=en">${x:i18n('language.english')}</a></li>
 			</ul>

@@ -4,6 +4,7 @@
 package it.seda.template.container;
 
 import it.seda.template.container.locale.LocalizedTemplateContainer;
+import it.seda.template.container.menu.MenuHandler;
 import it.seda.template.context.TemplateContext;
 import it.seda.template.renderer.Renderer;
 
@@ -24,6 +25,7 @@ public class TemplateContainer {
 	private Renderer renderer;
 	private LocalizedTemplateContainer localizedTemplateContainer;
 	private ScreenContainer screenContainer;	
+	private MenuHandler menuHandler;
 
 	public void addTemplate(Template template) {
 		localizedTemplateContainer.addTemplate(template);
@@ -45,11 +47,18 @@ public class TemplateContainer {
 		this.renderer=renderer;
 	}
 	
+	public void setMenuHandler(MenuHandler menuHandler){
+		this.menuHandler=menuHandler;
+	}
+	
+	public MenuHandler getMenuHandler(){
+		return menuHandler;
+	}		
+	
 	public TemplateContainer(TemplateContext context) {
 		this.context=context;
 		this.localizedTemplateContainer=new LocalizedTemplateContainer();
 		this.screenContainer=new ScreenContainer();
-		
 	}
 
 	public void render(String url, HttpServletRequest request,
@@ -78,6 +87,5 @@ public class TemplateContainer {
 				+ localizedTemplateContainer + ", screenContainer="
 				+ screenContainer + "]";
 	}
-	
 
 }

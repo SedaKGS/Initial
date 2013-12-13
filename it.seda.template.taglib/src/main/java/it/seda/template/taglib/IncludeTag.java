@@ -5,7 +5,7 @@ package it.seda.template.taglib;
 
 import it.seda.template.container.Parameter;
 import it.seda.template.request.ParameterContext;
-import it.seda.template.taglib.security.SecurityHelper;
+import it.seda.template.spring.security.SecurityHelper;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -19,6 +19,7 @@ import javax.servlet.jsp.tagext.TryCatchFinally;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 /**
  * @author f.ricci
@@ -28,7 +29,6 @@ import org.slf4j.LoggerFactory;
 public class IncludeTag extends TagSupport implements TryCatchFinally {
 
 	private Logger logger = LoggerFactory.getLogger(IncludeTag.class);
-	private SecurityHelper securityHelper;
 	
 	private String parameterName;
 	private Object[] args;	
@@ -44,10 +44,11 @@ public class IncludeTag extends TagSupport implements TryCatchFinally {
 
 	public void setHasRoles(String hasRoles) {
 		if (hasRoles!=null) {
-			this.hasRoles=new HashSet<String>();
-			for(String role:hasRoles.split(",")) {
-				this.hasRoles.add(role);
-			}
+			this.hasRoles=new HashSet<String>(StringUtils.commaDelimitedListToSet(hasRoles));
+//			this.hasRoles=new HashSet<String>();			
+//			for(String role:hasRoles.split(",")) {
+//				this.hasRoles.add(role);
+//			}
 		}
 	}
 	
@@ -59,7 +60,7 @@ public class IncludeTag extends TagSupport implements TryCatchFinally {
 		HttpServletRequest request=(HttpServletRequest)pageContext.getRequest();
 		
 		if (hasRoles!=null && hasRoles.size()>0) {
-			if (!getSecurityHelper().isInRole(hasRoles, request)) {
+			if (!SecurityHelper.isInRole(hasRoles, request)) {
 				return EVAL_PAGE; 
 			}
 		}
@@ -93,13 +94,6 @@ public class IncludeTag extends TagSupport implements TryCatchFinally {
 			pageContext.getOut().print(parameterContext.getMessage(parameter.getValue(), args));
 		}
 	}		
-
-	private SecurityHelper getSecurityHelper() {
-		if (securityHelper==null) {
-			securityHelper=new SecurityHelper();
-		}
-		return securityHelper;
-	}
 
 	@Override
 	public void doCatch(Throwable throwable) throws Throwable {

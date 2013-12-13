@@ -61,11 +61,10 @@
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-				<value>it/seda/sem/i18n/uimessages</value>
-				<value>it/seda/sem/i18n/validatorMessages</value>
+				<value>it/seda/sem/i18n/ui/uimessages</value>
+				<value>it/seda/sem/i18n/validator/messages</value>
+				<value>it/seda/sem/i18n/menu/menu</value>
 				<value>org/springframework/security/messages</value>
-				<value>it/seda/sem/i18n/TestMessages</value>
-				<value>it/seda/sem/i18n/TestValidator</value>
 				<!-- security localization work close to org.springframework.web.filter.RequestContextFilter 
 					or org.springframework.web.context.request.RequestContextListener -->
 				<!-- <value>it/seda/sem/i18n/security/messages</value> -->
