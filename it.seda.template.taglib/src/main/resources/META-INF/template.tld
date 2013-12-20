@@ -207,7 +207,7 @@
       <b>Render a date time selector.</b>
       </p>
       <p>
-      Render a dat time selector in three dropdown list in according to the current locale.
+      Render a datetime selector in three dropdown list in according to the current locale.
       </p>
       <p>
       You must specify <code>path</code>, <code>dateTime</code>, <code>selector</code> tag attributes.
@@ -285,6 +285,136 @@
 		</attribute>		
 	</tag>	
 	
+	<tag>
+		<description>
+      <![CDATA[
+      <p>
+      <b>Render a menu.</b>
+      </p>
+      <p>
+      Render a menu based on user roles and current url.
+      </p>
+      <p>
+      You can specify css styling <code>classItem</code> <code>classItemSelected</code> <code>classItemLink</code> and <code>classItemLinkSelected</code>
+      You can use <em>link</em> suffix style for those menu item that holds an hyperlink; <em>selected</em> suffix style for those item that is current selected depending on url path.
+      </p>
+      ]]>
+      </description>
+		<name>menu</name>
+		<tag-class>it.seda.template.taglib.MenuTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description> 
+         <![CDATA[
+         The prefix associated to the menuitem id for localization; i.e. prefix=menu- id=credentials, localization key must be menu-credentials, default menu-.
+         ]]>
+         </description>
+			<name>prefix</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>		
+		<attribute>
+			<description> 
+         <![CDATA[
+         The attribute for css class style for menuItem without url path, default menu-item.
+         ]]>
+         </description>
+			<name>classItem</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+         <![CDATA[
+         The attribute for css class style for selected menuItem without url path, default menu-item-selected.
+         ]]>
+         </description>
+			<name>classItemSelected</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+         <![CDATA[
+         The attribute for css class style for menuItem with url path, default menu-item-link.
+         ]]>
+         </description>
+			<name>classItemLink</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+         <![CDATA[
+         The attribute for css class style for selected menuItem with url path, default menu-item-Link-selected.
+         ]]>
+         </description>
+			<name>classItemLinkSelected</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>					
+		<attribute>
+			<description>
+         <![CDATA[
+         The html element that wraps the ul menu, default div.
+         ]]>
+         </description>
+			<name>element</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>		
+		<attribute>
+			<description>
+         <![CDATA[
+         The css class style of the html element that wraps the ul menu, default main-menu.
+         ]]>
+         </description>
+			<name>elementClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>		
+		<attribute>
+			<description>
+         <![CDATA[
+         If this tag decorates the item style (but not the selected style) with a number depending on its level, i.e. menu-item, menu-item1, menu-item2, etc...
+         For a MultiRowRenderer it appends <em>-sub</em> suffix to element class
+         ]]>
+         </description>
+			<name>useModifier</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+		</attribute>		
+		<attribute>
+			<description>
+         <![CDATA[
+         If this tag must use multirow renderer depending on parent selection instead of the default renderer. The root was always rendered.
+         ]]>
+         </description>
+			<name>useSelectedParent</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+         <![CDATA[
+         The user provided renderer; it must be an instance of it.seda.template.taglib.menu.Renderer. See it.seda.template.taglib.menu.DefaultRenderer.
+         ]]>
+         </description>
+			<name>renderer</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	
+	</tag>	
 	<!-- TEMPLATE FUNCTIONS -->
 	<function>
 		<description>Print i18n message.This function must be used with placeholder arguments 

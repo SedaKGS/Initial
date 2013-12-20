@@ -3,7 +3,11 @@
 <%@ taglib prefix="x" uri="http://template.seda.it/tags"%>
 
 <h1>Menu</h1>
+
+<x:menu/>
+
 <%-- example of two level menu. Do we want create a template tag??? --%>
+<%--
 <ul id="main-menu">
 	<c:forEach var="item" items="${menu_items}">
 		<c:choose>
@@ -19,7 +23,7 @@
 		</c:choose>
 
 		<li id="${item.id}" class="${menu_item}">
-			<%-- Use resource bundle to get text --%>
+			<!-- Use resource bundle to get text -->
 			<c:set var="itemlabel" value="menu-${item.id}"/> 
 			<a href="${href}">${x:i18n(itemlabel)}</a>
 			<c:if test="${item.hasChildren}">
@@ -34,7 +38,7 @@
 							<c:when test="${subitem.selected && item.hasLink}"><c:set var="menu_item" value="submenu-item-link menu-link-selected" /></c:when>
 							<c:when test="${subitem.selected && !item.hasLink}"><c:set var="menu_item" value="submenu-item menu-selected" /></c:when>
 							<c:when test="${subitem.hasLink}"><c:set var="menu_item" value="submenu-item-link" /></c:when>
-							<%-- test="${!item.hasLink}" --%>
+							<!-- test="${!item.hasLink}" -->
 							<c:otherwise><c:set var="menu_item" value="submenu-item" /></c:otherwise>
 						</c:choose>
 						<li id="${subitem.id}" class="${menu_item}">
@@ -48,6 +52,7 @@
 
 	</c:forEach>
 </ul>
+ --%>
 <%--
 <table border="">
 	<tr>
