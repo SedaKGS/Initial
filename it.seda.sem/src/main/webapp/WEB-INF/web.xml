@@ -46,6 +46,18 @@
 		<dispatcher>ERROR</dispatcher> <!-- per la gestione degli errori http altrimenti non porta i dati di sessione -->
 	</filter-mapping>
 	
+	<!-- routing data source --> 
+	<filter>
+		<filter-name>dataSourceContextFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>dataSourceContextFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>		
+		<dispatcher>ERROR</dispatcher> <!-- per la gestione degli errori http altrimenti non porta i dati di sessione -->		
+	</filter-mapping>	
 	
 	<!--  Hidden Method Filter -->
 	<!-- cosi possiamo gestire su qualsiasi richiesta i metodi statndard rest specificando il parametro method o

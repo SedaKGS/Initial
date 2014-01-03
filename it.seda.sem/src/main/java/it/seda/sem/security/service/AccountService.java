@@ -3,7 +3,9 @@
  */
 package it.seda.sem.security.service;
 
-import it.seda.sem.jdbc.RowBoundsHelper;
+import it.seda.jdbc.commons.DataPage;
+import it.seda.jdbc.commons.DefaultDataPage;
+import it.seda.jdbc.ibatis.RowBoundsHelper;
 import it.seda.sem.security.UserDetailsAdapter;
 import it.seda.sem.security.domain.Account;
 import it.seda.sem.security.domain.AccountTO;
@@ -12,7 +14,6 @@ import it.seda.sem.security.domain.GroupMember;
 import it.seda.sem.security.domain.Signon;
 import it.seda.sem.security.exceptions.DuplicateAccountException;
 import it.seda.sem.security.persistence.AccountMapper;
-import it.seda.template.taglib.DatagridTag.Page;
 
 import java.util.List;
 
@@ -103,13 +104,13 @@ public class AccountService {
 	}	
 
 	@Transactional(value="transactionSecurityManager", readOnly=true)
-	public Page<AccountTO> listaAccount(int pageNumber, int rowsPerPage){
+	public DataPage<AccountTO> listaAccount(int pageNumber, int rowsPerPage){
 
 		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
 		int totalrows=listAccountCount(); //per testare la propagazione della transazione su altri metodi
 
 		List<AccountTO> accountList=accountMapper.listAccount(rbh.buildRowBounds());
-		Page<AccountTO> accountPage= new Page<AccountTO>(accountList);
+		DataPage<AccountTO> accountPage= new DefaultDataPage<AccountTO>(accountList);
 		rbh.decorate(accountPage, totalrows);
 
 		return accountPage;

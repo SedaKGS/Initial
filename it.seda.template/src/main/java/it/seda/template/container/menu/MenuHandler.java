@@ -59,7 +59,7 @@ public class MenuHandler {
 		}
 
 		if (roots.isEmpty() && tempMap.size()>0) {
-			roots=resolveRoots(tempMap, 1);
+			roots=resolveRoots(tempMap, 1); // roots may contains one or more dots
 		}
 		
 		for (String menuId : tempMap.keySet()) {

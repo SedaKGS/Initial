@@ -16,7 +16,7 @@
 	<mvc:annotation-driven validator="validator" />
 
 	<!-- business datasource -->
-	<bean id="dataSourceBusiness" class="it.seda.sem.jdbc.datasource.RoutingDataSource">
+	<bean id="dataSourceBusiness" class="it.seda.jdbc.datasource.RoutingDataSource">
 	 	<property name="targetDataSources">
 	 		<map>
 	 			<entry key="dataSourceRef" value="java:comp/env/jdbc/SEMDataSource"/>

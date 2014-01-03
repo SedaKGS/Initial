@@ -3,20 +3,16 @@
  */
 package it.seda.sem.domain;
 
-/**
- * @author f.ricci
- *
- */
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 /**
  * The factory class that creates a Transfer Object for a
  * given Bean or vice versa.
+ * 
+ * @author f.ricci 
  */
 public class ObjectCopier {
 	/**
@@ -27,6 +23,7 @@ public class ObjectCopier {
 	/**
 	 * Create an Object from the given class name. Only the commons fields are copied between objects.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T createObject(Object fromObject, Class<T> toClass) {
 		try {
 			// Get the class data for the complete 
@@ -50,7 +47,7 @@ public class ObjectCopier {
 				}				
 				try {
 					for (int j=0; j < fromFields.length; j++) {
-						// if the field names are same, copy value
+						// if the field names are the same, copy value
 						if (toFieldName.equals(fromFields[j].getName())) {
 							// Copy value from matching field into the new Object
 							if (toFields[i].getType().isAssignableFrom(fromFields[j].getType())) {
@@ -151,7 +148,7 @@ class ClassData {
 		arrFields = fields;
 		emptyConstructor=findEmptyConstructor(beanClass);
 		if (emptyConstructor==null) {
-			throw new IllegalArgumentException("The provided to class '" + beanClass +"' has not default constructor or has private modifier");			
+			throw new IllegalArgumentException("The provided 'TO' class '" + beanClass +"' has not default constructor or has private modifier");			
 		}		
 	}
 	public Object getObject() {
@@ -159,7 +156,7 @@ class ClassData {
 			try {
 				return emptyConstructor.newInstance();
 			} catch (Exception e) {
-				throw new IllegalArgumentException("The provided to class '" + beanClass +"' has not default constructor or has private modifier");
+				throw new IllegalArgumentException("The provided 'TO' class '" + beanClass +"' has not default constructor or has private modifier");
 			}
 		}
 		return null;

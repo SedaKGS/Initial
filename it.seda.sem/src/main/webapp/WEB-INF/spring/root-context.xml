@@ -15,14 +15,27 @@
 		up static resources in the ${webappRoot}/resources/ directory -->
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
+ 	<!-- example of data source discovery bean configuration -->
+ 	<bean id="dataSourceRefDiscovery" class="it.seda.jdbc.datasource.filter.DefaultDataSourceRefDiscovery">
+ 		<property name="defaultRef" value="dataSourceRef"/>
+ 		<property name="definitions">
+ 			<map>
+ 				<entry key="/**" value="dataSourceRef"/>
+ 			</map>
+ 		</property>
+ 	</bean>
+ 	<!-- routing data source filter that use the previous discovery bean -->
+ 	<bean id="dataSourceContextFilter" class="it.seda.jdbc.datasource.filter.DataSourceContextFilter">
+ 		<property name="dataSourceRefDiscovery" ref="dataSourceRefDiscovery"/>
+ 	</bean>
+
 	<!-- Business datasource (can be different from security data source) -->
 	 <!--	 
 	<bean id="dataSourceBusiness" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="java:comp/env/jdbc/SEMDataSource" />
 	</bean>
  	-->
- 		
-	 <bean id="dataSourceBusiness" class="it.seda.sem.jdbc.datasource.RoutingDataSource">
+	 <bean id="dataSourceBusiness" class="it.seda.jdbc.datasource.RoutingDataSource">
 	 	<property name="targetDataSources">
 	 		<map>
 	 			<entry key="dataSourceRef" value="java:comp/env/jdbc/SEMDataSource"/>

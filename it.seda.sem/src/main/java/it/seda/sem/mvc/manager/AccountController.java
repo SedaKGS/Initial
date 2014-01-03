@@ -1,5 +1,6 @@
 package it.seda.sem.mvc.manager;
 
+import it.seda.jdbc.commons.DataPage;
 import it.seda.sem.domain.ObjectCopier;
 import it.seda.sem.mvc.manager.models.FormAccount;
 import it.seda.sem.mvc.utils.OptionsUtil;
@@ -7,7 +8,6 @@ import it.seda.sem.security.domain.AccountTO;
 import it.seda.sem.security.domain.Group;
 import it.seda.sem.security.exceptions.DuplicateAccountException;
 import it.seda.sem.security.service.AccountService;
-import it.seda.template.taglib.DatagridTag.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -190,7 +190,7 @@ public class AccountController {
 	}
 
 	protected void addListAccount(ModelMap model, int pageNumber, int rowsPerPage) {
-		Page<AccountTO> accountPage=accountService.listaAccount(pageNumber, rowsPerPage);
+		DataPage<AccountTO> accountPage=accountService.listaAccount(pageNumber, rowsPerPage);
 
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("rowsPerPage", rowsPerPage);

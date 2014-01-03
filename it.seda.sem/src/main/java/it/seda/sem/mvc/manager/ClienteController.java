@@ -1,10 +1,10 @@
 package it.seda.sem.mvc.manager;
 
+import it.seda.jdbc.commons.DataPage;
 import it.seda.sem.domain.Cliente;
 import it.seda.sem.domain.ObjectCopier;
 import it.seda.sem.manager.service.ClienteService;
 import it.seda.sem.mvc.manager.models.FormClient;
-import it.seda.template.taglib.DatagridTag.Page;
 
 import java.math.BigInteger;
 
@@ -152,7 +152,7 @@ public class ClienteController {
 	
 	
 	protected void refreshDatagrid(ModelMap model, int pageNumber, int rowsPerPage) {
-		Page<Cliente> clientiPage=clientService.listClienti(pageNumber, rowsPerPage);		
+		DataPage<Cliente> clientiPage=clientService.listClienti(pageNumber, rowsPerPage);		
 	
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("rowsPerPage", rowsPerPage);

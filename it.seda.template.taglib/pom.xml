@@ -20,7 +20,13 @@
 			<groupId>it.seda.template</groupId>
 			<artifactId>it.seda.template</artifactId>
 			<version>0.0.2-SNAPSHOT</version>			
-		</dependency>			
+		</dependency>
+		<!-- Seda jdbc -->
+		<dependency>
+			<groupId>it.seda.jdbc</groupId>
+			<artifactId>it.seda.jdbc</artifactId>
+			<version>0.0.1-SNAPSHOT</version>			
+		</dependency>					
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -143,7 +149,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>it.seda.template.taglib</finalName>
+		<!-- finalName>it.seda.template.taglib</finalName -->
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

@@ -152,12 +152,12 @@ public class SMTPMXLookup {
 
 	public static void main( String args[] ) {
 		String testData[] = {
-				"f.ricci@seda.it",
-				"you@acquisto.net",
-				"fail.me@nowhere.spam", // Invalid domain name
-				"arkham@bigmeanogre.net", // Invalid address
-				"nosuchaddress@yahoo.com" // Failure of this method
-		};
+				"f.ricci@seda.it"};
+//				"you@acquisto.net",
+//				"fail.me@nowhere.spam", // Invalid domain name
+//				"arkham@bigmeanogre.net", // Invalid address
+//				"nosuchaddress@yahoo.com" // Failure of this method
+//		};
 
 		for ( int ctr = 0 ; ctr < testData.length ; ctr++ ) {
 			System.out.println( testData[ ctr ] + " is valid? " +

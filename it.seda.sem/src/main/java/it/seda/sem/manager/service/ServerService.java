@@ -1,22 +1,16 @@
 package it.seda.sem.manager.service;
 
-import it.seda.sem.domain.Cliente;
+import it.seda.jdbc.commons.DataPage;
+import it.seda.jdbc.commons.DefaultDataPage;
+import it.seda.jdbc.ibatis.RowBoundsHelper;
 import it.seda.sem.domain.Server;
-import it.seda.sem.jdbc.RowBoundsHelper;
 import it.seda.sem.persistence.ServerMapper;
-import it.seda.template.taglib.DatagridTag.Page;
 
 import java.math.BigInteger;
 import java.util.List;
 
-
-
-
-
-
 import javax.inject.Inject;
 
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,14 +42,14 @@ public class ServerService {
 	}
 	
 	@Transactional
-	public Page<Server> listServer(int pageNumber, int rowsPerPage) {
+	public DataPage<Server> listServer(int pageNumber, int rowsPerPage) {
 		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
 		
 		int totalRows=serverMapper.listServerCount();
 		
 		List<Server> serverList=serverMapper.listServer(rbh.buildRowBounds());
 		
-		Page<Server> serverPage=new Page<Server>(serverList);
+		DataPage<Server> serverPage=new DefaultDataPage<Server>(serverList);
 		rbh.decorate(serverPage, totalRows);
 		
 		return serverPage;

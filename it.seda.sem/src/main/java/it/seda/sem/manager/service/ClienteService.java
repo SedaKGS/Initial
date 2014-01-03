@@ -1,9 +1,10 @@
 package it.seda.sem.manager.service;
 
+import it.seda.jdbc.commons.DataPage;
+import it.seda.jdbc.commons.DefaultDataPage;
+import it.seda.jdbc.ibatis.RowBoundsHelper;
 import it.seda.sem.domain.Cliente;
-import it.seda.sem.jdbc.RowBoundsHelper;
 import it.seda.sem.persistence.ClienteMapper;
-import it.seda.template.taglib.DatagridTag.Page;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -34,20 +35,21 @@ public class ClienteService {
 		clienteMapper.deleteCliente(id);
 	}
 
+	@Transactional(readOnly=true)
 	public Cliente  getCliente(BigInteger id) {
 		Cliente cliente=clienteMapper.getCliente(id);
 		return cliente;
 	}
 
 	@Transactional(readOnly=true)
-	public Page<Cliente> listClienti(int pageNumber, int rowsPerPage) {
+	public DataPage<Cliente> listClienti(int pageNumber, int rowsPerPage) {
 		
 		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
 		int totalrows=clienteMapper.listClientiCount();
 		
 		List<Cliente> clientiList=clienteMapper.listClienti(rbh.buildRowBounds());		
 		
-		Page<Cliente> clientiPage=new Page<Cliente>(clientiList);
+		DataPage<Cliente> clientiPage=new DefaultDataPage<Cliente>(clientiList);
 		rbh.decorate(clientiPage, totalrows);
 		
 		return clientiPage;

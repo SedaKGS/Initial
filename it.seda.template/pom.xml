@@ -99,7 +99,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>it.seda.template</finalName>
+		<!-- finalName>it.seda.template</finalName -->
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

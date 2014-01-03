@@ -1,6 +1,5 @@
 package it.seda.template.taglib.time;
 
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;

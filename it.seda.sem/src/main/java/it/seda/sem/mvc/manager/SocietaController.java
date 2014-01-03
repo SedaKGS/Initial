@@ -1,25 +1,12 @@
 package it.seda.sem.mvc.manager;
 
-import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-
-
+import it.seda.jdbc.commons.DataPage;
 import it.seda.sem.domain.ObjectCopier;
 import it.seda.sem.domain.Societa;
-import it.seda.sem.jdbc.RowBoundsHelper;
 import it.seda.sem.manager.service.SocietaService;
-import it.seda.sem.mvc.manager.models.FormAccount;
 import it.seda.sem.mvc.manager.models.FormSocieta;
-import it.seda.sem.security.domain.AccountTO;
-import it.seda.sem.security.exceptions.DuplicateAccountException;
-import it.seda.sem.security.service.AccountService;
-import it.seda.template.taglib.DatagridTag.Page;
+
+import java.math.BigInteger;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -27,16 +14,13 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -172,13 +156,7 @@ public class SocietaController {
 	
 	
 	protected void refreshDatagrid(ModelMap model, int pageNumber, int rowsPerPage) {
-		int totalRows=societaService.listSocietaCount();
-
-		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
-		List<Societa> ar=societaService.listSocieta(rbh.buildRowBounds());
-		
-		Page<Societa> societaPage = new Page<Societa>(ar);
-		rbh.decorate(societaPage, totalRows);
+		DataPage<Societa> societaPage =societaService.listSocieta(pageNumber, rowsPerPage);
 		
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("rowsPerPage", rowsPerPage);
@@ -187,19 +165,3 @@ public class SocietaController {
 	
 	
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
