@@ -84,7 +84,7 @@ public class TemplateContext {
 	}		
 	
 	public String getMessage(String code, Locale locale, Object[] args) {
-		return wac.getMessage(code, args, "*** missing localized message ***", locale==null?localeResolver.getLocale():locale);
+		return wac.getMessage(code, args, "*** missing localized message '"+ code +"' ***", locale==null?localeResolver.getLocale():locale);
 	}	
 	
 	public TemplateContext (WebApplicationContext wac) {

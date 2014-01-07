@@ -472,7 +472,24 @@
 		<description>
    <![CDATA[
       <p>
-      <b>Insert an i18n message form theme.</b>
+      <b>Insert the locale string.</b>
+      </p>
+      <p>
+      Insert the locale string. Refer to the java.util.Locale.toString()
+      </p>
+      ]]>   
+   </description>
+
+		<name>i18nlocale</name>
+		<function-class>it.seda.template.taglib.I18N</function-class>
+		<function-signature>java.lang.String locale()</function-signature>
+	</function>
+
+	<function>
+		<description>
+   <![CDATA[
+      <p>
+      <b>Insert an i18n message from theme.</b>
       </p>
       <p>
       Insert an i18n message from a defined theme message key.

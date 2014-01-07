@@ -97,7 +97,8 @@
        <intercept-url pattern="/events/**"
                 access="hasAnyRole('ROLE_ADMIN,ROLE_USER')"/>
        	
-		<form-login login-page="/security/login" 
+		<form-login login-processing-url="/j_spring_security_check" 
+					login-page="/security/login" 
 		            authentication-failure-url="/security/login?failed=true"
 			        default-target-url="/events/welcome" />
 		

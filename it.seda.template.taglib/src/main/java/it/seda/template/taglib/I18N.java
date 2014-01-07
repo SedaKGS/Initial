@@ -8,6 +8,7 @@ import it.seda.template.utils.LocaleOrientation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.context.Theme;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -36,7 +37,7 @@ public class I18N {
 	}
 	
 	protected static String getMessage(String key,Object [] args){
-		if(key==null) return null;
+		if(key==null || key.isEmpty()) return null;
 		String message=null;
 		try{
 			message=getContext().getMessage(key, args);		
@@ -65,6 +66,10 @@ public class I18N {
 		logger.warn("ThemeResolver not found");
 		
 		return "";
+	}	
+	
+	public static String locale() {
+		return LocaleContextHolder.getLocale().toString();
 	}	
 	
 	public static String direction() {
