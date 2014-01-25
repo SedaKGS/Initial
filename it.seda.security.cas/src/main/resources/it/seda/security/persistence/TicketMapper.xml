@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="it.seda.security.persistence.TicketMapper">
+
+	<resultMap id="ticket" type="Ticket">
+		<id property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="applicationId" column="application_id" />
+		<result property="creationDate" column="creation_date" />
+		<result property="expirationDate" column="expiration_date" />
+	</resultMap> 	
+
+	<insert id="insertTicket" parameterType="Ticket">
+		INSERT INTO TICKETS (ID, USERNAME, APPLICATION_ID, EXPIRATION_DATE)
+		VALUES (#{id},#{username},#{applicationId}, #{expirationDate})
+	</insert>
+	<delete id="deleteTicket" parameterType="Ticket">
+		DELETE FROM TICKETS
+		WHERE ID=#{id}
+	</delete>
+	<select id="selectTicket" parameterType="string">
+	    SELECT TICKETS.ID
+	         , TICKETS.USERNAME
+	         , TICKETS.APPLICATION_ID
+	         , TICKETS.CREATION_DATE	         
+	         , TICKETS.EXPIRATION_DATE	         
+	     FROM TICKETS
+	    WHERE TICKETS.ID=#{id}
+	</select>
+	<select id="listTicket" resultMap="ticket" parameterType="Ticket">
+	    SELECT TICKETS.ID
+	         , TICKETS.USERNAME
+	         , TICKETS.APPLICATION_ID
+	         , TICKETS.CREATION_DATE	         
+	         , TICKETS.EXPIRATION_DATE	         
+	     FROM TICKETS
+	     <where>
+	     	<if test="username != null"> username=#{username}</if>
+	     	<if test="application_id != null"> application_id=#{application_id}</if>
+	     </where>
+	    ORDER BY TICKETS.EXPIRATION_DATE DESC	       		
+	</select>
+	<select id="listTicketCount" resultType="int" parameterType="Ticket">
+	    SELECT COUNT(*)
+	     FROM TICKETS
+	     <where>
+	     	<if test="username != null"> username=#{username}</if>
+	     	<if test="application_id != null"> application_id=#{application_id}</if>
+	     </where>
+	</select>
+</mapper>

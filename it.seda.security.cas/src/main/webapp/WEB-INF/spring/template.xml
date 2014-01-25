@@ -1,0 +1,31 @@
+<templates>
+	<template name="default" url="/template/default/default.jsp" default="true"/>
+  
+	<screen name="base">
+		<parameter key="header" value="/template/default/header.jsp"/>
+		<parameter key="navigation" value="/template/default/navigation.jsp"/>		
+		<parameter key="footer" value="/template/default/footer.jsp"/>
+	</screen>
+
+	<screen name="login" extends="base">
+		 <parameter key="content" value="/views/auth/login.jsp"/>
+	</screen>
+	
+	<screen name="home" extends="base">
+		 <parameter key="content" value="/views/home.jsp"/>
+	</screen>	
+
+	<!-- unexpected error views -->	
+	<screen name="error" extends="base">
+		 <parameter key="content" value="/views/errors/error.jsp"/>
+	</screen>
+	
+	<screen name="error404" extends="base">
+		 <parameter key="content" value="/views/errors/error404.jsp"/>
+	</screen>	
+	
+	<screen name="error500" extends="base">
+		 <parameter key="content" value="/views/errors/error500.jsp"/>
+	</screen>	
+
+</templates>

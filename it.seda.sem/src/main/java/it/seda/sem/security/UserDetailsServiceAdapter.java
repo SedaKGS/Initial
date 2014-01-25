@@ -6,8 +6,7 @@ package it.seda.sem.security;
 import it.seda.sem.security.domain.Account;
 import it.seda.sem.security.service.AccountService;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service(value="userDetailsService")
 public class UserDetailsServiceAdapter implements UserDetailsService {
 	
-	@Inject AccountService accountService;
+	@Autowired AccountService accountService;
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

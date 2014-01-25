@@ -8,7 +8,7 @@ import it.seda.jdbc.commons.DefaultDataPage;
 import it.seda.jdbc.ibatis.RowBoundsHelper;
 import it.seda.sem.security.UserDetailsAdapter;
 import it.seda.sem.security.domain.Account;
-import it.seda.sem.security.domain.AccountTO;
+import it.seda.sem.security.domain.MutableAccount;
 import it.seda.sem.security.domain.Group;
 import it.seda.sem.security.domain.GroupMember;
 import it.seda.sem.security.domain.Signon;
@@ -41,8 +41,8 @@ public class AccountService {
 	}
 
 	@Transactional(value="transactionSecurityManager", readOnly=true)
-	public AccountTO getAccountTOByUserName(String username) {
-		return accountMapper.getAccountTOByUsername(username);
+	public MutableAccount getMutableAccountByUserName(String username) {
+		return accountMapper.getMutableAccountByUsername(username);
 	}
 
 	@Transactional(value="transactionSecurityManager", readOnly=true)
@@ -61,35 +61,31 @@ public class AccountService {
 	}	
 	/**
 	 * 
-	 * @param account
+	 * @param mutable
 	 * @throws DuplicateAccountException in case of duplicate account username
 	 */
 	@Transactional("transactionSecurityManager")
-	public void insertAccount(AccountTO account) {
-		if (accountMapper.getAccountByUsername(account.getUsername())!=null) {
-			throw new DuplicateAccountException(account.getUsername());
+	public void insertAccount(MutableAccount mutable) {
+		if (accountMapper.getAccountByUsername(mutable.getUsername())!=null) {
+			throw new DuplicateAccountException(mutable.getUsername());
 		}
 
 		Signon signon = new Signon();
-		signon.setUsername(account.getUsername());
+		signon.setUsername(mutable.getUsername());
 
-		Account unAccount = AccountTO.createAccount(account);
+		Account unAccount = new Account();
+		unAccount.setUsername(mutable.getUsername());
 		Object salt = saltSource.getSalt(new UserDetailsAdapter(unAccount));
-		signon.setPassword(passwordEncoder.encodePassword(account.getUsername(),salt));
+		signon.setPassword(passwordEncoder.encodePassword(mutable.getUsername(),salt));
 
 		GroupMember gm = new GroupMember();
-		gm.setGroupName(account.getGroupName());
-		gm.setUsername(account.getUsername());
+		gm.setGroupName(mutable.getGroupName());
+		gm.setUsername(mutable.getUsername());
 
-		accountMapper.insertAccount(account);
+		accountMapper.insertAccount(mutable);
 		accountMapper.insertGroupMember(gm);
 		accountMapper.insertSignon(signon);
-		accountMapper.updateCredentialsExpiration(account.getUsername());
-	}
-
-	@Transactional("transactionSecurityManager")
-	public void updateAccount(Account account) {
-		accountMapper.updateAccount(account);
+		accountMapper.updateCredentialsExpiration(mutable.getUsername());
 	}
 
 	@Transactional("transactionSecurityManager")
@@ -101,16 +97,17 @@ public class AccountService {
 		signon.setPassword(passwordEncoder.encodePassword(signon.getPassword(),salt));
 
 		accountMapper.updateSignon(signon);
+		accountMapper.updateCredentialsExpiration(signon.getUsername());
 	}	
 
 	@Transactional(value="transactionSecurityManager", readOnly=true)
-	public DataPage<AccountTO> listaAccount(int pageNumber, int rowsPerPage){
+	public DataPage<MutableAccount> listaAccount(int pageNumber, int rowsPerPage){
 
 		RowBoundsHelper rbh = new RowBoundsHelper(rowsPerPage, pageNumber);
 		int totalrows=listAccountCount(); //per testare la propagazione della transazione su altri metodi
 
-		List<AccountTO> accountList=accountMapper.listAccount(rbh.buildRowBounds());
-		DataPage<AccountTO> accountPage= new DefaultDataPage<AccountTO>(accountList);
+		List<MutableAccount> accountList=accountMapper.listAccount(rbh.buildRowBounds());
+		DataPage<MutableAccount> accountPage= new DefaultDataPage<MutableAccount>(accountList);
 		rbh.decorate(accountPage, totalrows);
 
 		return accountPage;
@@ -135,11 +132,11 @@ public class AccountService {
 	}
 
 	@Transactional("transactionSecurityManager")
-	public void updateAccountTO(AccountTO ato){
+	public void updateAccount(MutableAccount ato){
 		GroupMember gm = new GroupMember();
 		gm.setGroupName(ato.getGroupName());
 		gm.setUsername(ato.getUsername());
-		accountMapper.updateAccountTO(ato);
+		accountMapper.updateAccount(ato);
 		accountMapper.updateGroupMember(gm);
 	}
 

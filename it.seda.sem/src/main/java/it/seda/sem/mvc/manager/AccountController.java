@@ -4,19 +4,19 @@ import it.seda.jdbc.commons.DataPage;
 import it.seda.sem.domain.ObjectCopier;
 import it.seda.sem.mvc.manager.models.FormAccount;
 import it.seda.sem.mvc.utils.OptionsUtil;
-import it.seda.sem.security.domain.AccountTO;
 import it.seda.sem.security.domain.Group;
+import it.seda.sem.security.domain.MutableAccount;
 import it.seda.sem.security.exceptions.DuplicateAccountException;
 import it.seda.sem.security.service.AccountService;
 
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -27,10 +27,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value="/account")
+@RequestMapping("/account")
 public class AccountController {
 
-	@Inject AccountService accountService;
+	@Autowired AccountService accountService;
 
 	private Logger logger = LoggerFactory.getLogger(AccountController.class);
 
@@ -69,8 +69,8 @@ public class AccountController {
 		if (!result.hasErrors()) {
 			logger.debug("Account Controller: dati inseriti correttamente"); //TODO i18n		
 			try{	
-				AccountTO ato=ObjectCopier.createObject(account, AccountTO.class);
-				accountService.updateAccountTO(ato);
+				MutableAccount ato=ObjectCopier.createObject(account, MutableAccount.class);
+				accountService.updateAccount(ato);
 				account.setEsito("formAccount.esito.ok");
 
 			}catch(DuplicateAccountException e){
@@ -122,7 +122,7 @@ public class AccountController {
 			ModelMap model) {
 
 
-		AccountTO account=accountService.getAccountTOByUserName(username);
+		MutableAccount account=accountService.getMutableAccountByUserName(username);
 		FormAccount formAccount=ObjectCopier.createObject(account, FormAccount.class); 
 
 		model.addAttribute("accountData",formAccount);
@@ -162,7 +162,7 @@ public class AccountController {
 		if (!result.hasErrors()) {
 			logger.debug("ChangePassword: dati inseriti correttamente"); //TODO i18n		
 			try{	
-				AccountTO ato=ObjectCopier.createObject(account, AccountTO.class);
+				MutableAccount ato=ObjectCopier.createObject(account, MutableAccount.class);
 				accountService.insertAccount(ato);
 				account.setEsito("formAccount.esito.ok");
 
@@ -190,7 +190,7 @@ public class AccountController {
 	}
 
 	protected void addListAccount(ModelMap model, int pageNumber, int rowsPerPage) {
-		DataPage<AccountTO> accountPage=accountService.listaAccount(pageNumber, rowsPerPage);
+		DataPage<MutableAccount> accountPage=accountService.listaAccount(pageNumber, rowsPerPage);
 
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("rowsPerPage", rowsPerPage);

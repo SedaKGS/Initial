@@ -34,7 +34,7 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 	private String border;
 	private String cellPadding;
 	private String cellSpacing;
-	private String viewstate;
+//	private String viewstate;
 	protected String context=null;
 	private String action;
 	private String order;
@@ -98,9 +98,9 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 		return cellSpacing==null?"":" cellspacing=\"" + cellSpacing + "\"";
 	}
 
-	public void setViewstate(String viewstate) {
-		this.viewstate=viewstate;
-	}
+//	public void setViewstate(String viewstate) {
+//		this.viewstate=viewstate;
+//	}
 
 	public void setAction(String action) {
 		this.action=action;
@@ -324,11 +324,11 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 		int iRowperPages = pageset.getPageSize();
 		String sViewstate="";
 
-		if (action.contains("?")) {
-			sViewstate = "&amp;viewstate=" + viewstate;
-		} else {
-			sViewstate = "?viewstate=" + viewstate;
-		}
+//		if (action.contains("?")) {
+//			sViewstate = "&amp;viewstate=" + viewstate;
+//		} else {
+//			sViewstate = "?viewstate=" + viewstate;
+//		}
 
 		int iPageLeft = iCurrentPage + 1;
 		int iPageRight = iCurrentPage - 1;
@@ -547,7 +547,7 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 		border=null;
 		cellPadding=null;
 		cellSpacing=null;
-		viewstate=null;
+//		viewstate=null;
 		context=null;
 		action=null;
 		order=null;

@@ -106,11 +106,13 @@
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<!-- 
 		<attribute>
 			<name>viewstate</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		 -->
 		<attribute>
 			<name>border</name>
 			<required>false</required>

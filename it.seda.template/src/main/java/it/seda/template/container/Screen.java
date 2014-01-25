@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class contains all the attributes present in the tag screen that is
- * used in the seda composition tool's configuration file (es. template.xml).
- * In addition to these parameters this class contains a parameter list in wich every 
+ * used in the composition tool's configuration file (template.xml).
+ * In addition to these parameters this class contains a parameter list in which every 
  * element represents the tag attribute used in the same configuration file.
  * 
  * <br>

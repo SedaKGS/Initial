@@ -62,7 +62,7 @@ public class URLBasedThemeResolver extends AbstractThemeResolver implements Init
 		if (definitions==null) {
 			definitions=new HashMap<String, String>(0);
 			if (logger.isInfoEnabled()) {
-				logger.info("no definitions found always set to default '" + getDefaultThemeName()+"'");
+				logger.info("no definitions found will always use default '" + getDefaultThemeName()+"'");
 			}			
 		}
 	}

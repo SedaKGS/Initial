@@ -1,24 +1,28 @@
-package it.seda.sem.security.domain;
+/**
+ * 
+ */
+package it.seda.security.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
+/**
+ * The abstract Account, the base security identity
+ * 
+ * @author f.ricci
+ *
+ */
 @SuppressWarnings("serial")
-public class AccountTO implements Serializable {
-	
-	private String username;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private String groupName;
-	private boolean enabled;
-	private short attempts;
-	
-	public static Account createAccount(AccountTO accountTO){
-		Account account=new Account();
-		account.setUsername(accountTO.username);
-		return account;
-		
-	}
+public abstract class AbstractAccount implements Serializable {
+
+	protected String username;
+	protected String firstName;
+	protected String lastName;
+	protected String email;
+	protected boolean enabled;
+	protected short attempts;
+	protected Date lastAttempt;
+
 	public String getUsername() {
 		return username;
 	}
@@ -43,12 +47,7 @@ public class AccountTO implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getGroupName() {
-		return groupName;
-	}
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
+
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -64,13 +63,18 @@ public class AccountTO implements Serializable {
 	public void setAttempts(short attempts) {
 		this.attempts = attempts;
 	}
-
+	public Date getLastAttempt() {
+		return lastAttempt;
+	}
+	public void setLastAttempt(Date lastAttempt) {
+		this.lastAttempt = lastAttempt;
+	}
 	@Override
 	public String toString() {
 		return "AccountTO [username=" + username + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", email=" + email
-				+ ", groupName=" + groupName + ", enabled=" + enabled
-				+ ", attempts=" + attempts + ", isLocked()=" + isLocked() + "]";
-	}	
+				+ ", enabled=" + enabled + ", attempts=" + attempts 
+				+ ", isLocked()=" + isLocked() + "]";
+	}
 	
 }

@@ -1,7 +1,7 @@
 package it.seda.sem.security;
 
 import it.seda.sem.security.domain.Account;
-import it.seda.sem.security.domain.AccountTO;
+import it.seda.sem.security.domain.MutableAccount;
 import it.seda.sem.security.service.AccountService;
 
 import javax.inject.Inject;
@@ -34,7 +34,7 @@ public class RefreshContextListener implements ApplicationListener<ContextRefres
 			logger.warn("administrator account not found.... trying to create it..."); //TODO no i18n
 			//final DateTime expiration = new DateTime(2099, 12, 31, 12, 0, 0, 0);
 			//final DateTime credentialsExpiration = new DateTime(2099, 12, 30, 12, 0, 0, 0);
-			AccountTO accountto=new AccountTO();
+			MutableAccount accountto=new MutableAccount();
 			accountto.setUsername(ADMIN_USER);
 			accountto.setGroupName("administrators");
 			accountto.setFirstName("administrator");

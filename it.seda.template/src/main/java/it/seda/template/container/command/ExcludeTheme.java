@@ -3,7 +3,7 @@ package it.seda.template.container.command;
 import java.util.TreeSet;
 
 /**
- * Represent the CommandTheme implementation responsable for the exclusion of a particular theme.
+ * Represent the CommandTheme implementation responsible for the exclusion of a particular theme.
  * 
  */
 

@@ -8,29 +8,24 @@
 	Preferiamo usar le cache di Spring
 	<cache />
  	-->
-	<resultMap id="account" type="Account">
-		<id property="username" column="username" />
-		<result property="password" column="password" />
-		<result property="firstName" column="firstname" />
-		<result property="email" column="email" />
-		<result property="enabled" column="enabled" />
-		<result property="registration" column="registration" />
-		<result property="expiration" column="expiration" />
-		<result property="credentialsExpiration" column="credentialsExpiration" />
-		<result property="locked" column="locked" />
-		<result property="attempts" column="attempts" />
-		<result property="lastAttempt" column="lastAttempt" />
-	</resultMap>
-	
-	
-	<resultMap id="accountTO" type="AccountTO">
+	<resultMap id="abstractAccount" type="AbstractAccount">
 		<id property="username" column="username" />
 		<result property="firstName" column="firstName" />
 		<result property="lastName" column="lastName" />
 		<result property="email" column="email" />
 		<result property="enabled" column="enabled" />
+		<result property="attempts" column="attempts" />
+		<result property="lastAttempt" column="lastAttempt" />
+	</resultMap> 	
+
+	<resultMap id="mutableAccount" type="MutableAccount" extends="abstractAccount">
 		<result property="groupName" column="groupName" />
-		<result property="attempts" column="attempts" />		
+	</resultMap>
+ 	
+	<resultMap id="account" type="Account" extends="abstractAccount">
+		<result property="registration" column="registration" />
+		<result property="expiration" column="expiration" />
+		<result property="credentialsExpiration" column="credentialsExpiration" />
 	</resultMap>
 	
 	<resultMap id="group" type="Group">
@@ -38,7 +33,6 @@
 		<result property="groupName" column="GROUP_NAME" />
 		<result property="groupDescription" column="GROUP_DESCRIPTION" />
 	</resultMap>
-	
 	
 	<resultMap id="accountComplete" type="Account" extends="account">
 		<collection property="authorities" ofType="Authority">
@@ -65,14 +59,15 @@
 		AND GROUP_AUTHORITIES.GROUP_ID = GROUP_MEMBERS.GROUP_ID
 	</select>
 	
-	<select id="getAccountTOByUsername" parameterType="string" resultMap="accountTO">
+	<select id="getMutableAccountByUsername" parameterType="string" resultMap="mutableAccount">
 		SELECT
 		USERS.username,
 		USERS.firstName,
 		USERS.lastName,
 		USERS.email,
 		USERS.enabled,
-		USERS.attempt,		
+		USERS.attempts,
+		USERS.lastAttempt,		
 		GROUPS.GROUP_NAME as "groupName"
 		FROM USERS 
 		INNER JOIN GROUP_MEMBERS
@@ -97,7 +92,7 @@
 		ORDER BY GROUP_NAME 
 	</select>
 	
-	<select id="listAccount"  resultMap="accountTO">
+	<select id="listAccount"  resultMap="mutableAccount">
 	  SELECT
 		USERS.username,
 		USERS.firstName,
@@ -105,6 +100,7 @@
 		USERS.email,
 		USERS.enabled,
 		USERS.attempts,
+		USERS.lastAttempt,
 		USERS.lastAttempt,
 		GROUPS.GROUP_NAME as "groupName"
 		FROM USERS 
@@ -122,14 +118,14 @@
        WHERE USERS.USERNAME!='admin'
 	</select>
 	
-	<insert id="insertAccount" parameterType="AccountTO">
+	<insert id="insertAccount" parameterType="MutableAccount">
 		INSERT INTO USERS
 		(username,firstName,lastName,email,expiration,enabled)
 		VALUES
 		(#{username}, #{firstName}, #{lastName}, #{email}, '2099-12-31', #{enabled})
 	</insert>
 	
-	<update id="updateAccountTO" parameterType="AccountTO">
+	<update id="updateAccount" parameterType="MutableAccount">
 	   UPDATE USERS
        SET firstName=#{firstName}
          , lastName=#{lastName}
@@ -182,6 +178,7 @@
        WHERE USERS.USERNAME=#{username}
 	</delete>
 
+	<!-- 
 	<update id="updateAccount" parameterType="Account">
 		UPDATE USERS
 		<set>
@@ -194,7 +191,7 @@
 		</set>
 		WHERE USERNAME = #{username}		
 	</update>
-
+ 	-->
 	<update id="updateSignon" parameterType="Signon">
 		UPDATE SIGNON SET PASSWORD = #{password}
 		WHERE USERNAME = #{username}

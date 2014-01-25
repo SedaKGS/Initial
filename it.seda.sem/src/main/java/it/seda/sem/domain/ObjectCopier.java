@@ -5,6 +5,7 @@ package it.seda.sem.domain;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,16 +113,19 @@ public class ObjectCopier {
 	private static ClassData resolveClassData(Class<?> clazz){
 		ClassData cData = null;
 		try {
-			// Get the class of the given object and the 
-			// Transfer Object to be created
-			Field[] arrFields ;
-			// Determine the fields that must be copied
-			arrFields = clazz.getDeclaredFields();
-			for (int i = 0; i < arrFields.length; i++) {
-				if (!arrFields[i].isAccessible()) 
-					arrFields[i].setAccessible(true);
-			}
-			cData = new ClassData(clazz, arrFields);
+			Class<?> current = clazz;
+			ArrayList<Field> arrFields = new ArrayList<Field>();
+			do {
+				// Determine the fields that must be copied
+				for (Field field: current.getDeclaredFields()) {
+					if (!field.isAccessible()) {
+						field.setAccessible(true);
+					}
+					arrFields.add(field);
+				}
+			} while ((current=current.getSuperclass())!=null);
+
+			cData = new ClassData(clazz, arrFields.toArray(new Field[arrFields.size()]));
 			classDataInfo.put(clazz.getName(), cData);
 		} catch (Throwable t) {
 			throw new RuntimeException(t.getMessage(),t);
