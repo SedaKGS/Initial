@@ -1,7 +1,7 @@
 /**
  * 
  */
-package it.seda.security.cas.manager;
+package it.seda.security.cas.manager.controller;
 
 import it.seda.jdbc.commons.DataPage;
 import it.seda.security.domain.Customer;
