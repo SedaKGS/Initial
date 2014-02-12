@@ -29,15 +29,18 @@
 	<http auto-config="true" use-expressions="true">
         <intercept-url pattern="/"
                 access="permitAll"/>
+                <!-- 
         <intercept-url pattern="/resources/**"
-                access="permitAll"/>                
+                access="permitAll"/>
+                 -->                
         <intercept-url pattern="/login/**"
                 access="permitAll"/>
         <intercept-url pattern="/logout"
                 access="permitAll"/>
+                <!-- 
         <intercept-url pattern="/errors/**"
                 access="permitAll"/>
-
+ 				-->
 		<!-- 
         <intercept-url pattern="/**"
                 access="hasAnyRole('ROLE_ADMIN, ROLSE_USER')"/>
@@ -53,8 +56,9 @@
 		<!-- Using "logout-success-url" attribute we delete the remember me cookie after logout -->	
 		<logout logout-success-url="/login" 
 				logout-url="/logout"/>
-
+		<!-- 
 		<remember-me />
+		 -->
 	</http>
 	
 	<!-- **************************************************************************** -->

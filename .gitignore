@@ -4,8 +4,9 @@
 *.jar
 *.war
 *.ear
-it.seda.security.cas/target
-it.seda.sem/target
 it.seda.jdbc/target
+it.seda.security.cas/target
+it.seda.security/target
+it.seda.sem/target
 it.seda.template/target
 it.seda.template.taglib/target

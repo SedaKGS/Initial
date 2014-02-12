@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import it.seda.jdbc.commons.DataPage;
 import it.seda.security.domain.Customer;
 import it.seda.security.service.ManagerService;
-import it.seda.sem.mvc.manager.models.FormClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

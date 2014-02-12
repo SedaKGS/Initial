@@ -50,7 +50,7 @@
 		<property name="basenames">
 			<list>
 				<value>it/seda/security/i18n/ui/uilabel</value>
-				<value>it/seda/security/i18n/validator/messages</value>
+				<value>it/seda/security/domain/i18n/validation</value>
 				<value>it/seda/security/i18n/menu/menu</value>
 				<value>org/springframework/security/messages</value>
 				<!-- security localization work close to org.springframework.web.filter.RequestContextFilter 

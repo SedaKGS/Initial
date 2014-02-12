@@ -107,12 +107,19 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- Seda security -->
+		<dependency>
+			<groupId>it.seda.security</groupId>
+			<artifactId>it.seda.security</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
 		<!-- Seda jdbc -->
 		<dependency>
 			<groupId>it.seda.jdbc</groupId>
 			<artifactId>it.seda.jdbc</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency>		
 
 		<!-- Seda Template Core -->
 		<dependency>

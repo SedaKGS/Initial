@@ -20,7 +20,8 @@
 	<c:param name="pageNumber" value="${pageNumber}" />
 	<c:param name="rowsPerPage" value="${rowsPerPage}" />
 </c:url>
-
+<<spring:url value="">
+</spring:url>
 <div id="divErrors" class="errors">${x:i18n(accountData.esito)}</div>
 
 <div class="title" style="text-align: center">
