@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="it.seda.security.persistence.SecurityMapper">
+
+	<resultMap id="abstractAccount" type="AbstractAccount">
+		<id property="username" column="username" />
+		<result property="firstName" column="firstName" />
+		<result property="lastName" column="lastName" />
+		<result property="email" column="email" />
+		<result property="enabled" column="enabled" />
+		<result property="attempts" column="attempts" />
+		<result property="lastAttempt" column="lastAttempt" />
+	</resultMap> 	
+
+	<resultMap id="mutableAccount" type="MutableAccount" extends="abstractAccount">
+		<result property="customerId" column="customerId" />	
+		<result property="groupName" column="groupName" />
+	</resultMap>
+ 	
+	<resultMap id="account" type="Account" extends="abstractAccount">
+		<result property="registration" column="registration" />
+		<result property="expiration" column="expiration" />
+		<result property="credentialsExpiration" column="credentialsExpiration" />
+	</resultMap>
+	
+	<resultMap id="group" type="Group">
+		<id property="id" column="ID" />
+		<result property="groupName" column="GROUP_NAME" />
+		<result property="groupDescription" column="GROUP_DESCRIPTION" />
+	</resultMap>
+	
+	<resultMap id="accountComplete" type="Account" extends="account">
+		<collection property="authorities" ofType="Authority">
+			<result column="authority" property="name" />
+		</collection>
+	</resultMap>
+
+	<select id="getAccountByUsername" parameterType="string" resultMap="accountComplete">
+		SELECT
+		USERS.username,
+		USERS.firstName,
+		USERS.lastName,
+		USERS.email,
+		USERS.enabled,
+		USERS.registration,
+		USERS.expiration,
+		USERS.credentialsExpiration,
+		USERS.attempts,
+		USERS.lastAttempt,
+		GROUP_AUTHORITIES.authority as "authority"
+		FROM USERS, GROUP_MEMBERS, GROUP_AUTHORITIES
+		WHERE USERS.USERNAME = #{username}
+		AND GROUP_MEMBERS.USERNAME = USERS.USERNAME
+		AND GROUP_AUTHORITIES.GROUP_ID = GROUP_MEMBERS.GROUP_ID
+	</select>
+	
+	<select id="getMutableAccountByUsername" parameterType="string" resultMap="mutableAccount">
+		SELECT
+		USERS.username,
+		USERS.firstName,
+		USERS.lastName,
+		USERS.email,
+		USERS.enabled,
+		USERS.attempts,
+		USERS.lastAttempt,		
+		CUSTOMER_USERS.ID as "customerId"
+		GROUPS.GROUP_NAME as "groupName"
+		FROM USERS 
+		INNER JOIN GROUP_MEMBERS
+		ON GROUP_MEMBERS.USERNAME = USERS.USERNAME
+		INNER JOIN GROUPS
+		ON GROUP_MEMBERS.GROUP_ID = GROUPS.ID
+		INNER JOIN CUSTOMER_USERS
+		ON CUSTOMER_USERS.username=USERS.username	
+		WHERE USERS.USERNAME=#{username}
+	</select>
+
+	<select id="findPasswordByUsername" parameterType="Account" resultType="string">
+		SELECT SIGNON.password
+		  FROM SIGNON
+		 WHERE SIGNON.username = #{username}
+	</select>
+	
+	<select id="groupsList"  resultMap="group">
+		SELECT GROUPS.GROUP_DESCRIPTION,
+		       GROUPS.GROUP_NAME,
+		       GROUPS.ID 
+		  FROM GROUPS
+		ORDER BY GROUP_NAME 
+	</select>
+	
+	<select id="listAccount"  parameterType="string" resultMap="mutableAccount">
+	  SELECT
+		USERS.username,
+		USERS.firstName,
+		USERS.lastName,
+		USERS.email,
+		USERS.enabled,
+		USERS.attempts,
+		USERS.lastAttempt,
+		USERS.lastAttempt,
+        CUSTOMER_USERS.ID as "customerId"		
+		GROUPS.GROUP_NAME as "groupName"
+		FROM USERS 
+		INNER JOIN GROUP_MEMBERS
+		ON GROUP_MEMBERS.USERNAME = USERS.USERNAME
+		INNER JOIN GROUPS
+		ON GROUP_MEMBERS.GROUP_ID = GROUPS.ID
+		INNER JOIN CUSTOMER_USERS
+		ON CUSTOMER_USERS.username=USERS.username		
+		WHERE USERS.USERNAME!='admin'
+		AND CUSTOMER_USERS.customer_id=#{customerId}		
+		ORDER BY USERS.username
+	</select>
+	
+	<select id="listAccountCount"  parameterType="string" resultType="int">
+	   SELECT COUNT(USERS.USERNAME)
+       FROM USERS
+       INNER JOIN CUSTOMER_USERS
+		ON CUSTOMER_USERS.username=USERS.username
+       WHERE USERS.USERNAME &lt;&gt; 'admin'
+       AND CUSTOMER_USERS.customer_id=#{customerId}
+	</select>
+	
+	<insert id="insertAccount" parameterType="MutableAccount">
+		INSERT INTO USERS
+		(username,firstName,lastName,email,expiration,enabled)
+		VALUES
+		(#{username}, #{firstName}, #{lastName}, #{email}, '2099-12-31', #{enabled})
+	</insert>
+	
+	<update id="updateAccount" parameterType="MutableAccount">
+	   UPDATE USERS
+       SET firstName=#{firstName}
+         , lastName=#{lastName}
+         , email=#{email}
+         , enabled=#{enabled}
+       WHERE username=#{username}
+	</update>
+
+	<update id="loginFailure" parameterType="string">
+	   UPDATE USERS
+	      SET attempts=attempts+1
+	        , lastAttempt=CURRENT TIMESTAMP
+       WHERE username=#{username}
+	</update>
+	
+	<update id="resetAttempts" parameterType="string">
+	   UPDATE USERS
+	      SET attempts=0
+	        , lastAttempt=null
+       WHERE username=#{username}
+	</update>	
+
+	<insert id="insertDefaultGroupMember" parameterType="string">
+		INSERT INTO GROUP_MEMBERS (group_id, username)
+		SELECT id,#{username} FROM GROUPS 
+		 WHERE group_name='users'
+	</insert>
+	
+
+	<delete id="deleteGroupMember" parameterType="GroupMember">
+	    DELETE FROM GROUP_MEMBERS
+	     WHERE group_id = #{groupId}
+	       AND username = #{username}
+	</delete>
+	
+	<delete id="insertGroupMember" parameterType="GroupMember">
+	    INSERT INTO GROUP_MEMBERS (group_id, username)
+		SELECT id,#{username} FROM GROUPS 
+		 WHERE group_name=#{groupName}
+	</delete>
+	
+	<update id="updateGroupMember" parameterType="GroupMember">
+	  UPDATE GROUP_MEMBERS
+	   SET GROUP_MEMBERS.GROUP_ID=(SELECT GROUPS.ID FROM GROUPS WHERE GROUPS.GROUP_NAME=#{groupName})
+	   WHERE GROUP_MEMBERS.USERNAME=#{username}
+	</update>
+	
+	<delete id="deleteAccount" parameterType="string">
+	   DELETE FROM USERS
+       WHERE USERS.USERNAME=#{username}
+	</delete>
+
+	<update id="updateSignon" parameterType="Signon">
+		UPDATE SIGNON SET PASSWORD = #{password}
+		WHERE USERNAME = #{username}
+	</update>
+	
+	<update id="updateCredentialsExpiration" parameterType="string">
+		UPDATE USERS SET CREDENTIALSEXPIRATION = CURRENT DATE+30 DAY
+		WHERE USERNAME = #{username}
+	</update>
+
+	<insert id="insertSignon" parameterType="Signon">
+		INSERT INTO SIGNON (PASSWORD,USERNAME)
+		VALUES (#{password}, #{username})
+	</insert>
+			
+</mapper>
