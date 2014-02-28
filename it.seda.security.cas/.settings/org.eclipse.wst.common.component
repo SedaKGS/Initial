@@ -17,6 +17,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/it.seda.security.cas/build/classes"/>
-        <property name="context-root" value="it.seda.security.cas"/>
+        <property name="context-root" value="cas"/>
     </wb-module>
 </project-modules>

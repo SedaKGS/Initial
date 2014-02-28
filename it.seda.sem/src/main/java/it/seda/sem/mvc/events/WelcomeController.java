@@ -32,6 +32,7 @@ public class WelcomeController {
 		logger.info("Credential: "+ctx.getAuthentication().getCredentials());
 		logger.info("Details: "+ctx.getAuthentication().getDetails());
 		logger.info("Name "+ctx.getAuthentication().getName());
+		logger.info("Name "+ctx.getAuthentication().getName());
 		return new ModelAndView("welcome");
 	}
 	

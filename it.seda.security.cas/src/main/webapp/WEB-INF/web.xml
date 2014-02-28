@@ -26,10 +26,11 @@
 		<filter-name>requestContextFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>		
-		<dispatcher>ERROR</dispatcher> <!-- per la gestione degli errori http altrimenti non porta i dati di sessione -->		
+		<dispatcher>ERROR</dispatcher>		
 	</filter-mapping>
 
 	<!-- Spring Security filter -->
+
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -39,9 +40,9 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>		
-		<dispatcher>ERROR</dispatcher> <!-- per la gestione degli errori http altrimenti non porta i dati di sessione -->
+		<dispatcher>ERROR</dispatcher> 
 	</filter-mapping>
-	
+
 	<!--  Hidden Method Filter -->
 	<!-- cosi possiamo gestire su qualsiasi richiesta i metodi statndard rest specificando il parametro method o
 	dal form spring  -->

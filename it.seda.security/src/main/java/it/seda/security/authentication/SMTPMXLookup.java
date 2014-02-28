@@ -3,6 +3,7 @@ package it.seda.security.authentication;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+
 import javax.naming.*;
 import javax.naming.directory.*;
 //TODO meglio gestire dei pesi in quanto se il rcords mx esiste è certo che il dominio esiste. Per l'accesso smtp è più problematico ed è difficile che
@@ -34,6 +35,7 @@ public class SMTPMXLookup {
 
 		return;
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static ArrayList getMX( String hostName )
 			throws NamingException {
 		// Perform a DNS lookup for MX records in the domain
@@ -76,6 +78,7 @@ public class SMTPMXLookup {
 		return res;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static boolean isAddressValid( String address ) {
 		// Find the separator for the domain name
 		int pos = address.indexOf( '@' );

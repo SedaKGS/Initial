@@ -4,7 +4,7 @@
 
 <h1>Menu</h1>
 
-<x:menu/>
+<x:menu />
 
 <%-- example of two level menu. Do we want create a template tag??? --%>
 <%--
