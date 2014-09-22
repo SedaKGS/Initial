@@ -47,6 +47,21 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 	public boolean showrows=true;	
 	public boolean showpagesize=true;
 	public String modifier="";
+	
+	
+	
+	//i18n
+	private String pagina="i18npagina";
+	private String di="i18ndi";
+	private String righe="i18nrighe";
+	private String su="i18nsu";
+	private String righePerPagina="i18nrighePerPagina";
+	private String first="i18nfirst";
+	private String prev="i18nprev";
+	private String next="i18nnext";
+	private String last="i18nlast";
+	private String vai="i18nvai";
+	
 
 	public void setPageset(DataPage<?> pageset) {
 		this.pageset=pageset;
@@ -132,11 +147,56 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 	}		
 	public void setModifier(String modifier) {
 		this.modifier=modifier;
-	}	
+	}
+	
+	
+	//i18n
+	public void setPagina(String pagina){
+		this.pagina=pagina;
+	}
+	
+	public void setDi(String di){
+		this.di=di;
+	}
+	
+	public void setRighe(String righe){
+		this.righe=righe;
+	}
+	
+	public void setSu(String su){
+		this.su=su;
+	}
+	
+	public void setRighePerPagina(String righePerPagina){
+		this.righePerPagina=righePerPagina;
+	}
+	
+	
+	public void setFirst(String first){
+		this.first=first;
+	}
+	
+	public void setPrev(String prev){
+		this.prev=prev;
+	}
+	
+	public void setNext(String next){
+		this.next=next;
+	}
+	
+	public void setLast(String last){
+		this.last=last;
+	}
+	
+	public void setVai(String vai){
+		this.vai=vai;
+	}
 
 	public String hasOrder() {
 		return (order == null ? "" : "&amp;order=" + order);
 	}
+	
+	
 
 	@Override
 	public int doStartTag() throws JspException {
@@ -365,8 +425,8 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 							+ "\" onsubmit=\"return false;\"> ");
 
 			if (showrowindex) {
-				html.append( "<span class=\"seda-ui-spandgrow\">Righe   "
-						+ iFrow + " - " + iLrow + " su " + iNumRow + "</span>");					
+				html.append( "<span class=\"seda-ui-spandgrow\">"+righe+"  "
+						+ iFrow + " - " + iLrow + " "+su+ " " + iNumRow + "</span>");					
 			}
 			if (showfirst) {
 				html.append(
@@ -379,7 +439,7 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 								+ "&amp;" + modifier + "rowsPerPage="
 								+ iRowperPages
 								+ hasOrder()
-								+ "\" ><span class=\"seda-ui-spanfirst\">First</span> </a>"
+								+ "\" ><span class=\"seda-ui-spanfirst\">"+first+"</span> </a>"
 						);
 			}
 			html.append(
@@ -392,12 +452,15 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 							+ "&amp;" + modifier + "rowsPerPage="
 							+ iRowperPages
 							+ hasOrder()
-							+ "\" ><span class=\"seda-ui-spanprev\">Prev</span> </a>"
+							+ "\" ><span class=\"seda-ui-spanprev\">"+prev+"</span> </a>"
 							+ ""
 
-					+ "<span class=\"seda-ui-spandgpage\"> pagina "
+					+ "<span class=\"seda-ui-spandgpage\">"
+					+ pagina
+					+ " "
 					+ iCurrentPage
-					+ " di "
+					+ di
+					+" "
 					+ iNumPages
 					+ " </span>"
 
@@ -410,7 +473,7 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 					+ "&#38;" + modifier + "rowsPerPage="
 					+ iRowperPages
 					+ hasOrder()
-					+ "\" ><span class=\"seda-ui-spannext\">Next</span> </a>");
+					+ "\" ><span class=\"seda-ui-spannext\">"+next+"</span> </a>");
 			if (showlast) {
 				html.append("<a class=\"seda-ui-paginglnk  seda-ui-rightrightarrow\" "
 						+ " href=\""
@@ -421,12 +484,12 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 						+ "&amp;" + modifier + "rowsPerPage="
 						+ iRowperPages
 						+ hasOrder()
-						+ " \" ><span class=\"seda-ui-spanlast\">Last</span> </a>"
+						+ " \" ><span class=\"seda-ui-spanlast\">"+last+"</span> </a>"
 						+ "");
 			}
 
 			if (showpagesize) {
-				html.append("<label id=\"sedauilabeldgrow\" class=\"seda-ui-labeldgrow\" for=\"sedauiddlrow\"> Righe per Pagina: </label>");
+				html.append("<label id=\"sedauilabeldgrow\" class=\"seda-ui-labeldgrow\" for=\"sedauiddlrow\"> "+ righePerPagina+" :"+" </label>");
 				html.append("<select id=\"sedauiddlrow\" class=\"seda-ui-ddlrow\" name=\"sedauiddlrow\"  size=\"1\">");
 
 				if (rowperPages.length > 0) {
@@ -445,8 +508,8 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 					}
 				}
 
-				html.append("</select><input name=\"sedauidgbuttonrow\" id=\"sedauidgbuttonrow\" type=\"button\" class=\"seda-ui-pagingbtn seda-ui-dgbuttonrow\" value=\"Vai\" onclick=\"location = this.form.sedauiddlrow.value\" /> ");
-				html.append("<label id=\"sedauilabeldgpage\" class=\"seda-ui-labeldgpage\" for=\"sedauiddlpage\"> Pagina: </label>");
+				html.append("</select><input name=\"sedauidgbuttonrow\" id=\"sedauidgbuttonrow\" type=\"button\" class=\"seda-ui-pagingbtn seda-ui-dgbuttonrow\" value=\""+vai+"\" onclick=\"location = this.form.sedauiddlrow.value\" /> ");
+				html.append("<label id=\"sedauilabeldgpage\" class=\"seda-ui-labeldgpage\" for=\"sedauiddlpage\"> "+pagina+" : </label>");
 				html.append("<select id=\"sedauiddlpage\" name=\"sedauiddlpage\" class=\"seda-ui-ddlpage\"  size=\"1\">");
 				for (int i = 1; i <= iNumPages; i++) {
 					html.append("<option value=\"" + action
@@ -458,10 +521,10 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 					}
 					html.append(" >" + i + "</option>");
 				}
-				html.append("</select><input name=\"sedauidgbuttonpage\" id=\"sedauidgbuttonpage\" type=\"button\" class=\"seda-ui-pagingbtn seda-ui-dgbuttonpage\" value=\"Vai\" onclick=\"location = this.form.sedauiddlpage.value\" /> ");
+				html.append("</select><input name=\"sedauidgbuttonpage\" id=\"sedauidgbuttonpage\" type=\"button\" class=\"seda-ui-pagingbtn seda-ui-dgbuttonpage\" value=\""+vai+"\" onclick=\"location = this.form.sedauiddlpage.value\" /> ");
 			}
 			if (showrows && !showrowindex) {
-				html.append("<span class=\"seda-ui-spandgrow\">Righe:"+iNumRow+"</span>");
+				html.append("<span class=\"seda-ui-spandgrow\"> "+righe+": "+iNumRow+"</span>");
 			}
 			html.append("</form>");
 			html.append("</th> </tr> ");
