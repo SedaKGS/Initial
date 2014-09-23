@@ -1,6 +1,7 @@
 package it.seda.template.taglib;
 
 import it.seda.jdbc.commons.DataPage;
+import it.seda.template.request.ParameterContext;
 import it.seda.template.taglib.DgColumnTag.DgColumn;
 
 import java.io.IOException;
@@ -8,11 +9,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.jstl.core.LoopTagStatus;
 import javax.servlet.jsp.jstl.core.LoopTagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
+
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.ui.context.Theme;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 
@@ -51,16 +60,38 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 	
 	
 	//i18n
-	private String pagina="i18npagina";
-	private String di="i18ndi";
-	private String righe="i18nrighe";
-	private String su="i18nsu";
-	private String righePerPagina="i18nrighePerPagina";
-	private String first="i18nfirst";
-	private String prev="i18nprev";
-	private String next="i18nnext";
-	private String last="i18nlast";
-	private String vai="i18nvai";
+	private static String DATAGRID_PAGINA="datagrid.pagina";
+	private static boolean paginaIsUserDefined=false;
+	private static String DATAGRID_DI="datagrid.di";
+	private static boolean diIsUserDefined=false;
+	private static String DATAGRID_RIGHE="datagrid.righe";
+	private static boolean righeIsUserDefined=false;
+	private static String DATAGRID_SU="datagrid.su";
+	private static boolean suIsUserDefined=false;
+	private static String DATAGRID_RIGHE_PER_PAGINA="datagrid.righePerPagina";
+	private static boolean righePerPaginaIsUserDefined=false;
+	private static String DATAGRID_FIRST="datagrid.first";
+	private static boolean firstIsUserDefined=false;
+	private static String DATAGRID_PREV="datagrid.prev";
+	private static boolean prevIsUserDefined=false;
+	private static String DATAGRID_NEXT="datagrid.next";
+	private static boolean nextIsUserDefined=false;
+	private static String DATAGRID_LAST="datagrid.last";
+	private static boolean lastIsUserDefined=false;
+	private static String DATAGRID_VAI="datagrid.vai";
+	private static boolean vaiIsUserDefined=false;
+	
+	
+	private String pagina=null;
+	private String di=null;
+	private String righe=null;
+	private String su=null;
+	private String righePerPagina=null;
+	private String first=null;
+	private String prev=null;
+	private String next=null;
+	private String last=null;
+	private String vai=null;
 	
 
 	public void setPageset(DataPage<?> pageset) {
@@ -150,47 +181,114 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 	}
 	
 	
-	//i18n
+	//i18n INIZIO
 	public void setPagina(String pagina){
+		if(pagina!=null&&!pagina.isEmpty()){
+		paginaIsUserDefined=true;
+		}
 		this.pagina=pagina;
 	}
 	
 	public void setDi(String di){
+		if(di!=null&&!di.isEmpty()){
+			diIsUserDefined=true;
+			}
 		this.di=di;
 	}
 	
 	public void setRighe(String righe){
+		if(righe!=null&&!righe.isEmpty()){
+			righeIsUserDefined=true;
+			}
 		this.righe=righe;
 	}
 	
 	public void setSu(String su){
+		if(su!=null&&!su.isEmpty()){
+			suIsUserDefined=true;
+			}
 		this.su=su;
 	}
 	
 	public void setRighePerPagina(String righePerPagina){
+		if(righePerPagina!=null&&!righePerPagina.isEmpty()){
+			righePerPaginaIsUserDefined=true;
+			}
 		this.righePerPagina=righePerPagina;
 	}
 	
 	
 	public void setFirst(String first){
+		if(first!=null&&!first.isEmpty()){
+			firstIsUserDefined=true;
+			}
 		this.first=first;
 	}
 	
 	public void setPrev(String prev){
+		if(prev!=null&&!prev.isEmpty()){
+			prevIsUserDefined=true;
+			}
 		this.prev=prev;
 	}
 	
 	public void setNext(String next){
+		if(next!=null&&!next.isEmpty()){
+			nextIsUserDefined=true;
+			}
 		this.next=next;
 	}
 	
 	public void setLast(String last){
+		if(last!=null&&!last.isEmpty()){
+			lastIsUserDefined=true;
+			}
 		this.last=last;
 	}
 	
 	public void setVai(String vai){
+		if(vai!=null&&!vai.isEmpty()){
+			vaiIsUserDefined=true;
+			}
 		this.vai=vai;
 	}
+	
+	protected static HttpServletRequest getHttpRequest(){
+		RequestAttributes attributes=RequestContextHolder.getRequestAttributes();
+		return ((ServletRequestAttributes)attributes).getRequest();
+	}	
+	
+	protected static ParameterContext getContext(){
+		ParameterContext parameterContext=ParameterContext.retrieve(getHttpRequest());
+		return parameterContext;
+	}
+	
+	protected static String getMessage(String key,Object [] args){
+		if(key==null || key.isEmpty()) return null;
+		String message=null;
+		try{
+			message=getContext().getMessage(key, args);		
+		}
+		catch(NoSuchMessageException e) {
+			e.printStackTrace();
+		}
+		return message;
+	}
+	
+	public void setAllMessages(){
+		pagina=(!paginaIsUserDefined?getMessage(DATAGRID_PAGINA,null):pagina);
+		di=(!diIsUserDefined?getMessage(DATAGRID_DI,null):di);
+		righe=(!righeIsUserDefined?getMessage(DATAGRID_RIGHE,null):righe);
+		su=(!suIsUserDefined?getMessage(DATAGRID_SU,null):su);
+		righePerPagina=(!righePerPaginaIsUserDefined?getMessage(DATAGRID_RIGHE_PER_PAGINA,null):righePerPagina);
+		first=(!firstIsUserDefined?getMessage(DATAGRID_FIRST,null):first);
+		prev=(!prevIsUserDefined?getMessage(DATAGRID_PREV,null):prev);
+		next=(!nextIsUserDefined?getMessage(DATAGRID_NEXT,null):next);
+		last=(!lastIsUserDefined?getMessage(DATAGRID_LAST,null):last);
+		vai=(!vaiIsUserDefined?getMessage(DATAGRID_VAI,null):vai);
+	}
+	
+	//i18n FINE
 
 	public String hasOrder() {
 		return (order == null ? "" : "&amp;order=" + order);
@@ -200,6 +298,7 @@ public class DatagridTag extends LoopTagSupport implements TryCatchFinally {
 
 	@Override
 	public int doStartTag() throws JspException {
+		setAllMessages();
 		columns=new ArrayList<DgColumn>();
 
 		headerPrinted=false;
