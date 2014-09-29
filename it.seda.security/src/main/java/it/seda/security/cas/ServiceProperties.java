@@ -29,6 +29,8 @@ public class ServiceProperties implements InitializingBean {
     private boolean authenticateAllArtifacts;
 
     private boolean sendRenew = false;
+    
+    private String applicationName = "";
 
     private String artifactParameter = DEFAULT_CAS_ARTIFACT_PARAMETER;
 
@@ -78,7 +80,15 @@ public class ServiceProperties implements InitializingBean {
         this.sendRenew = sendRenew;
     }
 
-    public final void setService(final String service) {
+    public String getApplicationName() {
+		return applicationName;
+	}
+
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
+
+	public final void setService(final String service) {
         this.service = service;
     }
 
