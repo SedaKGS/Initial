@@ -26,6 +26,7 @@
 	<context:component-scan base-package="it.seda.security.cas.domain" />
 	<context:component-scan base-package="it.seda.security.cas.errors.controller" />
 	<context:component-scan base-package="it.seda.security.service" />
+	<context:component-scan base-package="it.seda.security.cas.beans" />
 
 	<!-- Seda templating -->
 	<bean id="menuConfigurer" class="it.seda.template.container.menu.DefaultMenuConfigurer">
@@ -50,5 +51,23 @@
 			<property name="paramName" value="language" />
 		</bean>
 	</mvc:interceptors>
+
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	  <property name="order" value="1" />
+	  <property name="mediaTypes">
+		<map>
+		   <entry key="json" value="application/json" />
+		</map>
+	  </property>
+ 
+	  <property name="defaultViews">
+		<list>
+			  <!-- JSON View -->
+		  <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">  </bean>
+ 		 </list>
+	  </property>
+	  <property name="ignoreAcceptHeader" value="true" />
+ 
+	</bean>
 
 </beans>

@@ -16,6 +16,19 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<!-- application id filter --> 
+	<filter>
+		<filter-name>requestApplicatiopnIdtFilter</filter-name>
+		<filter-class>it.seda.security.cas.filters.ApplicationIdFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>requestApplicatiopnIdtFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>		
+		<dispatcher>ERROR</dispatcher>		
+	</filter-mapping>
+	
 	<!-- i18n --> 
 	<filter>
 		<filter-name>requestContextFilter</filter-name>
@@ -85,12 +98,12 @@
 	<!-- --> 
 	<error-page>
 		<error-code>404</error-code>
-		<location>/errors/http404</location>
+		<location>/views/errors/error404</location>
 	</error-page> 
 	
 	<error-page>
 		<error-code>500</error-code>
-		<location>/errors/http500</location>
+		<location>/views/errors/error500</location>
 	</error-page>	
 
 	<!-- entry system -->

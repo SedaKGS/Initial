@@ -51,7 +51,10 @@
 		<form-login login-processing-url="/j_signon" 
 					login-page="/login" 
 		            authentication-failure-url="/login?failed=true"
+		            authentication-success-handler-ref="sedaSuccessHandler"
 			        default-target-url="/welcome" />
+			        
+			        
 		
 		<!-- Using "logout-success-url" attribute we delete the remember me cookie after logout -->	
 		<logout logout-success-url="/login" 
@@ -61,6 +64,10 @@
 		 -->
 	</http>
 	
+	<!-- Dopo aver fatto la login si deve vedere se c'è l'aaplicationid  o no, se c'è l'appllicationId devo vedere 
+	     se l'utentè è abiliato o meno se non c'è entriamo nella pagina di gestione dopo aver controllato se l'utente 
+	     ha i permessi per farlo -->	        
+	<beans:bean  id="sedaSuccessHandler" class="it.seda.security.cas.seda.success.handler.SedaAuthenticationSuccessHandler"/>	
 	<!-- **************************************************************************** -->
 
 	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
