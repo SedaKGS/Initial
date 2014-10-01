@@ -99,10 +99,10 @@
 		   SET APPLICATION_NAME=#{application_name}
 		 WHERE ID=#{id}
 	</update>
-	<select id="existstApplication" parameterType="string" resultType="boolean">
+	<select id="existsApplication" parameterType="string" resultType="boolean">
 	    SELECT 1 FROM APPLICATIONS WHERE ID=#{id}
 	</select>	
-	<select id="existstApplicationByName" parameterType="string" resultType="boolean">
+	<select id="existsApplicationByName" parameterType="string" resultType="boolean">
 	    SELECT 1 FROM APPLICATIONS WHERE APPLICATION_NAME=#{application_name}
 	</select>	
 	<select id="selectApplication" parameterType="string" resultMap="application">
@@ -110,6 +110,12 @@
 	         , APPLICATIONS.APPLICATION_NAME
 	      FROM APPLICATIONS
 	     WHERE ID=#{id}
+	</select>
+	<select id="selectApplicationIdByName" parameterType="string" resultMap="application">
+	    SELECT APPLICATIONS.ID
+	         , APPLICATIONS.APPLICATION_NAME
+	      FROM APPLICATIONS
+	     WHERE APPLICATION_NAME=#{applicationName}
 	</select>
 	<select id="listApplication" resultMap="application">
 		SELECT APPLICATIONS.ID

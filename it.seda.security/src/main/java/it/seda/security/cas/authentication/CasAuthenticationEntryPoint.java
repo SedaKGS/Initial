@@ -1,8 +1,11 @@
 
 package it.seda.security.cas.authentication;
 
+import it.seda.security.authentication.UserDetailsAdapter;
 import it.seda.security.cas.CommonUtils;
 import it.seda.security.cas.ServiceProperties;
+import it.seda.security.domain.Application;
+import it.seda.security.service.ManagerService;
 
 import java.io.IOException;
 
@@ -10,10 +13,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Used by the <code>ExceptionTranslationFilter</code> to commence authentication via the Seda Central
@@ -29,9 +39,18 @@ import org.springframework.util.Assert;
  */
 public class CasAuthenticationEntryPoint implements AuthenticationEntryPoint, InitializingBean {
 
+	@Autowired protected ManagerService managerService;
+	@Autowired protected UserDetailsService userDetailsService;
+//	@Autowired protected UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken ;
+	
 	private ServiceProperties serviceProperties;
+	
+	private static final Logger logger = LoggerFactory.getLogger(CommonUtils.class);
 
     private String loginUrl;
+    private String redirectUrl ="";
+    private String urlEncodedService = "";
+    private String applicationId = "";
 
     public void afterPropertiesSet() throws Exception {
         Assert.hasLength(this.loginUrl, "loginUrl must be specified");
@@ -42,15 +61,20 @@ public class CasAuthenticationEntryPoint implements AuthenticationEntryPoint, In
     public final void commence(final HttpServletRequest servletRequest, final HttpServletResponse response,
             final AuthenticationException authenticationException) throws IOException, ServletException {
 
-        final String urlEncodedService = createServiceUrl(servletRequest, response);
-        final String redirectUrl = createRedirectUrl(urlEncodedService);
-
+    	urlEncodedService = createServiceUrl(servletRequest, response);
+        redirectUrl = createRedirectUrl(urlEncodedService);
+        applicationId = getApplicationId(serviceProperties);
+        
         preCommence(servletRequest, response);
-
-        response.sendRedirect(redirectUrl);
+        
+        //TODO Verificare se c'un ticket nella request ed in tal caso chiamare il web services per il salvataggio dell userbean
+        submitTicket(servletRequest,response);
+//        saveApplicationId(servletRequest);
+        response.sendRedirect(concatApplicationIdToUrl(applicationId));
     }
 
-    /**
+
+	/**
      * Constructs a new Service Url.  The default implementation relies on the CAS client to do the bulk of the work.
      * @param request the HttpServletRequest
      * @param response the HttpServlet Response
@@ -102,4 +126,63 @@ public class CasAuthenticationEntryPoint implements AuthenticationEntryPoint, In
         this.serviceProperties = serviceProperties;
     }
 
+    /* Metodo per ottenere l'Id della applicazione */
+    protected String getApplicationId (ServiceProperties serviceProperties) {
+    	String applicationName  = serviceProperties.getApplicationName();
+    	Application application = null;
+    	try {
+    		application = managerService.selectApplicationIdByName(applicationName);	
+		} catch (Exception e) {
+			logger.error("Applicazione: " +applicationName +" non censita all'interno della tabella Applications");
+			logger.error(e.getMessage());
+		}
+    	if (application != null) {
+    		return application.getId();	
+    	} 
+    	return "";
+    }
+    
+    /* Metodo per concatenare l'ÏId della applicazione alla Url di redirect */ 
+    protected String concatApplicationIdToUrl (String applicationId) {
+    	logger.debug("Url di redirect: " +redirectUrl + "&applicationId=" +applicationId);
+		return redirectUrl = redirectUrl + "&applicationId=" +applicationId;
+	}
+
+
+    private void saveApplicationId(HttpServletRequest servletRequest) {
+	
+    	RestTemplate restTemplate = new RestTemplate();
+
+    	restTemplate.put(urlEncodedService+"/casws/"+applicationId, applicationId);
+		
+	}
+    
+    protected void submitTicket(HttpServletRequest servletRequest,HttpServletResponse response) throws IOException {
+		
+    	String ticket = servletRequest.getParameter("ticket");
+    	if (ticket== null)  {
+    		return;
+    	}
+    	
+    	UserDetailsAdapter userDetailsAdapter = getUserBean(ticket);  	
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            // in here, get your principal, and populate the auth object with 
+            // the right authorities
+        	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("luca","Seda123%");
+        	usernamePasswordAuthenticationToken.setDetails(userDetailsAdapter);
+        	usernamePasswordAuthenticationToken.setAuthenticated(true);
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        }
+        response.sendRedirect("it.seda.example.springProject/");
+        
+	}
+
+	private UserDetailsAdapter getUserBean(String ticket) {
+//		UserDetailsAdapter userDetailsAdapter = new UserDetailsAdapter();
+//		userDetailsAdapter.setPassword("Seda123%");
+		
+		RestTemplate restTemplate = new RestTemplate();
+		UserDetailsAdapter userDetailsAdapter = restTemplate.getForObject(redirectUrl, UserDetailsAdapter.class);
+		return null;
+	}
 }

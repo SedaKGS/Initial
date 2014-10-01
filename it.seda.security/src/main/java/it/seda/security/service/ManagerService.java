@@ -80,9 +80,16 @@ public class ManagerService {
 		 managerMapper.updateApplication(application);
 	 }
 	 
+	 
 	 @Transactional(readOnly=true)
 	 public Application selectApplication(String applicationId) {
 		 return managerMapper.selectApplication(applicationId);
+	 }
+
+	 /* Metodo che dato il nome della applicazione in output mi restituisce l'oggetto applicazione da cui poi recuparare l' Id*/
+	 @Transactional(readOnly=true)
+	 public Application selectApplicationIdByName(String applicationName) {
+		 return managerMapper.selectApplicationIdByName(applicationName);
 	 }
 	 
 	 @Transactional(readOnly=true)

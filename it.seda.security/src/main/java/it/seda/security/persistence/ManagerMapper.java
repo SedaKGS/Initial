@@ -37,6 +37,7 @@ public interface ManagerMapper {
 	void deleteApplication(Application application);
 	void updateApplication(Application application);
 	Application selectApplication(String applicationId);
+	Application selectApplicationIdByName(String applicationName);
 	boolean existsApplication(String applicationId);
 	boolean existsApplicationByName(String applicationName);
 	List<Application> listApplication(RowBounds rowBounds);
