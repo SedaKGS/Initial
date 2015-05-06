@@ -7,6 +7,9 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.seda.jdbc.commons.DefaultDataPage;
+import java.util.ArrayList;
+
 
 import it.seda.ws.restfull.data.WebServiceOutput;
 
@@ -48,7 +51,7 @@ public class $service.getName() {
 		$mapper$delete$ModelUpper($ModelLower);
 	}
 	
-	@Transactional("$transactionManager",readOnly = true)
+	@Transactional(value="$transactionManager",readOnly = true)
 	public $ModelUpper  get$ModelUpper$ById($ModelUpper $ModelLower) {
 		$ModelUpper tmp= $mapper$get$ModelUpper$ById($ModelLower);
 		return tmp;
@@ -56,34 +59,28 @@ public class $service.getName() {
 	}
 	
 	
-	@Transactional("$transactionManager",readOnly = true)
-	public int list$ModelUpper$Count() {
-		int rowsNumber=$mapper$list$ModelUpper$Count();
-		return rowsNumber;
-		
-	}
 	
-	@Transactional("$transactionManager",readOnly = true)
+	@Transactional(value="$transactionManager",readOnly = true)
 	public List<$ModelUpper> list$ModelUpper(RowBounds rowBounds) {
 		List<$ModelUpper> cl=$mapper$list$ModelUpper(rowBounds);
 		return cl;
 		
 	}
 	
-	@Transactional("$transactionManager",readOnly = true)
+	@Transactional(value="$transactionManager",readOnly = true)
 	public WebServiceOutput  list$ModelUpper$ByFilter($ModelUpper $ModelLower,RowBounds rowBounds) {
 	  List<$ModelUpper> list=$mapper$list$ModelUpper$ByFilter($ModelLower,rowBounds);
 	  DefaultDataPage<$ModelUpper> editOutPage =  new DefaultDataPage<$ModelUpper>(list);
 	  
-	  int totalRows=$list$ModelUpper$Count($ModelLower,rowBounds)
+	  int totalRows=$mapper$list$ModelUpper$Count($ModelLower);
 	  
 	  WebServiceOutput listOutput = new WebServiceOutput();
 	  listOutput.setModelName("listaContribuentiServizio");
       listOutput.setOrderBy("codice fiscale");
       listOutput.setStatus("ok");
       listOutput.setValue("");
-	  listOutput.buildDataPage(editOutPage,rowBounds.getLimit(),rowBounds.getOffSet(),totalRows);
-      listOutput.setElementList(listEdit);
+	  listOutput.buildDataPage(editOutPage,rowBounds.getLimit(),rowBounds.getOffset(),totalRows);
+      listOutput.setElementList(list);
       return listOutput;
 	}
 	

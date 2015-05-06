@@ -112,19 +112,8 @@ public class ComuneControllerWS {
      Comune comune=new Comune();
      comune.setSocieta(societa);
      comune.setCodiceBelfiore(codiceBelfiore);
-    
-     
-     /*
-     to delete
-     */
-     ComuneForm comuneForm=new ComuneForm();
-     model.addAttribute("comuneData",comuneForm);
-     model.addAttribute("action",action);
-     /*
-     to delete
-     */
-    WebServiceOutput editOutput= comune=comuneService.getComuneByIdWS(comune);
-    
+  
+     WebServiceOutput editOutput= comune=comuneService.getComuneByIdWS(comune);
      return editOutput;
     }
 	

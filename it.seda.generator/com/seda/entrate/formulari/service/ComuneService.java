@@ -7,6 +7,9 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.seda.jdbc.commons.DefaultDataPage;
+import java.util.ArrayList;
+
 
 import it.seda.ws.restfull.data.WebServiceOutput;
 
@@ -36,7 +39,7 @@ public class ComuneService {
 		comuneMapper.deleteComune(comune);
 	}
 	
-	@Transactional("transactionManager",readOnly = true)
+	@Transactional(value="transactionManager",readOnly = true)
 	public Comune  getComuneById(Comune comune) {
 		Comune tmp= comuneMapper.getComuneById(comune);
 		return tmp;
@@ -44,26 +47,26 @@ public class ComuneService {
 	}
 	
 	
-	@Transactional("transactionManager",readOnly = true)
+	@Transactional(value="transactionManager",readOnly = true)
 	public int listComuneCount() {
 		int rowsNumber=comuneMapper.listComuneCount();
 		return rowsNumber;
 		
 	}
 	
-	@Transactional("transactionManager",readOnly = true)
+	@Transactional(value="transactionManager",readOnly = true)
 	public List<Comune> listComune(RowBounds rowBounds) {
 		List<Comune> cl=comuneMapper.listComune(rowBounds);
 		return cl;
 		
 	}
 	
-	@Transactional("transactionManager",readOnly = true)
+	@Transactional(value="transactionManager",readOnly = true)
 	public WebServiceOutput  listComuneByFilter(Comune comune,RowBounds rowBounds) {
 	  List<Comune> list=comuneMapper.listComuneByFilter(comune,rowBounds);
 	  DefaultDataPage<Comune> editOutPage =  new DefaultDataPage<Comune>(list);
 	  
-	  int totalRows=.listComuneCount(comune,rowBounds)
+	  int totalRows=comuneMapper.listComuneCount(comune,rowBounds)
 	  
 	  WebServiceOutput listOutput = new WebServiceOutput();
 	  listOutput.setModelName("listaContribuentiServizio");

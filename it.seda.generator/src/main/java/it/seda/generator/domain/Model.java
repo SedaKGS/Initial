@@ -315,7 +315,7 @@ public class Model implements Render {
 						sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
 						sb.append(attribute.getColumn());
 						sb.append("= #{"+attribute.getName()+"} ");
-						sb.append("<if />");
+						sb.append("</if>");
 						temp++;
 						first++;
 					}
@@ -324,7 +324,7 @@ public class Model implements Render {
 						sb.append("AND ");
 						sb.append(attribute.getColumn());
 						sb.append("= #{"+attribute.getName()+"} ");
-						sb.append("<if />");
+						sb.append("</if>");
 						temp++;	
 					}
 					
@@ -333,7 +333,7 @@ public class Model implements Render {
 				sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
 				sb.append(attribute.getColumn());	
 				sb.append("= #{"+attribute.getName()+"} ");
-				sb.append("<if />");
+				sb.append("</if>");
 				}
 			}
 		}

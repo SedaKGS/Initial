@@ -52,7 +52,7 @@ import it.seda.ws.restfull.data.WebServiceOutput;
 #set($listFields=$restWS.getForm().getListAttributes())
 #set($dot=".")
 #set($idUrl="")
-#set($WS="WS");
+#set($WS="WS")
 #foreach($field in $fields)
 #if($field.getPk()>0 && $field.isNotPkList())
      #set($idUrl=$idUrl+"/"+"{"+$field.getName()+"}")
@@ -94,7 +94,7 @@ public class $restWS.getName() {
     deleteOut.setTotalPages(0);
 	deleteOut.setTotalRows(0);
 	deleteOut.setPageSize(15);
-	deleteOut.pageNumber(1);
+	deleteOut.setPageNumber(1);
     return deleteOut;
     }
 	
@@ -115,7 +115,7 @@ public class $restWS.getName() {
     updateOut.setTotalPages(0);
 	updateOut.setTotalRows(0);
 	updateOut.setPageSize(15);
-	updateOut.pageNumber(1);
+	updateOut.setPageNumber(1);
     updateOut.setStatus("OK");                            
     
     if (!result.hasErrors()) {
@@ -158,22 +158,8 @@ public class $restWS.getName() {
      $ModelLower$set$field.getNameUcase()($field.getName());
 #end
 #end	                         
-    
-     
-     /*
-     to delete
-     */
-     $FormUpper $FormLower=new $FormUpper();
-#foreach($field in $restWS.getForm().getFormAttributes())
-     $FormLower$set$field.getNameUcase()($ModelLower$get$field.getNameUcase());
-#end
-     model.addAttribute("$ModelLower$Data",$FormLower);
-     model.addAttribute("action",action);
-     /*
-     to delete
-     */
-    WebServiceOutput editOutput= $ModelLower=$nameService$get$ModelUpper$ById$WS($ModelLower);
-    
+  
+     WebServiceOutput editOutput= $nameService$get$ModelUpper$ById$WS($ModelLower);
      return editOutput;
     }
 	
@@ -195,7 +181,7 @@ public class $restWS.getName() {
     insertOut.setTotalPages(0);
 	insertOut.setTotalRows(0);
 	insertOut.setPageSize(15);
-	insertOut.pageNumber(1);
+	insertOut.setPageNumber(1);
     insertOut.setStatus("OK");                                 
             
 		if (!result.hasErrors()) {
@@ -207,12 +193,12 @@ public class $restWS.getName() {
 			}catch(Exception e){
 				$FormLower$setEsito("$FormLower$esito$notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
-				 updateOut.setStatus("KO");     
+				 insertOut.setStatus("KO");     
 			}finally{
 				model.addAttribute("$FormLower",$FormLower);
 			}
 		}
-		refreshDatagrid(model, pageNumber, rowsPerPage);
+	
 		return insertOut;
 	}
 	
