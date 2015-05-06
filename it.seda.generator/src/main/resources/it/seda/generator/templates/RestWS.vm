@@ -1,0 +1,230 @@
+package  $restWS.getNamespace();
+
+import it.seda.sem.domain.ObjectCopier;
+import it.seda.sem.jdbc.RowBoundsHelper;
+import it.seda.template.taglib.DatagridTag.Page;
+import $restWS.getForm().getClazz();
+import $restWS.getModel().getClazz();
+import $restWS.getService().getClazz();
+import java.util.List;
+import javax.inject.Inject;
+import javax.validation.Valid;
+import org.apache.ibatis.session.RowBounds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import it.seda.ws.restfull.data.WebServiceOutput;
+
+
+#set($ModelLower=$restWS.getModel().getLowerName())
+#set($ModelUpper=$restWS.getModel().getUpperName())
+#set($service=$restWS.getService().getName())
+#set($nameService=$restWS.getService().getLowerName())
+#set($class=".class")
+#set($delete=".delete")
+#set($FormUpper=$restWS.getForm().getName())
+#set($FormLower=$restWS.getForm().getLowerName())
+#set($Data="Data")
+#set($Page="Page")
+#set($Count="Count")
+#set($ById="ById")
+#set($setEsito=".setEsito")
+#set($cancel=".cancel")
+#set($esito=".esito")
+#set($ok=".ok")
+#set($notOk=".notOk")
+#set($set=".set")
+#set($get=".get")
+#set($list=".list")
+#set($insert=".insert")
+#set($update=".update")
+#set($fields=$restWS.getModel().getAttributes())
+#set($pgNmb=$restWS.getPageNumber())
+#set($rwspg=$restWS.getRowsPerPage())
+#set($baseUrl=$restWS.getBaseUrl())
+#set($listFields=$restWS.getForm().getListAttributes())
+#set($dot=".")
+#set($idUrl="")
+#set($WS="WS");
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+     #set($idUrl=$idUrl+"/"+"{"+$field.getName()+"}")
+#end
+#end
+
+@Controller
+@RequestMapping(value="/$baseUrl")
+public class $restWS.getName() {
+
+    @Inject $service $nameService;
+    private Logger logger = LoggerFactory.getLogger($restWS.getName()$class);
+	
+    /*
+     * Method used to delete  $ModelUpper by primary key
+    */
+    @RequestMapping(value="$idUrl", 
+                    method=RequestMethod.DELETE) 
+    public WebServiceOutput deleteName(
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+                             @PathVariable $field.printType() $field.getName(),
+#end
+#end
+                             @RequestParam(value="pageNumber", defaultValue="$pgNmb")  int pageNumber, 
+                             @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
+                             ModelMap model) {
+			                   
+    $ModelUpper $ModelLower=new $ModelUpper();
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+    $ModelLower$set$field.getNameUcase()($field.getName());
+#end
+#end			                   
+    $nameService$delete$ModelUpper($ModelLower);
+    
+    WebServiceOutput  deleteOut = new WebServiceOutput ();
+    deleteOut.setStatus("OK");
+    deleteOut.setTotalPages(0);
+	deleteOut.setTotalRows(0);
+	deleteOut.setPageSize(15);
+	deleteOut.pageNumber(1);
+    return deleteOut;
+    }
+	
+
+    /*
+     * Method used to update  $ModelUpper
+    */
+    @RequestMapping(method=RequestMethod.PUT) 
+    public WebServiceOutput update$ModelUpper(
+                                    @Valid @ModelAttribute("$ModelLower$Data") $FormUpper $FormLower,
+                                    BindingResult result,
+                                    @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber, 
+                                    @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
+                                    ModelMap model) {
+                                    
+      WebServiceOutput  updateOut = new WebServiceOutput ();
+  
+    updateOut.setTotalPages(0);
+	updateOut.setTotalRows(0);
+	updateOut.setPageSize(15);
+	updateOut.pageNumber(1);
+    updateOut.setStatus("OK");                            
+    
+    if (!result.hasErrors()) {
+    logger.debug("$restWS.getName(): dati inseriti correttamente"); //TODO i18n		
+	try{	
+        $ModelUpper $ModelLower =ObjectCopier.createObject($FormLower, $ModelUpper$class);
+        $nameService$update$ModelUpper($ModelLower);
+        $FormLower$setEsito("$FormLower$esito$ok");
+       
+       }catch(Exception e){
+        $FormLower$setEsito("$FormLower$esito$notOk");
+        logger.error("Err",e); //TODO i18n errore inserimento
+        updateOut.setStatus("KO");
+       }finally{
+        model.addAttribute("$FormLower",$FormLower);
+       }
+     }		
+    return updateOut;  
+     }
+	
+
+    /*
+     * Method used to edit $ModelUpper given the primary key
+    */
+    @RequestMapping(value="$idUrl", 
+                    method=RequestMethod.GET) 
+    public WebServiceOutput edit$ModelUpper(
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+                            @PathVariable $field.printType() $field.getName(),
+#end
+#end 
+                            @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber, 
+                            @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
+                            @RequestParam(value="action",required=false) String action,
+                            ModelMap model) {
+     $ModelUpper $ModelLower=new $ModelUpper();
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+     $ModelLower$set$field.getNameUcase()($field.getName());
+#end
+#end	                         
+    
+     
+     /*
+     to delete
+     */
+     $FormUpper $FormLower=new $FormUpper();
+#foreach($field in $restWS.getForm().getFormAttributes())
+     $FormLower$set$field.getNameUcase()($ModelLower$get$field.getNameUcase());
+#end
+     model.addAttribute("$ModelLower$Data",$FormLower);
+     model.addAttribute("action",action);
+     /*
+     to delete
+     */
+    WebServiceOutput editOutput= $ModelLower=$nameService$get$ModelUpper$ById$WS($ModelLower);
+    
+     return editOutput;
+    }
+	
+			
+
+	/*
+	 * Inserts a new $ModelUpper
+	 */
+	@RequestMapping(method = RequestMethod.POST)
+	public WebServiceOutput add$ModelUpper(@Valid @ModelAttribute("$ModelLower$Data") $FormUpper $FormLower, 
+                                 BindingResult result, 
+                                 ModelMap model,
+                                 @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber,
+                                 @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage) {
+                                 
+                                 
+         WebServiceOutput  insertOut = new WebServiceOutput ();
+  
+    insertOut.setTotalPages(0);
+	insertOut.setTotalRows(0);
+	insertOut.setPageSize(15);
+	insertOut.pageNumber(1);
+    insertOut.setStatus("OK");                                 
+            
+		if (!result.hasErrors()) {
+			logger.debug("$restWS.getName(): dati inseriti correttamente"); //TODO i18n		
+			try{
+			    $ModelUpper $ModelLower=ObjectCopier.createObject($FormLower, $ModelUpper$class);
+				$nameService$insert$ModelUpper($ModelLower);
+				$FormLower$setEsito("$FormLower$esito$ok");
+			}catch(Exception e){
+				$FormLower$setEsito("$FormLower$esito$notOk");
+				logger.error("Err",e); //TODO i18n errore inserimento
+				 updateOut.setStatus("KO");     
+			}finally{
+				model.addAttribute("$FormLower",$FormLower);
+			}
+		}
+		refreshDatagrid(model, pageNumber, rowsPerPage);
+		return insertOut;
+	}
+	
+  
+	
+	
+		
+		
+		
+}
+
+
+
+
+
