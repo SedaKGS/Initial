@@ -1,68 +1,30 @@
 <models>
-<!--
-<aliases>
-	<alias name="Attribute" class="it.seda.generator.domain.Attribute"/>
-</aliases>
-
-
-<model classpath="it.seda.test.Person">
-  <attribute column="ID"   name="id"   type="int"  pk="1" auto="1">
-  </attribute>
-  <attribute column="NAME" name="name" type="string"  pk="2" >
-     <input type="input" form="1" datagrid="1"></input>
-     <validator notempty="1"  pattern="^a$"></validator>
-   </attribute>  
-   <attribute column="COGNOME" name="cognome" type="string">
-      <input form="2" datagrid="2"></input>
-    </attribute>
-    <attribute column="INDIRIZZO" name="indirizzo" type="list"  generic="Attribute">
-      <input type="select" form="3" datagrid="3" field="name"></input>
-    </attribute>    
+<model classpath="com.seda.entrate.formulari.domain.Comune">
+  		<attribute column="SESOCI_CCODSOCI"   name="societa"   type="string"  pk="1" auto="1"></attribute>
+ 		<attribute column="ANCOMU_CCODBLEFIORE"   name="codiceBelfiore"   type="string"  pk="1" auto="1"></attribute>
+  		<attribute column="ANCOMU_CCOMDESCRIZ" name="descrizioneComune" type="string" ></attribute>  
+  		<attribute column="ANCOMU_GDATAINIZIOVAL" name="dataInizioValidita" type="date" ></attribute>
+  		<attribute column="ANCOMU_CFLAGSOPPR" name="flagSospensione" type="string" ></attribute>
+  		<attribute column="ANCOMU_CFLAGESTERO" name="flagStatoEstero" type="string" ></attribute>
+  		<attribute column="ANPROV_CSIGLAPROV" name="siglaProvincia" type="string" ></attribute>
+  		<attribute column="ANCOMU_CCODCAP" name="cap" type="string" ></attribute>
+  		<attribute column="ANREGI_CCODREGIONE" name="codiceRegione" type="string" ></attribute>
+  		<attribute column="ANNAZI_CCODNAZIONE" name="codiceNazione" type="string" ></attribute>
+  		<attribute column="ANCOMU_CCODISTAT" name="codiceIstat" type="string" ></attribute>
+  		<attribute column="ANCOMU_CCODCATASTO" name="codiceCatastale" type="string" ></attribute>
+  		<attribute column="ANCOMU_CCODCAB" name="codiceCab" type="string" ></attribute>
+  		<attribute column="ANCONS_CCODCONSE" name="conservatoria" type="string" ></attribute>
+  		<attribute column="ANTRIB_CCODTRIB" name="codiceTribunale" type="string" ></attribute>
+  		<attribute column="ANCOMU_GDATACESS" name="dataCessazione" type="date" ></attribute>
+  		<attribute column="ANCOMU_COPERINSE" name="operInserimento" type="string" ></attribute>
+  		<attribute column="ANCOMU_GDATAINSE" name="dataInserimento" type="date" ></attribute>
+  		<attribute column="ANCOMU_COPERUVAR" name="operVariazione" type="string" ></attribute>
+  		<attribute column="ANCOMU_GDATAUVAR" name="dataVariazione" type="date" ></attribute>
 </model>
 
+<mapper classpath="com.seda.entrate.formulari.persistence.ComuneMapper" annotation="org.springframework.stereotype.Service"></mapper>
 
-<mapper classpath="it.seda.test.Mapper" annotation="it.seda.sem.mvc.annotations.BusinessRepository"></mapper>
+<myBatis classpath="com.seda.entrate.formulari.persistence.ComuneMapper"></myBatis>
 
-<myBatis classpath="it.seda.test.Mapper"></myBatis>
-
-<service classpath="it.seda.test.Service" transaction="transactionBusinessManager"> </service>
-
-<controller classpath="it.seda.test.ControllerXXX" baseurl="/account/manager" pageNumber="3" rowsPerPage="18"> </controller>
-
-<form classpath="it.seda.test.Form"></form>
-
-<messages validator="it.seda.test.Validator" message="it.seda.test.Messages"></messages>
-
-<jsp classpath="it.seda.test.JspPage"></jsp>
-  -->
-  
-<model classpath="it.seda.sem.domain.Test">
-  <attribute column="ID"   name="id"   type="int"  pk="1" auto="1">
-  </attribute>
-  <attribute column="NAME" name="name" type="string" >
-     <input type="input" form="1" datagrid="1"></input>
-     <validator notempty="1"  pattern="^a$"></validator>
-   </attribute>  
-   <attribute column="COGNOME" name="cognome" type="string">
-      <input form="2" datagrid="2"></input>
-    </attribute>
-    <attribute column="REGISTRAZIONE" name="registrazione" type="date" >
-      <input type="select" form="3" datagrid="3"></input>
-    </attribute>    
-</model>
-
-
-<mapper classpath="it.seda.sem.persistence.Test" annotation="it.seda.sem.mvc.annotations.BusinessRepository"></mapper>
-
-<myBatis classpath="it.seda.sem.persistence.Test"></myBatis>
-
-<service classpath="it.seda.sem.manager.service.Test" transaction="transactionBusinessManager"> </service>
-
-<controller classpath="it.seda.sem.mvc.manager.Test" baseurl="test" pageNumber="3" rowsPerPage="18"> </controller>
-
-<form classpath="it.seda.sem.mvc.manager.models.Form"></form>
-
-<messages validator="it.seda.sem.i18n.Test" message="it.seda.sem.i18n.Test"></messages>
-
-<jsp classpath="webapp.template.manager.Test"></jsp>
+<service classpath="com.seda.entrate.formulari.service.ComuneService" transaction="transactionManager"> </service>
 </models>

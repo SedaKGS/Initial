@@ -51,14 +51,14 @@ public class XMLGeneratorParser {
 	
 	private void parseRoot(XNode root){
 		try {
-			aliasesElement(root.evalNodes("aliases"));
+//			aliasesElement(root.evalNodes("aliases"));
 			modelElement(root.evalNode("model"));
 			modelMapperElement(root.evalNode("mapper"));
 			serviceElement(root.evalNode("service"));
-			controllerElement(root.evalNode("controller"));
-			formElement(root.evalNode("form"));
-			messagesElement(root.evalNode("messages"));
-			jspElement(root.evalNode("jsp"));
+//			controllerElement(root.evalNode("controller"));
+//			formElement(root.evalNode("form"));
+//			messagesElement(root.evalNode("messages"));
+//			jspElement(root.evalNode("jsp"));
 		    myBatisMapperElement(root.evalNode("myBatis"));
 		} catch (Exception e) {
 			throw new ParserException("Error parsing Procedure System. Cause: " + e, e);
@@ -237,7 +237,7 @@ public class XMLGeneratorParser {
 
 	public void chekAttribute(Attribute attribute){
 		if(attribute.getGeneric()!=null){
-			logger.warn(attribute.getName()+" non può essere primary key");
+			logger.warn(attribute.getName()+" non puï¿½ essere primary key");
 			return;
 		}
 		
@@ -246,7 +246,7 @@ public class XMLGeneratorParser {
 	
 	public void checkController(Controller controller){
 		if(controller.getName().equalsIgnoreCase("controller")){
-			logger.warn(controller.getName()+" non è un nome consentito");
+			logger.warn(controller.getName()+" non ï¿½ un nome consentito");
 			return;
 		}
 	}

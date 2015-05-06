@@ -71,7 +71,7 @@ public class GeneratorUtils {
 	
 	static public void printToFile(String path,String name,String ext,String body){
 		BufferedWriter writer = null;
-		File file=new File(path.replace(".", "\\"));
+		File file=new File(path.replace(".", File.separator));
 		if (!file.exists()) {
 			if (file.mkdirs()) {
 				logger.info(name+"."+ext+" : Directory creata!");
@@ -79,7 +79,7 @@ public class GeneratorUtils {
 				logger.info(name+"."+ext+" : Crazione directory fallita!");
 			}
 		}
-		file=new File(path.replace(".", "\\")+"\\"+name+"."+ext);
+		file=new File(path.replace(".", File.separator)+File.separator+name+"."+ext);
 		try {
 			file.createNewFile();
 			writer = new BufferedWriter(new FileWriter(file));

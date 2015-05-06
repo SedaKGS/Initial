@@ -24,14 +24,14 @@ public class RenderTest {
 		InputStream is=getClass().getClassLoader().getResourceAsStream("config.xml");
 		XMLGeneratorParser parser=new XMLGeneratorParser(is);
 		ModelsContainer container=parser.getContainer();
-		container.getController().render();
-		container.getForm().render();
-		container.getI18NMessages().render();
-		container.getJsp().render();
-		container.getModel().render();
-		container.getModelMapper().render();
-		container.getMyBatisMapper().render();
-		container.getService().render();
+		if(container.getController()!=null) {container.getController().render();}
+		if(container.getForm()!=null) {container.getForm().render();}
+		if(container.getI18NMessages()!=null) {container.getI18NMessages().render();}
+		if(container.getJsp()!=null) {container.getJsp().render();}
+		if(container.getModel()!=null) {container.getModel().render();}
+		if(container.getModelMapper()!=null) {container.getModelMapper().render();}
+		if(container.getMyBatisMapper()!=null) {container.getMyBatisMapper().render();}
+		if(container.getService()!=null) {container.getService().render();}
 	}
 
 }
