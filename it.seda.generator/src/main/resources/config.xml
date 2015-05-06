@@ -1,8 +1,14 @@
 <models>
-<model classpath="com.seda.entrate.formulari.domain.Comune">
-  		<attribute column="SESOCI_CCODSOCI"   name="societa"   type="string"  pk="1" auto="1"></attribute>
- 		<attribute column="ANCOMU_CCODBLEFIORE"   name="codiceBelfiore"   type="string"  pk="1" auto="1"></attribute>
-  		<attribute column="ANCOMU_CCOMDESCRIZ" name="descrizioneComune" type="string" ></attribute>  
+<model classpath="com.seda.entrate.formulari.domain.Comune" table="ANCOMUTB">
+  		<attribute column="SESOCI_CCODSOCI"   name="societa"   type="string"  pk="1" auto="1" >
+  		  <input form="1" type="string"/>
+  		</attribute>
+ 		<attribute column="ANCOMU_CCODBLEFIORE"   name="codiceBelfiore"   type="string"  pk="2" auto="1">
+ 		  <input form="2" type="string"/>
+ 		</attribute>
+  		<attribute column="ANCOMU_CCOMDESCRIZ" name="descrizioneComune" type="string">
+  		  <input form="3" type="string"/>
+  		</attribute>  
   		<attribute column="ANCOMU_GDATAINIZIOVAL" name="dataInizioValidita" type="date" ></attribute>
   		<attribute column="ANCOMU_CFLAGSOPPR" name="flagSospensione" type="string" ></attribute>
   		<attribute column="ANCOMU_CFLAGESTERO" name="flagStatoEstero" type="string" ></attribute>
@@ -22,9 +28,18 @@
   		<attribute column="ANCOMU_GDATAUVAR" name="dataVariazione" type="date" ></attribute>
 </model>
 
-<mapper classpath="com.seda.entrate.formulari.persistence.ComuneMapper" annotation="org.springframework.stereotype.Service"></mapper>
+<mapper classpath="com.seda.entrate.formulari.persistence.Comune" annotation="org.springframework.stereotype.Service"></mapper>
 
-<myBatis classpath="com.seda.entrate.formulari.persistence.ComuneMapper"></myBatis>
+<myBatis classpath="com.seda.entrate.formulari.persistence.Comune"></myBatis>
 
-<service classpath="com.seda.entrate.formulari.service.ComuneService" transaction="transactionManager"> </service>
+<service classpath="com.seda.entrate.formulari.service.Comune" transaction="transactionManager"> </service>
+
+<form classpath="com.seda.entrate.bind.Comune"></form>
+
+<controller classpath="com.seda.entrate.formulari.controllers.Comune"    baseurl="ANCOMUTB"  pageNumber="1"   rowsPerPage="15"/>
+
+
+<controllerWS  classpath="com.seda.entrate.formulari.controllers.Comune"    baseurl="ANCOMUTB"  pageNumber="1"   rowsPerPage="15"/>
+
+
 </models>

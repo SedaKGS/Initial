@@ -7,6 +7,7 @@ import it.seda.generator.domain.JSP;
 import it.seda.generator.domain.Model;
 import it.seda.generator.domain.ModelMapper;
 import it.seda.generator.domain.MyBatisMapper;
+import it.seda.generator.domain.RestWS;
 import it.seda.generator.domain.Service;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class ModelsContainer {
 	private ModelMapper modelMapper;
 	private Service service;
 	private Controller controller;
+	private RestWS controllerWS;
 	private Form form;
 	private I18NMessages I18NMessages;
 	private JSP jsp;
@@ -65,6 +67,15 @@ public class ModelsContainer {
 		this.controller = controller;
 	}
 
+	public void setController(RestWS controllerWS) {
+		this.controllerWS=controllerWS;
+		
+	}
+	
+	public RestWS getControllerWS() {
+		return controllerWS;
+	}
+
 	public Service getService() {
 		return service;
 	}
@@ -94,10 +105,7 @@ public class ModelsContainer {
 	public void setModelMapper(ModelMapper modelMapper) {
 		this.modelMapper = modelMapper;
 	}
-	
-	
-	
-	
+
 	
 
 }

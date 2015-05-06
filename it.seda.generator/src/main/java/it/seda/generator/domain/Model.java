@@ -37,6 +37,7 @@ public class Model implements Render {
 	private ModelsContainer container;
 	
 	private List<Attribute> attributes;
+	private String table;
 	private Comparator<Attribute> comparator=new Comparator<Attribute>(){
 
 		@Override
@@ -75,6 +76,13 @@ public class Model implements Render {
 		return clazz;
 	}
 	
+	public String getTable() {
+		return table;
+	}
+	public void setTable(String table) {
+		this.table = table;
+	}
+	
 	public void addAttribute(Attribute attribute) {
 		attributes.add(attribute);
 	}
@@ -83,6 +91,8 @@ public class Model implements Render {
 		attributes.addAll(attributes);
 	}
 
+	
+	
 	public void addAllAttributeWithReplace(List<Attribute> attributes) {
 		attributes.clear();
 		addAllAttribute(attributes);
@@ -93,11 +103,14 @@ public class Model implements Render {
 		return attributes;
 	}
 	
-	public Model (String clazz,ModelsContainer container) {
+	public Model (String clazz,
+			              String table,
+			              ModelsContainer container) {
 		attributes=new ArrayList<Attribute>();
 		this.clazz=clazz;
-		this.name=GeneratorUtils.resolveClassName(clazz);
 		this.namespace=GeneratorUtils.resolveClassNamespace(clazz);
+		this.table=table;
+		this.name=GeneratorUtils.resolveClassName(clazz);
 		this.container=container;
 		
 	}
@@ -127,12 +140,12 @@ public class Model implements Render {
     	for (Attribute attribute : attributes) {
 			if(attribute.getPk()>0&&attribute.isNotList()){
 				if(temp<count){
-				sb.append(attribute.getName());
+				sb.append(attribute.getColumn());
 				sb.append("= #{"+attribute.getName()+"} ");
 				sb.append("AND ");
 				temp++;
 				}else{
-				sb.append(attribute.getName());	
+				sb.append(attribute.getColumn());	
 				sb.append("= #{"+attribute.getName()+"} ");
 				}
 			}
@@ -151,20 +164,27 @@ public class Model implements Render {
 			}
 		}
     	int temp=1;
-    	StringBuilder sb=new StringBuilder("SET ");
+    	StringBuilder sb=new StringBuilder("SET  (");
     	for (Attribute attribute : attributes) {
 			if(attribute.getPk()==0&&attribute.isNotList()){
 				if(temp<count){
-				sb.append(attribute.getName());
+					 
+				sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
+				sb.append(attribute.getColumn());
 				sb.append("= #{"+attribute.getName()+"} ");
 				sb.append(", ");
+				sb.append("<if/>");
 				temp++;
 				}else{
-				sb.append(attribute.getName());	
+				sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
+				sb.append(attribute.getColumn());	
 				sb.append("= #{"+attribute.getName()+"} ");
+				sb.append(", ");
+				sb.append("<if/>");
 				}
 			}
 		}
+    	sb.append(")");
     	this.SET=sb.toString();
     	}
     	return SET;
@@ -184,23 +204,24 @@ public class Model implements Render {
     	for (Attribute attribute : attributes) {
 			if(attribute.getAuto()==0&&attribute.isNotList()){
 				if(temp<count){
-				sb.append(attribute.getName());
+				//sb.append(attribute.getName());
+				sb.append(attribute.getColumn());
 				//sb.append("= #{"+attribute.getName()+"} ");
 				sb.append(", ");
 				temp++;
 				}else{
-				sb.append(attribute.getName());	
-				//sb.append("= #{"+attribute.getName()+"} ");
+				sb.append(attribute.getColumn());	
+				sb.append("= #{"+attribute.getName()+"} ");
 				}
 			}
 		}
-    	this.SET=sb.toString();
+    	this.INSERT=sb.toString();
     	}
-    	return SET;
+    	return INSERT;
     }
     
     public String getValues(){
-    	if(INSERT==null){
+    	if(VALUES==null){
     	int count=0;
     	for (Attribute attribute : attributes) {
 			if(attribute.getAuto()==0&&attribute.isNotList()){
@@ -222,9 +243,9 @@ public class Model implements Render {
 				}
 			}
 		}
-    	this.SET=sb.toString();
+    	this.VALUES=sb.toString();
     	}
-    	return SET;
+    	return VALUES;
     }
     
     public String getAll(){
@@ -234,11 +255,11 @@ public class Model implements Render {
     	int temp=1;
     	for (Attribute attribute : attributes) {		
 				if(temp<count){
-				sb.append(attribute.getName());
+				sb.append(attribute.getColumn());
 				sb.append(", ");
 				temp++;
 				}else{
-				sb.append(attribute.getName());	
+				sb.append(attribute.getColumn());	
 				}
 			
 		}
@@ -260,11 +281,11 @@ public class Model implements Render {
     	for (Attribute attribute : attributes) {
 			if(attribute.getPk()>0&&attribute.isNotList()){
 				if(temp<count){
-				sb.append(attribute.getName());
+				sb.append(attribute.getColumn());
 				sb.append(",");
 				temp++;
 				}else{
-				sb.append(attribute.getName());	
+				sb.append(attribute.getColumn());	
 				}
 			}
 		}

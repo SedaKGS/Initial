@@ -33,6 +33,9 @@ public class MyBatisMapper implements Render {
 	public Model getModel() {
 		return model;
 	}
+	
+	
+	
     
 	public static String getRESOURCE() {
 		return RESOURCE;
@@ -64,6 +67,10 @@ public class MyBatisMapper implements Render {
 	public String getNamespace() {
 		return namespace;
 	}
+	
+	public String getTable() {
+		return model.getTable().toUpperCase();
+	}
 
 
 	public void setNamespace(String namespace) {
@@ -74,7 +81,7 @@ public class MyBatisMapper implements Render {
 		String myBatisMapperName=GeneratorUtils.capitalize(this.name);
 		String modelMapperName=this.container.getModelMapper().getMapperUpperName();
 		if(!name.equals(modelMapperName)){
-		logger.info("MyBatis mapper name "+myBatisMapperName+" non coincide con "+modelMapperName+"verrà utilizzato "+modelMapperName);
+		logger.info("MyBatis mapper name "+myBatisMapperName+" non coincide con "+modelMapperName+"verrï¿½ utilizzato "+modelMapperName);
 		return modelMapperName;
 		}
 		return myBatisMapperName;

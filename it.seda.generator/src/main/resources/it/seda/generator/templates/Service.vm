@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import it.seda.ws.restfull.data.WebServiceOutput;
+
+
+
 @Service
 public class $service.getName() {
 	
@@ -22,6 +26,7 @@ public class $service.getName() {
 	#set($Count="Count")
 	#set($list=".list")
 	#set($transactionManager=$service.getTransactionManager())
+	#set($WS="WS");
 	
 	@Inject private $service.getMapperUpper() $mapper;
 	
@@ -64,5 +69,26 @@ public class $service.getName() {
 	
 	
 	
+	
+	@Transactional("$transactionManager")
+	public WebServiceOutput  get$ModelUpper$ById$WS($ModelUpper $ModelLower) {
+		$ModelUpper tmp= $mapper$get$ModelUpper$ById($ModelLower);
+
+	  List<$ModelUpper>  listEdit=new ArrayList<$ModelUpper>();
+	  listEdit.add(tmp);
+	  
+	  DefaultDataPage<$ModelUpper> editOutPage =  new DefaultDataPage<$ModelUpper>(listEdit);
+	  
+	  WebServiceOutput editOutput = new WebServiceOutput();
+	  editOutput.setModelName("listaContribuentiServizio");
+      editOutput.setOrderBy("codice fiscale");
+      editOutput.setStatus("ok");
+      editOutput.setValue("");
+	  editOutput.buildDataPage(editOutPage,1, 15,1);
+      editOutput.setElementList(listEdit);
+	  
+     return editOutput;
+		
+	}
 	
 }

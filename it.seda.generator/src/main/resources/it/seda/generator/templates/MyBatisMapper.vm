@@ -1,4 +1,5 @@
 #set($namespaces=$myBatisMapper.getClazz())
+#set($table=$myBatisMapper.getTable())
 #set($ModelLower=$myBatisMapper.getModel().getLowerName())
 #set($ModelUpper=$myBatisMapper.getModel().getName())
 #set($Count="Count")
@@ -37,7 +38,7 @@
 </resultMap>
 	
 <insert id="insert$ModelUpper" parameterType="$ModelUpper">
-INSERT INTO $ModelUpper
+INSERT INTO $table
    (
     $myBatisMapper.getModel().getInsert()
    )VALUES	
@@ -47,31 +48,31 @@ INSERT INTO $ModelUpper
 </insert>
 	
 <update id="update$ModelUpper" parameterType="$ModelUpper">
-UPDATE $ModelUpper
+UPDATE $table
    $myBatisMapper.getModel().getSet()
    $myBatisMapper.getModel().getWhere()
 </update>	
 
 <delete id="delete$ModelUpper" parameterType="java.math.BigInteger">
-DELETE FROM $ModelUpper
+DELETE FROM $table
 $myBatisMapper.getModel().getWhere()  
 </delete>	
 
 <select id="get$ModelUpper" parameterType="java.math.BigInteger" resultMap="$ModelLower">
 SELECT $myBatisMapper.getModel().getAll() 
-FROM $ModelUpper
+FROM $table
 $myBatisMapper.getModel().getWhere()  
 </select>	
 
 
 <select id="list$ModelUpper$Count"  resultType="int">
 SELECT COUNT($fields.get(0).getName())
-FROM $ModelUpper
+FROM $table
 </select>	
 
 <select id="list$ModelUpper"  resultMap="$ModelLower">
 SELECT  $myBatisMapper.getModel().getAll()
-FROM $ModelUpper
+FROM $table
 $myBatisMapper.getModel().getOrder()
 </select>
 	

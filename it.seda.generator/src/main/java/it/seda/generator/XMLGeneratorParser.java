@@ -8,6 +8,7 @@ import it.seda.generator.domain.JSP;
 import it.seda.generator.domain.Model;
 import it.seda.generator.domain.ModelMapper;
 import it.seda.generator.domain.MyBatisMapper;
+import it.seda.generator.domain.RestWS;
 import it.seda.generator.domain.Service;
 import it.seda.template.xparser.ParserException;
 import it.seda.template.xparser.XNode;
@@ -51,12 +52,13 @@ public class XMLGeneratorParser {
 	
 	private void parseRoot(XNode root){
 		try {
-//			aliasesElement(root.evalNodes("aliases"));
+			aliasesElement(root.evalNodes("aliases"));
 			modelElement(root.evalNode("model"));
 			modelMapperElement(root.evalNode("mapper"));
 			serviceElement(root.evalNode("service"));
-//			controllerElement(root.evalNode("controller"));
-//			formElement(root.evalNode("form"));
+			controllerElement(root.evalNode("controller"));
+			controllerWSElement(root.evalNode("controllerWS"));
+			formElement(root.evalNode("form"));
 //			messagesElement(root.evalNode("messages"));
 //			jspElement(root.evalNode("jsp"));
 		    myBatisMapperElement(root.evalNode("myBatis"));
@@ -65,6 +67,23 @@ public class XMLGeneratorParser {
 		}
 	}
 	
+	private void controllerWSElement(XNode controllerWS) {
+		if(controllerWS!=null){
+			String classpath=controllerWS.getStringAttribute("classpath");
+			String baseUrl=controllerWS.getStringAttribute("baseurl");
+			int pageNumber=controllerWS.getIntAttribute("pageNumber",1);
+			int rowsPerPage=controllerWS.getIntAttribute("rowsPerPage",15);
+			RestWS ctr=new RestWS(classpath,container);
+			ctr.setBaseUrl(baseUrl);
+			ctr.setPageNumber(pageNumber);
+			ctr.setRowsPerPage(rowsPerPage);
+			checkController(ctr);
+			container.setController(ctr);
+		}
+	}
+
+	
+
 	private void  myBatisMapperElement(XNode myBatisMapper){
 		if(myBatisMapper!=null){
 			String clazz=myBatisMapper.getStringAttribute("classpath");
@@ -157,7 +176,7 @@ public class XMLGeneratorParser {
 	
 	private void modelElement(XNode model){
 		if(model!=null){
-				Model mdl=new Model(model.getStringAttribute("classpath"),container);
+				Model mdl=new Model(model.getStringAttribute("classpath"),model.getStringAttribute("table"),container);
 				List<XNode> attributes=model.evalNodes("attribute");
 				for (XNode attribute : attributes) {	
 					
@@ -247,6 +266,13 @@ public class XMLGeneratorParser {
 	public void checkController(Controller controller){
 		if(controller.getName().equalsIgnoreCase("controller")){
 			logger.warn(controller.getName()+" non � un nome consentito");
+			return;
+		}
+	}
+	
+	private void checkController(RestWS controllerWS) {
+		if(controllerWS.getName().equalsIgnoreCase("controllerWS")){
+			logger.warn(controllerWS.getName()+" non � un nome consentito");
 			return;
 		}
 	}

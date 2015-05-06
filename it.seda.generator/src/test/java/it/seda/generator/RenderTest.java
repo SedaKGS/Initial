@@ -25,6 +25,7 @@ public class RenderTest {
 		XMLGeneratorParser parser=new XMLGeneratorParser(is);
 		ModelsContainer container=parser.getContainer();
 		if(container.getController()!=null) {container.getController().render();}
+		if(container.getControllerWS()!=null) {container.getControllerWS().render();}
 		if(container.getForm()!=null) {container.getForm().render();}
 		if(container.getI18NMessages()!=null) {container.getI18NMessages().render();}
 		if(container.getJsp()!=null) {container.getJsp().render();}
