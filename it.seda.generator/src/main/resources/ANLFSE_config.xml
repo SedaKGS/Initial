@@ -1,0 +1,38 @@
+<models>
+<model classpath="com.seda.entrate.anagrafica.domain.LogContribuenteServizio">
+  <attribute column="ANLFSE_CKEYLFSE"   name="chiaveLog"   type="string"  pk="1" auto="1"></attribute>
+  <attribute column="ANLFSE_GDATAVARIAZ" name="dataValidita" type="date" ></attribute>  
+  <attribute column="ANFSER_CKEYFSER" name="chiavecontribuenteServizio" type="string" ></attribute>
+  <attribute column="SESOCI_CCODSOCI" name="codiceSocieta" type="string" ></attribute>
+  <attribute column="NEUTEN_CCODUTE" name="codiceUtente" type="string" ></attribute>
+  <attribute column="NEENTE_CCODENTE" name="codiceEnte" type="string" ></attribute>
+  <attribute column="NEENIS_CCODENTEIS" name="impostaServizio" type="string" ></attribute>
+  <attribute column="ANFSER_CCODFISCALE" name="codiceFiscale" type="string" ></attribute>
+  <attribute column="ANLFSE_CDENOMINAZIONE" name="denominazione" type="string" ></attribute>
+  <attribute column="ANLFSE_CNOMEANAG" name="nome" type="string" ></attribute>
+  <attribute column="ANLFSE_CCOGNANAG" name="cognome" type="string" ></attribute>
+  <attribute column="ANLFSE_CINDIRIZZOREC" name="indirizzo" type="string" ></attribute>
+  <attribute column="ANLFSE_CNUMCIVICOREC" name="civico" type="string" ></attribute>
+  <attribute column="ANLFSE_CLETTERAREC" name="lettera" type="string" ></attribute>
+  <attribute column="ANLFSE_CKMRECAPITO" name="kilometro" type="string" ></attribute>
+  <attribute column="ANLFSE_CPALAZZREC" name="palazzina" type="string" ></attribute>
+  <attribute column="ANLFSE_CPIANOREC" name="piano" type="string" ></attribute>
+  <attribute column="ANLFSE_CINTERNREC" name="interno" type="string" ></attribute>
+  <attribute column="ANLFSE_CSCALAREC" name="scala" type="string" ></attribute>
+  <attribute column="ANLFSE_CCOMUREC" name="belfioreComune" type="string" ></attribute>
+  <attribute column="ANLFSE_CPROVREC" name="provincia" type="string" ></attribute>
+  <attribute column="ANLFSE_CCAPRECAPITO" name="cap" type="string" ></attribute>
+  <attribute column="ANLFSE_CLOCARECA" name="localita" type="string" ></attribute>
+  <attribute column="ANLFSE_CPRESSOREC" name="presso" type="string" ></attribute>
+  <attribute column="ANLFSE_COPERINS" name="operInserimento" type="string" ></attribute>
+  <attribute column="ANLFSE_GDATAINS" name="dataInserimento" type="date" ></attribute>
+  <attribute column="ANLFSE_COPEUVAR" name="operVariazione" type="string" ></attribute>
+  <attribute column="ANLFSE_GDATUVAR" name="dataVariazione" type="date" ></attribute>
+   </model>
+
+<mapper classpath="com.seda.entrate.anagrafica.persistence.LogContribuenteServizioMapper" annotation="org.springframework.stereotype.Service"></mapper>
+
+<myBatis classpath="com.seda.entrate.anagrafica.persistence.LogContribuenteServizioMapper"></myBatis>
+
+<service classpath="com.seda.entrate.anagrafica.service.LogContribuenteServizioService" transaction="transactionManager"> </service>
+</models>
