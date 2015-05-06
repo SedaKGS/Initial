@@ -6,6 +6,7 @@ import $mapper.getModel().getFullName();
 import $mapper.getAnnotationClazz();
 import org.apache.ibatis.session.RowBounds;
 
+#set($ByFilter="ByFilter")
 
 @$mapper.getAnnotationName()
 public interface $mapper.getMapperUpperName() {
@@ -14,6 +15,7 @@ public interface $mapper.getMapperUpperName() {
 	void update$mapper.getModel().getUpperName()($mapper.getModel().getUpperName() $mapper.getModel().getName());
 	void delete$mapper.getModel().getUpperName()($mapper.getModel().getUpperName() $mapper.getModel().getName()); 
     $mapper.getModel().getUpperName()  get$mapper.getModel().getUpperName()ById($mapper.getModel().getUpperName() $mapper.getModel().getName()); 
-    int list$mapper.getModel().getUpperName()Count(); 
+    int list$mapper.getModel().getUpperName()Count($mapper.getModel().getUpperName() $mapper.getModel().getName()); 
 	List<$mapper.getModel().getUpperName()> list$mapper.getModel().getUpperName()(RowBounds rowBounds); 
+	List<$mapper.getModel().getUpperName()> list$mapper.getModel().getUpperName()$ByFilter($mapper.getModel().getUpperName() $mapper.getModel().getName(),RowBounds rowBounds); 
 }

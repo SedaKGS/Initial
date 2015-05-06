@@ -7,6 +7,7 @@
 #set($length=0)
 #set($dot=".")
 #set($count="Count")
+#set($ByFilter="ByFilter")
 #foreach($field in $fields)
 #if($field.getPk()==0 && $field.isNotList())
 #set($length=$length+1) 
@@ -70,10 +71,24 @@ SELECT COUNT($fields.get(0).getName())
 FROM $table
 </select>	
 
+
+
+
+
+
 <select id="list$ModelUpper"  resultMap="$ModelLower">
 SELECT  $myBatisMapper.getModel().getAll()
 FROM $table
 $myBatisMapper.getModel().getOrder()
 </select>
+
+
+<select id="list$ModelUpper$ByFilter"  parameterType="$ModelUpper" resultMap="$ModelLower">
+SELECT  $myBatisMapper.getModel().getAll()
+FROM $table
+$myBatisMapper.getModel().getWhereFilter()
+$myBatisMapper.getModel().getOrder()
+</select>
+
 	
 </mapper>

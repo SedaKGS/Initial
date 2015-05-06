@@ -14,6 +14,7 @@ public interface ComuneMapper {
 	void updateComune(Comune Comune);
 	void deleteComune(Comune Comune); 
     Comune  getComuneById(Comune Comune); 
-    int listComuneCount(); 
+    int listComuneCount(Comune Comune); 
 	List<Comune> listComune(RowBounds rowBounds); 
+	List<Comune> listComuneByFilter(Comune Comune,RowBounds rowBounds); 
 }

@@ -26,6 +26,7 @@ public class Model implements Render {
 	private String INSERT=null;
 	private String VALUES=null;
 	private String WHERE=null;
+	private String WHEREFILTER=null;
 	private String SET=null;
 	private String ALL=null;
 	private String ORDER=null;
@@ -294,6 +295,52 @@ public class Model implements Render {
     	return ORDER;
     }
 
+    
+    
+    public String getWhereFilter(){
+    	if(WHEREFILTER==null){
+    	int count=0;
+    	for (Attribute attribute : attributes) {
+			if(attribute.isNotList()){
+				count++;
+			}
+		}
+    	int temp=1;
+    	StringBuilder sb=new StringBuilder("WHERE ");
+    	int first=0;
+    	for (Attribute attribute : attributes) {
+			if(attribute.isNotList()){
+				if(temp<count){
+					if(first==0){
+						sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
+						sb.append(attribute.getColumn());
+						sb.append("= #{"+attribute.getName()+"} ");
+						sb.append("<if />");
+						temp++;
+						first++;
+					}
+					else{
+						sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
+						sb.append("AND ");
+						sb.append(attribute.getColumn());
+						sb.append("= #{"+attribute.getName()+"} ");
+						sb.append("<if />");
+						temp++;	
+					}
+					
+				
+				}else{
+				sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
+				sb.append(attribute.getColumn());	
+				sb.append("= #{"+attribute.getName()+"} ");
+				sb.append("<if />");
+				}
+			}
+		}
+    	this.WHEREFILTER=sb.toString();
+    	}
+    	return WHEREFILTER;
+    }
 
 	@Override
 	public void render() {
