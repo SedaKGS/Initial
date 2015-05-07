@@ -1,45 +1,29 @@
 <models>
-<model classpath="com.seda.entrate.formulari.domain.Comune" table="ANCOMUTB">
-  		<attribute column="SESOCI_CCODSOCI"   name="societa"   type="string"  pk="1" auto="1" >
-  		  <input form="1" type="string"/>
+<model classpath="com.seda.entrate.formulari.services.domain.Conservatoria" table="ANCONSTB">
+  		<attribute column="SESOCI_CCODSOCI"   name="societa"   type="string"  pk="1" auto="0" >
+  		  	<input form="1" type="string"/>
   		</attribute>
- 		<attribute column="ANCOMU_CCODBLEFIORE"   name="codiceBelfiore"   type="string"  pk="2" auto="1">
- 		  <input form="2" type="string"/>
- 		</attribute>
-  		<attribute column="ANCOMU_CCOMDESCRIZ" name="descrizioneComune" type="string">
-  		  <input form="3" type="string"/>
-  		</attribute>  
-  		<attribute column="ANCOMU_GDATAINIZIOVAL" name="dataInizioValidita" type="date" ></attribute>
-  		<attribute column="ANCOMU_CFLAGSOPPR" name="flagSospensione" type="string" ></attribute>
-  		<attribute column="ANCOMU_CFLAGESTERO" name="flagStatoEstero" type="string" ></attribute>
-  		<attribute column="ANPROV_CSIGLAPROV" name="siglaProvincia" type="string" ></attribute>
-  		<attribute column="ANCOMU_CCODCAP" name="cap" type="string" ></attribute>
-  		<attribute column="ANREGI_CCODREGIONE" name="codiceRegione" type="string" ></attribute>
-  		<attribute column="ANNAZI_CCODNAZIONE" name="codiceNazione" type="string" ></attribute>
-  		<attribute column="ANCOMU_CCODISTAT" name="codiceIstat" type="string" ></attribute>
-  		<attribute column="ANCOMU_CCODCATASTO" name="codiceCatastale" type="string" ></attribute>
-  		<attribute column="ANCOMU_CCODCAB" name="codiceCab" type="string" ></attribute>
-  		<attribute column="ANCONS_CCODCONSE" name="conservatoria" type="string" ></attribute>
-  		<attribute column="ANTRIB_CCODTRIB" name="codiceTribunale" type="string" ></attribute>
-  		<attribute column="ANCOMU_GDATACESS" name="dataCessazione" type="date" ></attribute>
-  		<attribute column="ANCOMU_COPERINSE" name="operInserimento" type="string" ></attribute>
-  		<attribute column="ANCOMU_GDATAINSE" name="dataInserimento" type="date" ></attribute>
-  		<attribute column="ANCOMU_COPERUVAR" name="operVariazione" type="string" ></attribute>
-  		<attribute column="ANCOMU_GDATAUVAR" name="dataVariazione" type="date" ></attribute>
+ 		<attribute column="ANCONS_CCODCONSE"   name="codiceConservatoria"   type="string"  pk="2" auto="0">
+ 		  	<input form="2" type="string"/>
+		</attribute> 		  
+  		<attribute column="ANCONS_DDESCONSE" name="descrizioneConservatoria" type="string" >
+  		 	<input form="3" type="string"/>
+  		</attribute>
+  		<attribute column="ANCONS_COPERINSE" name="operInserimento" type="string" ></attribute>
+  		<attribute column="ANCONS_GDATAINSE" name="dataInserimento" type="date" ></attribute>
+  		<attribute column="ANCONS_COPERUVAR" name="operVariazione" type="string" ></attribute>
+  		<attribute column="ANCONS_GDATAUVAR" name="dataVariazione" type="date" ></attribute>
 </model>
 
-<mapper classpath="com.seda.entrate.formulari.persistence.Comune" annotation="org.springframework.stereotype.Service"></mapper>
+<mapper classpath="com.seda.entrate.formulari.services.persistence.Conservatoria" annotation="org.springframework.stereotype.Service"></mapper>
 
-<myBatis classpath="com.seda.entrate.formulari.persistence.Comune"></myBatis>
+<myBatis classpath="com.seda.entrate.formulari.services.persistence.Conservatoria"></myBatis>
 
-<service classpath="com.seda.entrate.formulari.service.Comune" transaction="transactionManager"> </service>
+<service classpath="com.seda.entrate.formulari.services.service.Conservatoria" transaction="transactionManager"> </service>
 
-<form classpath="com.seda.entrate.bind.Comune"></form>
+<form classpath="com.seda.entrate.formulari.services.bind.Conservatoria"></form>
 
-<controller classpath="com.seda.entrate.formulari.controllers.Comune"    baseurl="ANCOMUTB"  pageNumber="1"   rowsPerPage="15"/>
-
-
-<controllerWS  classpath="com.seda.entrate.formulari.controllers.Comune"    baseurl="ANCOMUTB"  pageNumber="1"   rowsPerPage="15"/>
+<controllerWS  classpath="com.seda.entrate.formulari.services.controller.Conservatoria"    baseurl="ANCONSTB"  pageNumber="1"   rowsPerPage="15"/>
 
 
 </models>
