@@ -305,7 +305,7 @@ public class Model implements Render {
 			}
 		}
     	int temp=1;
-    	StringBuilder sb=new StringBuilder("WHERE ");
+    	StringBuilder sb=new StringBuilder("WHERE 1=1 AND ");
     	int first=0;
     	for (Attribute attribute : attributes) {
 			if(attribute.isNotList()){
@@ -330,6 +330,7 @@ public class Model implements Render {
 				
 				}else{
 				sb.append("<if test=\""+attribute.getName()+"> &quot;&quot; \">")	;
+				sb.append("AND ");
 				sb.append(attribute.getColumn());	
 				sb.append("= #{"+attribute.getName()+"} ");
 				sb.append("</if>");
