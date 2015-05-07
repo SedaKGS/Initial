@@ -102,7 +102,7 @@ public class $restWS.getName() {
     /*
      * Method used to update  $ModelUpper
     */
-    @RequestMapping(method=RequestMethod.PUT) 
+    @RequestMapping(value="$idUrl",method=RequestMethod.PUT) 
     public WebServiceOutput update$ModelUpper(
                                     @Valid @RequestBody $FormUpper $FormLower,
                                     BindingResult result,
