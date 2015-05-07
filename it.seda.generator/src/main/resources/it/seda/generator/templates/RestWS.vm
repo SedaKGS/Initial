@@ -1,8 +1,6 @@
 package  $restWS.getNamespace();
 
-import it.seda.sem.domain.ObjectCopier;
-import it.seda.sem.jdbc.RowBoundsHelper;
-import it.seda.template.taglib.DatagridTag.Page;
+
 import $restWS.getForm().getClazz();
 import $restWS.getModel().getClazz();
 import $restWS.getService().getClazz();
