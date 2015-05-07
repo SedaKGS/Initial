@@ -237,8 +237,9 @@ public class $restWS.getName() {
      $ModelLower$set$field.getNameUcase()($field.getName());
 #end
 #end	                         
-  
-     WebServiceOutput editOutput= $nameService$list$ModelUpper$ByFilter$WS($ModelLower);
+     
+     RowBounds rb=new RowBounds(pageNumber,rowsPerPage);
+     WebServiceOutput editOutput= $nameService$list$ModelUpper$ByFilter$WS($ModelLower, rb);
      return editOutput;                      
 
 	}
