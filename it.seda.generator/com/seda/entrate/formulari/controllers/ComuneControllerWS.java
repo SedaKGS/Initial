@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.seda.ws.restfull.data.WebServiceOutput;
 
 
-;
 
 @Controller
 @RequestMapping(value="/ANCOMUTB")
@@ -54,7 +53,7 @@ public class ComuneControllerWS {
     deleteOut.setTotalPages(0);
 	deleteOut.setTotalRows(0);
 	deleteOut.setPageSize(15);
-	deleteOut.pageNumber(1);
+	deleteOut.setPageNumber(1);
     return deleteOut;
     }
 	
@@ -75,7 +74,7 @@ public class ComuneControllerWS {
     updateOut.setTotalPages(0);
 	updateOut.setTotalRows(0);
 	updateOut.setPageSize(15);
-	updateOut.pageNumber(1);
+	updateOut.setPageNumber(1);
     updateOut.setStatus("OK");                            
     
     if (!result.hasErrors()) {
@@ -113,7 +112,7 @@ public class ComuneControllerWS {
      comune.setSocieta(societa);
      comune.setCodiceBelfiore(codiceBelfiore);
   
-     WebServiceOutput editOutput= comune=comuneService.getComuneByIdWS(comune);
+     WebServiceOutput editOutput= comuneService.getComuneByIdWS(comune);
      return editOutput;
     }
 	
@@ -135,7 +134,7 @@ public class ComuneControllerWS {
     insertOut.setTotalPages(0);
 	insertOut.setTotalRows(0);
 	insertOut.setPageSize(15);
-	insertOut.pageNumber(1);
+	insertOut.setPageNumber(1);
     insertOut.setStatus("OK");                                 
             
 		if (!result.hasErrors()) {
@@ -147,12 +146,12 @@ public class ComuneControllerWS {
 			}catch(Exception e){
 				comuneForm.setEsito("comuneForm.esito.notOk");
 				logger.error("Err",e); //TODO i18n errore inserimento
-				 updateOut.setStatus("KO");     
+				 insertOut.setStatus("KO");     
 			}finally{
 				model.addAttribute("comuneForm",comuneForm);
 			}
 		}
-		refreshDatagrid(model, pageNumber, rowsPerPage);
+	
 		return insertOut;
 	}
 	

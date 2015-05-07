@@ -3,6 +3,7 @@
 #set($ModelLower=$myBatisMapper.getModel().getLowerName())
 #set($ModelUpper=$myBatisMapper.getModel().getName())
 #set($Count="Count")
+#set($ById="ById")
 #set($fields=$myBatisMapper.getModel().getAttributes())
 #set($length=0)
 #set($dot=".")

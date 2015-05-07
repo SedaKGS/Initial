@@ -47,12 +47,6 @@ public class ComuneService {
 	}
 	
 	
-	@Transactional(value="transactionManager",readOnly = true)
-	public int listComuneCount() {
-		int rowsNumber=comuneMapper.listComuneCount();
-		return rowsNumber;
-		
-	}
 	
 	@Transactional(value="transactionManager",readOnly = true)
 	public List<Comune> listComune(RowBounds rowBounds) {
@@ -66,15 +60,15 @@ public class ComuneService {
 	  List<Comune> list=comuneMapper.listComuneByFilter(comune,rowBounds);
 	  DefaultDataPage<Comune> editOutPage =  new DefaultDataPage<Comune>(list);
 	  
-	  int totalRows=comuneMapper.listComuneCount(comune,rowBounds)
+	  int totalRows=comuneMapper.listComuneCount(comune);
 	  
 	  WebServiceOutput listOutput = new WebServiceOutput();
 	  listOutput.setModelName("listaContribuentiServizio");
       listOutput.setOrderBy("codice fiscale");
       listOutput.setStatus("ok");
       listOutput.setValue("");
-	  listOutput.buildDataPage(editOutPage,rowBounds.getLimit(),rowBounds.getOffSet(),totalRows);
-      listOutput.setElementList(listEdit);
+	  listOutput.buildDataPage(editOutPage,rowBounds.getLimit(),rowBounds.getOffset(),totalRows);
+      listOutput.setElementList(list);
       return listOutput;
 	}
 	
