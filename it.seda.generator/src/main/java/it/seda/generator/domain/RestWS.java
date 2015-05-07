@@ -150,6 +150,8 @@ public class RestWS implements Render{
 		GeneratorUtils.printToFile(this.namespace,this.name,"java",sw.toString());
 		
 	}
+
+	
 	
 	
 }

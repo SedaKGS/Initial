@@ -136,6 +136,8 @@ public class ModelMapper implements Render {
 		template.merge( context, sw );
 		GeneratorUtils.printToFile(this.mapperNamespace,this.mapperName,"java",sw.toString());	
 	}
+
+	
 	
 	
 }

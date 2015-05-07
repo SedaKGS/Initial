@@ -102,6 +102,8 @@ public class MyBatisMapper implements Render {
 		template.merge( context, sw );
 		GeneratorUtils.printToFile(this.namespace,this.name,"xml",sw.toString());
 	}
+
+	
 	
 	
 	
