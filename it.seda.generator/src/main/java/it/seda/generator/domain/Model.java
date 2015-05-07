@@ -165,7 +165,7 @@ public class Model implements Render {
 			}
 		}
     	int temp=1;
-    	StringBuilder sb=new StringBuilder("SET  (");
+    	StringBuilder sb=new StringBuilder("SET  ");
     	for (Attribute attribute : attributes) {
 			if(attribute.getPk()==0&&attribute.isNotList()){
 				if(temp<count){
@@ -184,7 +184,7 @@ public class Model implements Render {
 				}
 			}
 		}
-    	sb.append(")");
+    	
     	this.SET=sb.toString();
     	}
     	return SET;
