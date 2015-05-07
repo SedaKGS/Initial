@@ -68,8 +68,9 @@ $myBatisMapper.getModel().getWhere()
 
 
 <select id="list$ModelUpper$Count"  resultType="int">
-SELECT COUNT($fields.get(0).getName())
+SELECT COUNT()
 FROM $table
+$myBatisMapper.getModel().getWhereFilter()
 </select>	
 
 
