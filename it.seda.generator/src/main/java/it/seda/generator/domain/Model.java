@@ -311,7 +311,7 @@ public class Model implements Render {
 			if(attribute.isNotList()){
 				if(temp<count){
 					if(first==0){
-						sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
+						sb.append("<if test=\""+attribute.getName()+"> &quot;&quot; \">")	;
 						sb.append(attribute.getColumn());
 						sb.append("= #{"+attribute.getName()+"} ");
 						sb.append("</if>");
@@ -319,7 +319,7 @@ public class Model implements Render {
 						first++;
 					}
 					else{
-						sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
+						sb.append("<if test=\""+attribute.getName()+" > &quot;&quot; \">")	;
 						sb.append("AND ");
 						sb.append(attribute.getColumn());
 						sb.append("= #{"+attribute.getName()+"} ");
@@ -329,7 +329,7 @@ public class Model implements Render {
 					
 				
 				}else{
-				sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
+				sb.append("<if test=\""+attribute.getName()+"> &quot;&quot; \">")	;
 				sb.append(attribute.getColumn());	
 				sb.append("= #{"+attribute.getName()+"} ");
 				sb.append("</if>");

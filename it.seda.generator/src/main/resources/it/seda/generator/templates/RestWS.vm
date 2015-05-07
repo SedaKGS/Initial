@@ -226,7 +226,6 @@ public class $restWS.getName() {
                                 @RequestParam(value="$field.getName()",defaultValue="") $field.printType() $field.getName(),
 #end
 #end 
-                                 BindingResult result, 
                                  ModelMap model,
                                  @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber,
                                  @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage) {
