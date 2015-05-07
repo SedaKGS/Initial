@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import it.seda.ws.restfull.data.WebServiceOutput;
 import it.seda.jdbc.utils.ObjectCopier;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 #set($ModelLower=$restWS.getModel().getLowerName())
@@ -103,7 +104,7 @@ public class $restWS.getName() {
     */
     @RequestMapping(method=RequestMethod.PUT) 
     public WebServiceOutput update$ModelUpper(
-                                    @Valid @ModelAttribute("$ModelLower$Data") $FormUpper $FormLower,
+                                    @Valid @RequestBody $FormUpper $FormLower,
                                     BindingResult result,
                                     @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber, 
                                     @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
@@ -168,7 +169,7 @@ public class $restWS.getName() {
 	 * Inserts a new $ModelUpper
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public WebServiceOutput add$ModelUpper(@Valid @ModelAttribute("$ModelLower$Data") $FormUpper $FormLower, 
+	public WebServiceOutput add$ModelUpper(@Valid@RequestBody $FormUpper $FormLower, 
                                  BindingResult result, 
                                  ModelMap model,
                                  @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber,

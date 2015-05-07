@@ -73,10 +73,6 @@ FROM $table
 </select>	
 
 
-
-
-
-
 <select id="list$ModelUpper"  resultMap="$ModelLower">
 SELECT  $myBatisMapper.getModel().getAll()
 FROM $table

@@ -212,7 +212,7 @@ public class Model implements Render {
 				temp++;
 				}else{
 				sb.append(attribute.getColumn());	
-				sb.append("= #{"+attribute.getName()+"} ");
+				//sb.append("= #{"+attribute.getName()+"} ");
 				}
 			}
 		}
