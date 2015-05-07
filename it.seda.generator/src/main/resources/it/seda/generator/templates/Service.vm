@@ -68,7 +68,7 @@ public class $service.getName() {
 	}
 	
 	@Transactional(value="$transactionManager",readOnly = true)
-	public WebServiceOutput  list$ModelUpper$ByFilter($ModelUpper $ModelLower,RowBounds rowBounds) {
+	public WebServiceOutput  list$ModelUpper$ByFilter$WS($ModelUpper $ModelLower,RowBounds rowBounds) {
 	  List<$ModelUpper> list=$mapper$list$ModelUpper$ByFilter($ModelLower,rowBounds);
 	  DefaultDataPage<$ModelUpper> editOutPage =  new DefaultDataPage<$ModelUpper>(list);
 	  

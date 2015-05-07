@@ -56,7 +56,7 @@ public class ComuneService {
 	}
 	
 	@Transactional(value="transactionManager",readOnly = true)
-	public WebServiceOutput  listComuneByFilter(Comune comune,RowBounds rowBounds) {
+	public WebServiceOutput  listComuneByFilterWS(Comune comune,RowBounds rowBounds) {
 	  List<Comune> list=comuneMapper.listComuneByFilter(comune,rowBounds);
 	  DefaultDataPage<Comune> editOutPage =  new DefaultDataPage<Comune>(list);
 	  

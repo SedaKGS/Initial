@@ -53,6 +53,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 #set($dot=".")
 #set($idUrl="")
 #set($WS="WS")
+#set($ByFilter="ByFilter")
 #foreach($field in $fields)
 #if($field.getPk()>0 && $field.isNotPkList())
      #set($idUrl=$idUrl+"/"+"{"+$field.getName()+"}")
@@ -154,11 +155,6 @@ public class $restWS.getName() {
     @RequestMapping(value="$idUrl", 
                     method=RequestMethod.GET) 
     public WebServiceOutput edit$ModelUpper(
-#foreach($field in $fields)
-#if($field.getPk()>0 && $field.isNotPkList())
-                            @PathVariable $field.printType() $field.getName(),
-#end
-#end 
                             @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber, 
                             @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
                             @RequestParam(value="action",required=false) String action,
@@ -209,6 +205,39 @@ public class $restWS.getName() {
 				model.addAttribute("$FormLower",$FormLower);
 			}
 		}
+	
+		return insertOut;
+	}
+	
+	
+	
+	/*
+	 * Select by filter
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public WebServiceOutput list$ModelUpper(
+#foreach($field in $fields)
+#if($field.getForm()>0 && $field.isNotPkList())             
+                                @RequestParam(value="$field.getName()") $field.printType() $field.getName(),
+#end
+#end 
+                                 BindingResult result, 
+                                 ModelMap model,
+                                 @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber,
+                                 @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage) {
+                                 
+           $ModelUpper $ModelLower=new $ModelUpper();
+#foreach($field in $fields)
+#if($field.getForm()>0 && $field.isNotPkList())
+     $ModelLower$set$field.getNameUcase()($field.getName());
+#end
+#end	                         
+  
+     WebServiceOutput editOutput= $nameService$list$ModelUpper$ByFilter$WS($ModelLower);
+     return editOutput;                      
+                               
+            
+		
 	
 		return insertOut;
 	}

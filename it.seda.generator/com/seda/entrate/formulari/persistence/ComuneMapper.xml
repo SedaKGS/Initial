@@ -30,7 +30,7 @@
 <insert id="insertComune" parameterType="Comune">
 INSERT INTO ANCOMUTB
    (
-    ANCOMU_GDATAINIZIOVAL, ANCOMU_CFLAGSOPPR, ANCOMU_CFLAGESTERO, ANPROV_CSIGLAPROV, ANCOMU_CCODCAP, ANREGI_CCODREGIONE, ANNAZI_CCODNAZIONE, ANCOMU_CCODISTAT, ANCOMU_CCODCATASTO, ANCOMU_CCODCAB, ANCONS_CCODCONSE, ANTRIB_CCODTRIB, ANCOMU_GDATACESS, ANCOMU_COPERINSE, ANCOMU_GDATAINSE, ANCOMU_COPERUVAR, ANCOMU_GDATAUVAR, ANCOMU_CCOMDESCRIZ= #{descrizioneComune} 
+    ANCOMU_GDATAINIZIOVAL, ANCOMU_CFLAGSOPPR, ANCOMU_CFLAGESTERO, ANPROV_CSIGLAPROV, ANCOMU_CCODCAP, ANREGI_CCODREGIONE, ANNAZI_CCODNAZIONE, ANCOMU_CCODISTAT, ANCOMU_CCODCATASTO, ANCOMU_CCODCAB, ANCONS_CCODCONSE, ANTRIB_CCODTRIB, ANCOMU_GDATACESS, ANCOMU_COPERINSE, ANCOMU_GDATAINSE, ANCOMU_COPERUVAR, ANCOMU_GDATAUVAR, ANCOMU_CCOMDESCRIZ
    )VALUES	
    (
    #{dataInizioValidita} , #{flagSospensione} , #{flagStatoEstero} , #{siglaProvincia} , #{cap} , #{codiceRegione} , #{codiceNazione} , #{codiceIstat} , #{codiceCatastale} , #{codiceCab} , #{conservatoria} , #{codiceTribunale} , #{dataCessazione} , #{operInserimento} , #{dataInserimento} , #{operVariazione} , #{dataVariazione} , #{descrizioneComune} 
@@ -39,7 +39,7 @@ INSERT INTO ANCOMUTB
 	
 <update id="updateComune" parameterType="Comune">
 UPDATE ANCOMUTB
-   SET  (<if test="dataInizioValiditaente > &quot;&quot; ">ANCOMU_GDATAINIZIOVAL= #{dataInizioValidita} , <if/><if test="flagSospensioneente > &quot;&quot; ">ANCOMU_CFLAGSOPPR= #{flagSospensione} , <if/><if test="flagStatoEsteroente > &quot;&quot; ">ANCOMU_CFLAGESTERO= #{flagStatoEstero} , <if/><if test="siglaProvinciaente > &quot;&quot; ">ANPROV_CSIGLAPROV= #{siglaProvincia} , <if/><if test="capente > &quot;&quot; ">ANCOMU_CCODCAP= #{cap} , <if/><if test="codiceRegioneente > &quot;&quot; ">ANREGI_CCODREGIONE= #{codiceRegione} , <if/><if test="codiceNazioneente > &quot;&quot; ">ANNAZI_CCODNAZIONE= #{codiceNazione} , <if/><if test="codiceIstatente > &quot;&quot; ">ANCOMU_CCODISTAT= #{codiceIstat} , <if/><if test="codiceCatastaleente > &quot;&quot; ">ANCOMU_CCODCATASTO= #{codiceCatastale} , <if/><if test="codiceCabente > &quot;&quot; ">ANCOMU_CCODCAB= #{codiceCab} , <if/><if test="conservatoriaente > &quot;&quot; ">ANCONS_CCODCONSE= #{conservatoria} , <if/><if test="codiceTribunaleente > &quot;&quot; ">ANTRIB_CCODTRIB= #{codiceTribunale} , <if/><if test="dataCessazioneente > &quot;&quot; ">ANCOMU_GDATACESS= #{dataCessazione} , <if/><if test="operInserimentoente > &quot;&quot; ">ANCOMU_COPERINSE= #{operInserimento} , <if/><if test="dataInserimentoente > &quot;&quot; ">ANCOMU_GDATAINSE= #{dataInserimento} , <if/><if test="operVariazioneente > &quot;&quot; ">ANCOMU_COPERUVAR= #{operVariazione} , <if/><if test="dataVariazioneente > &quot;&quot; ">ANCOMU_GDATAUVAR= #{dataVariazione} , <if/><if test="descrizioneComuneente > &quot;&quot; ">ANCOMU_CCOMDESCRIZ= #{descrizioneComune} , <if/>)
+   SET  <if test="dataInizioValidita> &quot;&quot; ">ANCOMU_GDATAINIZIOVAL= #{dataInizioValidita} , </if><if test="flagSospensione> &quot;&quot; ">ANCOMU_CFLAGSOPPR= #{flagSospensione} , </if><if test="flagStatoEstero> &quot;&quot; ">ANCOMU_CFLAGESTERO= #{flagStatoEstero} , </if><if test="siglaProvincia> &quot;&quot; ">ANPROV_CSIGLAPROV= #{siglaProvincia} , </if><if test="cap> &quot;&quot; ">ANCOMU_CCODCAP= #{cap} , </if><if test="codiceRegione> &quot;&quot; ">ANREGI_CCODREGIONE= #{codiceRegione} , </if><if test="codiceNazione> &quot;&quot; ">ANNAZI_CCODNAZIONE= #{codiceNazione} , </if><if test="codiceIstat> &quot;&quot; ">ANCOMU_CCODISTAT= #{codiceIstat} , </if><if test="codiceCatastale> &quot;&quot; ">ANCOMU_CCODCATASTO= #{codiceCatastale} , </if><if test="codiceCab> &quot;&quot; ">ANCOMU_CCODCAB= #{codiceCab} , </if><if test="conservatoria> &quot;&quot; ">ANCONS_CCODCONSE= #{conservatoria} , </if><if test="codiceTribunale> &quot;&quot; ">ANTRIB_CCODTRIB= #{codiceTribunale} , </if><if test="dataCessazione> &quot;&quot; ">ANCOMU_GDATACESS= #{dataCessazione} , </if><if test="operInserimento> &quot;&quot; ">ANCOMU_COPERINSE= #{operInserimento} , </if><if test="dataInserimento> &quot;&quot; ">ANCOMU_GDATAINSE= #{dataInserimento} , </if><if test="operVariazione> &quot;&quot; ">ANCOMU_COPERUVAR= #{operVariazione} , </if><if test="dataVariazione> &quot;&quot; ">ANCOMU_GDATAUVAR= #{dataVariazione} , </if><if test="descrizioneComune > &quot;&quot; ">ANCOMU_CCOMDESCRIZ= #{descrizioneComune} </if>
    WHERE SESOCI_CCODSOCI= #{societa} AND ANCOMU_CCODBLEFIORE= #{codiceBelfiore} 
 </update>	
 
@@ -59,10 +59,6 @@ WHERE SESOCI_CCODSOCI= #{societa} AND ANCOMU_CCODBLEFIORE= #{codiceBelfiore}
 SELECT COUNT(dataInizioValidita)
 FROM ANCOMUTB
 </select>	
-
-
-
-
 
 
 <select id="listComune"  resultMap="comune">

@@ -1,8 +1,6 @@
 package  com.seda.entrate.formulari.controllers;
 
-import it.seda.sem.domain.ObjectCopier;
-import it.seda.sem.jdbc.RowBoundsHelper;
-import it.seda.template.taglib.DatagridTag.Page;
+
 import com.seda.entrate.bind.ComuneForm;
 import com.seda.entrate.formulari.domain.Comune;
 import com.seda.entrate.formulari.service.ComuneService;
@@ -21,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import it.seda.ws.restfull.data.WebServiceOutput;
+import it.seda.jdbc.utils.ObjectCopier;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -61,9 +61,11 @@ public class ComuneControllerWS {
     /*
      * Method used to update  Comune
     */
-    @RequestMapping(method=RequestMethod.PUT) 
+    @RequestMapping(value="/{societa}/{codiceBelfiore}",method=RequestMethod.PUT) 
     public WebServiceOutput updateComune(
-                                    @Valid @ModelAttribute("comuneData") ComuneForm comuneForm,
+                                    @PathVariable java.lang.String societa,
+                                    @PathVariable java.lang.String codiceBelfiore,
+                                    @Valid @RequestBody ComuneForm comuneForm,
                                     BindingResult result,
                                     @RequestParam(value="pageNumber", defaultValue="1") int pageNumber, 
                                     @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage,
@@ -80,6 +82,9 @@ public class ComuneControllerWS {
     if (!result.hasErrors()) {
     logger.debug("ComuneControllerWS: dati inseriti correttamente"); //TODO i18n		
 	try{	
+         comuneForm.setSocieta(societa);
+         comuneForm.setCodiceBelfiore(codiceBelfiore);
+	
         Comune comune =ObjectCopier.createObject(comuneForm, Comune.class);
         comuneService.updateComune(comune);
         comuneForm.setEsito("comuneForm.esito.ok");
@@ -102,8 +107,6 @@ public class ComuneControllerWS {
     @RequestMapping(value="/{societa}/{codiceBelfiore}", 
                     method=RequestMethod.GET) 
     public WebServiceOutput editComune(
-                            @PathVariable java.lang.String societa,
-                            @PathVariable java.lang.String codiceBelfiore,
                             @RequestParam(value="pageNumber", defaultValue="1") int pageNumber, 
                             @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage,
                             @RequestParam(value="action",required=false) String action,
@@ -122,7 +125,7 @@ public class ComuneControllerWS {
 	 * Inserts a new Comune
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public WebServiceOutput addComune(@Valid @ModelAttribute("comuneData") ComuneForm comuneForm, 
+	public WebServiceOutput addComune(@Valid@RequestBody ComuneForm comuneForm, 
                                  BindingResult result, 
                                  ModelMap model,
                                  @RequestParam(value="pageNumber", defaultValue="1") int pageNumber,
@@ -151,6 +154,35 @@ public class ComuneControllerWS {
 				model.addAttribute("comuneForm",comuneForm);
 			}
 		}
+	
+		return insertOut;
+	}
+	
+	
+	
+	/*
+	 * Select by filter
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public WebServiceOutput listComune(
+                                @RequestParam(value="descrizioneComune") java.lang.String descrizioneComune,
+                                @RequestParam(value="societa") java.lang.String societa,
+                                @RequestParam(value="codiceBelfiore") java.lang.String codiceBelfiore,
+                                 BindingResult result, 
+                                 ModelMap model,
+                                 @RequestParam(value="pageNumber", defaultValue="1") int pageNumber,
+                                 @RequestParam(value="rowsPerPage",defaultValue="15") int rowsPerPage) {
+                                 
+           Comune comune=new Comune();
+     comune.setDescrizioneComune(descrizioneComune);
+     comune.setSocieta(societa);
+     comune.setCodiceBelfiore(codiceBelfiore);
+  
+     WebServiceOutput editOutput= comuneService.listComune$ByFilterWS(comune);
+     return editOutput;                      
+                               
+            
+		
 	
 		return insertOut;
 	}
