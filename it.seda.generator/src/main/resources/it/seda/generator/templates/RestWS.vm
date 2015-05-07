@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 #set($Count="Count")
 #set($ById="ById")
 #set($setEsito=".setEsito")
+#set($ByFilter="ByFilter")
 #set($cancel=".cancel")
 #set($esito=".esito")
 #set($ok=".ok")
@@ -53,7 +54,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 #set($dot=".")
 #set($idUrl="")
 #set($WS="WS")
-#set($ByFilter="ByFilter")
 #foreach($field in $fields)
 #if($field.getPk()>0 && $field.isNotPkList())
      #set($idUrl=$idUrl+"/"+"{"+$field.getName()+"}")
@@ -155,6 +155,11 @@ public class $restWS.getName() {
     @RequestMapping(value="$idUrl", 
                     method=RequestMethod.GET) 
     public WebServiceOutput edit$ModelUpper(
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+                            @PathVariable $field.printType() $field.getName(),
+#end
+#end 
                             @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber, 
                             @RequestParam(value="rowsPerPage",defaultValue="$rwspg") int rowsPerPage,
                             @RequestParam(value="action",required=false) String action,
@@ -211,7 +216,7 @@ public class $restWS.getName() {
 	
 	
 	
-	/*
+    /*
 	 * Select by filter
 	 */
 	@RequestMapping(method = RequestMethod.GET)
@@ -235,13 +240,8 @@ public class $restWS.getName() {
   
      WebServiceOutput editOutput= $nameService$list$ModelUpper$ByFilter$WS($ModelLower);
      return editOutput;                      
-                               
-            
-		
-	
-		return insertOut;
+
 	}
-	
   
 	
 	
