@@ -104,6 +104,11 @@ public class $restWS.getName() {
     */
     @RequestMapping(value="$idUrl",method=RequestMethod.PUT) 
     public WebServiceOutput update$ModelUpper(
+#foreach($field in $fields)
+#if($field.getPk()>0 && $field.isNotPkList())
+                                    @PathVariable $field.printType() $field.getName(),
+#end
+#end 
                                     @Valid @RequestBody $FormUpper $FormLower,
                                     BindingResult result,
                                     @RequestParam(value="pageNumber", defaultValue="$pgNmb") int pageNumber, 
