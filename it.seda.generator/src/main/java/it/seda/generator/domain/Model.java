@@ -180,7 +180,6 @@ public class Model implements Render {
 				sb.append("<if test=\""+attribute.getName()+" > &quot;&quot; \">")	;
 				sb.append(attribute.getColumn());	
 				sb.append("= #{"+attribute.getName()+"} ");
-				sb.append(", ");
 				sb.append("</if>");
 				}
 			}
