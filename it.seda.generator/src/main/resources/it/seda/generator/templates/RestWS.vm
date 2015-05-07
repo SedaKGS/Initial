@@ -223,7 +223,7 @@ public class $restWS.getName() {
 	public WebServiceOutput list$ModelUpper(
 #foreach($field in $fields)
 #if($field.getForm()>0 && $field.isNotPkList())             
-                                @RequestParam(value="$field.getName()") $field.printType() $field.getName(),
+                                @RequestParam(value="$field.getName()",defaultValue="") $field.printType() $field.getName(),
 #end
 #end 
                                  BindingResult result, 
