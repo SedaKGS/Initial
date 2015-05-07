@@ -177,7 +177,7 @@ public class Model implements Render {
 				sb.append("</if>");
 				temp++;
 				}else{
-				sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
+				sb.append("<if test=\""+attribute.getName()+" > &quot;&quot; \">")	;
 				sb.append(attribute.getColumn());	
 				sb.append("= #{"+attribute.getName()+"} ");
 				sb.append(", ");
