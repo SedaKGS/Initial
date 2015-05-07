@@ -53,7 +53,7 @@ public class $service.getName() {
 	
 	@Transactional(value="$transactionManager",readOnly = true)
 	public $ModelUpper  get$ModelUpper$ById($ModelUpper $ModelLower) {
-		$ModelUpper tmp= $mapper$get$ModelUpper$ById($ModelLower);
+		$ModelUpper tmp= $mapper$get$ModelUpper($ModelLower);
 		return tmp;
 		
 	}
@@ -89,7 +89,7 @@ public class $service.getName() {
 	
 	@Transactional("$transactionManager")
 	public WebServiceOutput  get$ModelUpper$ById$WS($ModelUpper $ModelLower) {
-		$ModelUpper tmp= $mapper$get$ModelUpper$ById($ModelLower);
+		$ModelUpper tmp= $mapper$get$ModelUpper($ModelLower);
 
 	  List<$ModelUpper>  listEdit=new ArrayList<$ModelUpper>();
 	  listEdit.add(tmp);

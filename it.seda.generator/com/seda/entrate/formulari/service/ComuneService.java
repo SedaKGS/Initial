@@ -41,7 +41,7 @@ public class ComuneService {
 	
 	@Transactional(value="transactionManager",readOnly = true)
 	public Comune  getComuneById(Comune comune) {
-		Comune tmp= comuneMapper.getComuneById(comune);
+		Comune tmp= comuneMapper.getComune(comune);
 		return tmp;
 		
 	}
@@ -77,7 +77,7 @@ public class ComuneService {
 	
 	@Transactional("transactionManager")
 	public WebServiceOutput  getComuneByIdWS(Comune comune) {
-		Comune tmp= comuneMapper.getComuneById(comune);
+		Comune tmp= comuneMapper.getComune(comune);
 
 	  List<Comune>  listEdit=new ArrayList<Comune>();
 	  listEdit.add(tmp);

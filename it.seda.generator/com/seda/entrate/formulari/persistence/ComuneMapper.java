@@ -13,7 +13,7 @@ public interface ComuneMapper {
 	void insertComune(Comune Comune); 	
 	void updateComune(Comune Comune);
 	void deleteComune(Comune Comune); 
-    Comune  getComuneById(Comune Comune); 
+    Comune  getComune(Comune Comune); 
     int listComuneCount(Comune Comune); 
 	List<Comune> listComune(RowBounds rowBounds); 
 	List<Comune> listComuneByFilter(Comune Comune,RowBounds rowBounds); 
