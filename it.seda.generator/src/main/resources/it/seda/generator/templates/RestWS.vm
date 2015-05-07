@@ -128,11 +128,10 @@ public class $restWS.getName() {
 	try{	
 #foreach($field in $fields)
 #if($field.getPk()>0 && $field.isNotPkList())
-                                   $ModelLower$set$field.getNameUcase()($field.getName());
+         $FormLower$set$field.getNameUcase()($field.getName());
 #end
 #end 	
 	
-	    
         $ModelUpper $ModelLower =ObjectCopier.createObject($FormLower, $ModelUpper$class);
         $nameService$update$ModelUpper($ModelLower);
         $FormLower$setEsito("$FormLower$esito$ok");
