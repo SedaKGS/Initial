@@ -174,14 +174,14 @@ public class Model implements Render {
 				sb.append(attribute.getColumn());
 				sb.append("= #{"+attribute.getName()+"} ");
 				sb.append(", ");
-				sb.append("<if/>");
+				sb.append("</if>");
 				temp++;
 				}else{
 				sb.append("<if test=\""+attribute.getName()+"ente > &quot;&quot; \">")	;
 				sb.append(attribute.getColumn());	
 				sb.append("= #{"+attribute.getName()+"} ");
 				sb.append(", ");
-				sb.append("<if/>");
+				sb.append("</if>");
 				}
 			}
 		}
